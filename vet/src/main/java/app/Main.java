@@ -19,7 +19,9 @@ public class Main implements CommandLineRunner{
         System.out.println();
         System.out.println();
         System.out.println("**********************************************************************");
-    	System.out.println("Aquí llamamos al menu");
+    	System.out.println("Trae a tu mascota antes de que solo podamos atenderla en espíritu");
+        System.out.println("Consulta hoy y evita un final trágicamente innecesario");
+        System.out.println("********** ¡BIENVENIDO! **********");
         // loginInput.menu();
     }
 
@@ -27,5 +29,6 @@ public class Main implements CommandLineRunner{
         System.out.println("Hello world!");
         SpringApplication.run(Main.class, args);
         System.out.println("That's all for now ;)");
+        System.out.println("Cyao");
     }
 }

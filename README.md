@@ -15,4 +15,7 @@ Aplicativo para administrar una veterinaria.
 ```bash 
 git clone https://github.com/Dan802/ConstruccionSoftware2JuanFelipeGonzalez.git
 ```
-2. Correr el proyecto 🤙
+2. Configurar la conexión a la base de datos en:
+*vet/src/main/resources/application.properties*
+
+3. Correr el proyecto 🤙
