@@ -1,8 +1,11 @@
 # ConstruccionSoftware2JuanFelipeGonzalez
 
 # Materia: Construccion de software 2
-## Integrantes del Equipo - [Juan Felipe González](https://github.com/Dan802)
-## Tecnología en que se Desarrolló - <SpringBoot> - <SQL> 
+## Integrantes del Equipo 
+- [Juan Felipe González](https://github.com/Dan802)
+## Tecnología en que se Desarrolló 
+- SpringBoot
+- SQL
 
 # Nombre del Proyecto: Vet 
 Aplicativo para administrar una veterinaria.
