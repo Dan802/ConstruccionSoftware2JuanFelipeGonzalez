@@ -1,5 +1,7 @@
 package app.domain.services;
 
+import java.util.List;
+
 import app.domain.models.MedicalRecord;
 import app.domain.models.Order;
 import app.domain.models.Person;
@@ -14,44 +16,46 @@ public class VeterinaryService implements VeterinaryPort {
   public Pet createPet(){
     return null;
   }
+  
+
   @Override
-  public Person createPetOwner() {
+  public Person savePetOwner(Person petOwner) {
     // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'createPetOwner'");
+    throw new UnsupportedOperationException("Unimplemented method 'savePetOwner'");
   }
   @Override
-  public Order prescribeMedications(Order order) {
+  public Pet savePet(Pet pet) {
     // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'prescribeMedications'");
+    throw new UnsupportedOperationException("Unimplemented method 'savePet'");
   }
   @Override
-  public Order searchAllOrder() {
+  public MedicalRecord saveMedicalRecord(MedicalRecord medicalRecord) {
     // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'searchAllOrder'");
+    throw new UnsupportedOperationException("Unimplemented method 'saveMedicalRecord'");
   }
   @Override
-  public Order createOrder() {
+  public MedicalRecord findByPetId(Pet petId) {
     // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'createOrder'");
+    throw new UnsupportedOperationException("Unimplemented method 'findByPetId'");
   }
   @Override
-  public Order cancelOrder() {
+  public MedicalRecord updateMedicalHistory(Pet petId) {
     // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'cancelOrder'");
+    throw new UnsupportedOperationException("Unimplemented method 'setMedicalHistory'");
   }
   @Override
-  public MedicalRecord createMedicalRecord() {
+  public List<Order> getAllOrders() {
     // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'createMedicalRecord'");
+    throw new UnsupportedOperationException("Unimplemented method 'getAllOrders'");
   }
   @Override
-  public MedicalRecord searchMedicalHistory(Pet petId) {
+  public Order saveOrder(Order order) {
     // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'searchMedicalHistory'");
+    throw new UnsupportedOperationException("Unimplemented method 'saveOrder'");
   }
   @Override
-  public MedicalRecord editMedicalHistory(Pet petId) {
+  public Order updateOrder() {
     // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'editMedicalHistory'");
+    throw new UnsupportedOperationException("Unimplemented method 'updateOrder'");
   }
 }

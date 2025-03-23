@@ -26,3 +26,4 @@ van con una clase que implementan ese puerto
 
 # -------------------- Preguntas
 Quien crea los administradores?
+Todos los modelos deben tener un puerto? según yo si, pero pa saber

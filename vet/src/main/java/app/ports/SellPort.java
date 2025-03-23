@@ -1,14 +1,10 @@
 package app.ports;
 
+import java.util.List;
+
 import app.domain.models.Order;
 
 public interface SellPort {
   // Consultar al listado de ordenes
-  public Order searchAllOrder();
-
-  // Suministrar medicamentos
-  public void supplyMedicine();
-
-  // Vender medicina
-  public void sellMedicine();
+  public List<Order> getAllOrders();
 }

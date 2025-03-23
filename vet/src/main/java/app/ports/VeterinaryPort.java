@@ -1,29 +1,29 @@
 package app.ports;
 
+import java.util.List;
+
 import app.domain.models.MedicalRecord;
 import app.domain.models.Order;
 import app.domain.models.Person;
 import app.domain.models.Pet;
 
 public interface VeterinaryPort {
-  // Crea los dueños de las mascotas
-  public Person createPetOwner();
+  // Crear los dueños de las mascotas
+  public Person savePetOwner(Person petOwner);
   // Crear mascota
-  public Pet createPet();
+  public Pet savePet(Pet pet);
 
   // Crear la historia clinica
-  public MedicalRecord createMedicalRecord();
+  public MedicalRecord saveMedicalRecord(MedicalRecord medicalRecord);
   // Consultar historia clinica
-  public MedicalRecord searchMedicalHistory(Pet petId);
+  public MedicalRecord findByPetId(Pet petId);
   // Editar historia clinica
-  public MedicalRecord editMedicalHistory(Pet petId);
+  public MedicalRecord updateMedicalHistory(Pet petId); // Todo como se edita? 
 
-  // Recetar medicamentos
-  public Order prescribeMedications(Order order);
   // Consultar al listado de ordenes
-  public Order searchAllOrder();
+  public List<Order> getAllOrders();
   // Crear orden
-  public Order createOrder(); // todo recetar y crear no es lo mismo? 
+  public Order saveOrder(Order order); 
   // Anular orden (No se deben eliminar)
-  public Order cancelOrder();
+  public Order updateOrder(); // Todo como se edita?
 }

@@ -19,15 +19,19 @@ public class Main implements CommandLineRunner{
         System.out.println();
         System.out.println();
         System.out.println("**********************************************************************");
-    	System.out.println("Trae a tu mascota antes de que solo podamos atenderla en espíritu");
-        System.out.println("Consulta hoy y evita un final trágicamente innecesario");
-        System.out.println("********** ¡BIENVENIDO! **********");
+    	System.out.println("Trae a tu mascota antes de que solo podamos atenderla en espíritu.");
+        System.out.println("Consulta hoy y evita un final trágicamente innecesario.");
+        System.out.println();
+        System.out.println("***********************   ¡BIENVENIDO!   ***********************");
+        System.out.println();
         // loginInput.menu();
     }
 
     public static void main(String[] args) {
         System.out.println("Hello world!");
         SpringApplication.run(Main.class, args);
+        System.out.println();
+        System.out.println();
         System.out.println("That's all for now ;)");
         System.out.println("Cyao");
     }

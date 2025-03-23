@@ -1,29 +1,22 @@
 package app.domain.services;
 
 import app.domain.models.Person;
-import app.ports.AdministrationPort;
+import app.ports.PersonPort;
 
-public class AdministrationService implements AdministrationPort{
+public class AdministrationService implements PersonPort{
   
   public void setUserAndPassword(){
 
   }
 
   @Override
-  public Person createSeller() {
-    setUserAndPassword();
-    return null; //Todo
+  public boolean existPerson(long document) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'existPerson'");
   }
 
   @Override
-  public Person createVeterinary() {
-    setUserAndPassword();
-    return null; //Todo
-  }
-
-  @Override
-  public Person createAdmin() {
-    setUserAndPassword();
-    return null; //Todo
+  public void savePerson(Person person) {
+    // SOLO VENDEDORES Y VETRINARIOS
   }
 }
