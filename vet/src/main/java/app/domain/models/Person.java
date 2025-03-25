@@ -11,7 +11,7 @@ public class Person {
     private long document; // Cedula
     private String name; // Nombre
     private int age; // Edad
-    private String rol;
+    private String role;
         // Roles:
         // Administrador
         // Vendedor
@@ -22,6 +22,6 @@ public class Person {
         this.document = document;
         this.name = name;
         this.age = age;
-        this.rol = rol;
+        this.role = rol;
     }
 }
