@@ -21,10 +21,10 @@ public class LoginInput implements InputPort{
 
 	@Autowired 
 	private UserValidator userValidator;
-	
 	@Autowired
 	private AdminInput adminInput;
-	
+	@Autowired
+	private VetInput vetInput;
 	@Autowired
 	private LoginRepository loginRepository;
 
@@ -54,12 +54,12 @@ public class LoginInput implements InputPort{
 		try {
 			System.out.println("\nIngrese su usuario");
 			// String userName = userValidator.userNameValidator(Utils.getReader().nextLine());
-			System.out.println("Usuario admin ingresado");
-			String userName = "admin";
+			System.out.println("Usuario Pablo ingresado");
+			String userName = "Pablo";
 			System.out.println("\nIngrese su contraseña");
 			//String password = userValidator.passwordValidator(Utils.getReader().nextLine());
-			String password = "admin";
-			System.out.println("Contraseña admin ingresada");
+			String password = "Pablo";
+			System.out.println("Contraseña Pablo ingresada");
 
 			LoginEntity loginEntity = loginRepository.findByUserName(userName);
 			if(!verifyUser(password, loginEntity)) return;
@@ -73,6 +73,7 @@ public class LoginInput implements InputPort{
 					return;
 				}
 				case "Veterinario": {
+					vetInput.menu();
 					return;
 				}
 				default: {

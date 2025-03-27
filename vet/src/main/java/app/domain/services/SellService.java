@@ -15,7 +15,7 @@ import lombok.Setter;
 public class SellService {
 
   public Invoice generateInvoice() {
-    return null; // todoNull
+    return null; // todo 
   }
 
   // Suministrar medicamentos

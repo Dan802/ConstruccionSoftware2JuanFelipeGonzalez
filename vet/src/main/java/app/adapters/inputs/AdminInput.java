@@ -21,7 +21,7 @@ import lombok.Setter;
 @Component
 public class AdminInput implements InputPort {
 
-  private final String MENU = "\nMenu del administrador, ingrese la opcion:" + 
+  private final String MENU = "\nMenu del administrador, ingrese la opción:" + 
   " \n 1. Crear vendedor." + 
   " \n 2. Crear veterinario." +
   " \n 3. Salir.";
@@ -90,6 +90,6 @@ public class AdminInput implements InputPort {
 
     // Guardamos la persona
     administrationService.registerPerson(newPerson, newLoginInfo);
-    System.out.println("\n Persona guardada correctamente");
+    System.out.println("\n Persona guardada correctamente.");
   }
 }
