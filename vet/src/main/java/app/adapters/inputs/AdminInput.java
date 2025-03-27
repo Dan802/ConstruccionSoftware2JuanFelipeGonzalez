@@ -52,6 +52,7 @@ public class AdminInput implements InputPort {
 			}
       case "3" : {
         System.out.println("Has salido exitosamente.");
+        return;
       }
 			default:
 				System.out.println("Opcion no valida.");

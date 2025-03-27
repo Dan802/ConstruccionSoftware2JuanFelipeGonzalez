@@ -41,15 +41,6 @@ public class LoginAdapter implements LoginPort{
     // return personAdapter(personEntity);
 	}
 
-	private Person personAdapter(PersonEntity personEntity) {
-    Person person = new Person();
-    person.setDocument(personEntity.getDocument());
-    person.setName(personEntity.getName());
-    person.setRole(personEntity.getRole());
-    person.setAge(personEntity.getAge());
-    return person;
-  }
-
   @Override
   public void save(Login login) {
     PersonEntity personEntity = new PersonEntity();

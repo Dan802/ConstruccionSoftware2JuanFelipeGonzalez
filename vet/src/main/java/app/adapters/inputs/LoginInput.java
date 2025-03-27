@@ -4,9 +4,6 @@ import app.adapters.login.entity.LoginEntity;
 import app.adapters.login.repository.LoginRepository;
 import app.adapters.inputs.utils.UserValidator;
 import app.adapters.inputs.utils.Utils;
-import app.adapters.person.entity.PersonEntity;
-import app.domain.models.Login;
-import app.domain.models.Person;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -40,6 +37,7 @@ public class LoginInput implements InputPort{
 		switch (option) {
 			case "1": {
 				this.login();
+				return;
 			}
 			case "2": {
 				System.out.println("Cyao");
@@ -55,23 +53,16 @@ public class LoginInput implements InputPort{
   private void login() {
 		try {
 			System.out.println("\nIngrese su usuario");
-			// Todo descomentar linea de abajo
 			// String userName = userValidator.userNameValidator(Utils.getReader().nextLine());
 			System.out.println("Usuario admin ingresado");
 			String userName = "admin";
-			//System.out.println("\nIngrese su contraseña");
+			System.out.println("\nIngrese su contraseña");
 			//String password = userValidator.passwordValidator(Utils.getReader().nextLine());
+			String password = "admin";
+			System.out.println("Contraseña admin ingresada");
 
-			// Buscar por username y crear el objeto 
 			LoginEntity loginEntity = loginRepository.findByUserName(userName);
-
-			if(loginEntity == null) {
-				System.out.println("El usuario no existe, intentelo de nuevo");
-				return;
-			}
-
-			// Todo añadir validación de la contraseña
-			System.out.println("\nUsted ha ingresado correctamente");
+			if(!verifyUser(password, loginEntity)) return;
 
 			switch (loginEntity.getPersonId().getRole()) {
 				case "Administrador": {
@@ -86,13 +77,25 @@ public class LoginInput implements InputPort{
 				}
 				default: {
 					System.out.println("Ha habido un error, comunícate con soporte.");
-					System.out.println("Código error 406.");
-					// Error 406: No hay rol o no coincide con ninguno :( 
+					System.out.println("Error: El usuario no tiene rol o no coincide con ninguno :( ");
 					return;
 				}
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+	}
+
+	private boolean verifyUser(String password, LoginEntity loginEntity) throws Exception{
+		if(loginEntity == null) {
+			System.out.println("\nEl usuario no existe, intentelo de nuevo");
+			return false;
+		}
+		if(!password.equals(loginEntity.getPassword())){
+			System.out.println("\nLa contraseña no es correcta");
+			return false;
+		}
+		System.out.println("\nUsted ha ingresado correctamente");
+		return true;
 	}
 }
