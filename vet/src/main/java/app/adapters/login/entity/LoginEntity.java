@@ -22,9 +22,9 @@ public class LoginEntity {
   @Column(name="login_id")
   private long loginId;
   
-  @JoinColumn(name="document")
+  @JoinColumn(name="person_id")
   @OneToOne
-  private PersonEntity document;
+  private PersonEntity personId;
 
   @Column(name="user_name")
   private String userName;

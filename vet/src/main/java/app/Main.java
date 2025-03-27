@@ -41,8 +41,6 @@ public class Main implements CommandLineRunner{
         System.out.println("Hello world!");
         SpringApplication.run(Main.class, args);
         System.out.println();
-        System.out.println();
-        System.out.println("That's all for now ;)");
-        System.out.println("Cyao");
+        System.out.println("Proceso terminado.");
     }
 }

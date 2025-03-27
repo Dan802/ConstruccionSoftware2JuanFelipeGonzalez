@@ -20,4 +20,12 @@ public  class SimpleValidator {
 		}
 	}
 
+	public Integer intValidator(String value, String element) throws Exception {
+		try {
+			return Integer.parseInt(stringValidator(value, element));
+		}catch(Exception e) {
+			throw new Exception(element + " debe ser un valor numerico");
+		}
+	}
+
 }

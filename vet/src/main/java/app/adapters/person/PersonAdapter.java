@@ -22,13 +22,32 @@ public class PersonAdapter implements PersonPort {
   
   @Override
   public boolean existPerson(long document) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'existPerson'");
+    return personRepository.existsByDocument(document);
   }
 
   @Override
-  public void savePerson(Person person) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'savePerson'");
+  public Person savePerson(Person person) {
+    PersonEntity personEntity = new PersonEntity();
+    personEntity.setDocument(person.getDocument());
+		personEntity.setName(person.getName());
+    personEntity.setAge(person.getAge());
+    personEntity.setRole(person.getRole());
+		personRepository.save(personEntity);
+    return person;
   }
+
+  @Override
+  public Person findByDocument(Long document) {
+    PersonEntity personEntity = personRepository.findByDocument(document);
+    return personAdapter(personEntity);
+  }
+
+  private Person personAdapter(PersonEntity personEntity) {
+		Person person = new Person();
+		person.setDocument(personEntity.getDocument());
+		person.setName(personEntity.getName());
+		person.setAge(personEntity.getAge());
+		person.setRole(personEntity.getRole());
+		return person;
+	}
 }

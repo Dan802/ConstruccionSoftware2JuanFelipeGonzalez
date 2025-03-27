@@ -12,13 +12,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import app.ports.InputPort;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Component
+@Getter
+@Setter
+@NoArgsConstructor
 public class LoginInput implements InputPort{
 
-	@Autowired // Todo Por que se debe conectar así? 
+	@Autowired 
 	private UserValidator userValidator;
 	
+	@Autowired
 	private AdminInput adminInput;
 	
 	@Autowired
@@ -26,8 +33,9 @@ public class LoginInput implements InputPort{
 
   @Override
   public void menu() throws Exception {
-    System.out.println("Ingrese la opcion que desea:/n 1. iniciar sesion /n 2. salir");
-		String option = Utils.getReader().nextLine();
+    System.out.println("Ingrese la opcion que desea:\n 1. iniciar sesion \n 2. salir");
+		//String option = Utils.getReader().nextLine();
+		String option = "1"; //Todo Descomentar linea de arriba
 		
 		switch (option) {
 			case "1": {
@@ -46,30 +54,31 @@ public class LoginInput implements InputPort{
 
   private void login() {
 		try {
-			System.out.println("Ingrese su usuario");
-			String userName = userValidator.userNameValidator(Utils.getReader().nextLine());
-			//System.out.println("Ingrese su contraseña");
+			System.out.println("\nIngrese su usuario");
+			// Todo descomentar linea de abajo
+			// String userName = userValidator.userNameValidator(Utils.getReader().nextLine());
+			System.out.println("Usuario admin ingresado");
+			String userName = "admin";
+			//System.out.println("\nIngrese su contraseña");
 			//String password = userValidator.passwordValidator(Utils.getReader().nextLine());
 
 			// Buscar por username y crear el objeto 
 			LoginEntity loginEntity = loginRepository.findByUserName(userName);
-			System.out.println();
-			System.out.println("Username: " + loginEntity.getUserName());
-			System.out.println("Password: " +loginEntity.getPassword());
-			System.out.println("Name: " +loginEntity.getDocument().getName());
-			System.out.println("Role: " +loginEntity.getDocument().getRole());
-			System.out.println("Age: " +loginEntity.getDocument().getAge());
-			System.out.println("Document: " +loginEntity.getDocument().getDocument());
 
-			/*switch (person.getRole()) {
+			if(loginEntity == null) {
+				System.out.println("El usuario no existe, intentelo de nuevo");
+				return;
+			}
+
+			// Todo añadir validación de la contraseña
+			System.out.println("\nUsted ha ingresado correctamente");
+
+			switch (loginEntity.getPersonId().getRole()) {
 				case "Administrador": {
 					adminInput.menu();
 					return;
 				}
 				case "Vendedor": {
-					return;
-				}
-				case "Admin": {
 					return;
 				}
 				case "Veterinario": {
@@ -78,13 +87,12 @@ public class LoginInput implements InputPort{
 				default: {
 					System.out.println("Ha habido un error, comunícate con soporte.");
 					System.out.println("Código error 406.");
-					// Error 406: No hay rol o no coinciden :( 
+					// Error 406: No hay rol o no coincide con ninguno :( 
 					return;
 				}
-			}*/
+			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-
 	}
 }
