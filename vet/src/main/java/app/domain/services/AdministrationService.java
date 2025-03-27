@@ -23,20 +23,17 @@ public class AdministrationService {
   @Autowired
   public LoginPort loginPort;
 
-  public Person registerPerson(Person newPerson) throws Exception{
+  public void registerPerson(Person newPerson, Login login) throws Exception{
     if(personPort.existPerson(newPerson.getDocument())){
       throw new Exception("Ya existe una persona con esa cedula");
     }
     
-    return personPort.savePerson(newPerson);
-  }
-
-  public void registerLogin(Login login) throws Exception {
     if (loginPort.findByUsername(login.getUserName()) != null){
       throw new Exception("Ya existe ese username registrado");
-      //! Registro corrompido, borrar manualmente :(
     }
 
+    Person person = personPort.savePerson(newPerson);
+    login.setPersonId(person);
     loginPort.save(login);
   }
 }

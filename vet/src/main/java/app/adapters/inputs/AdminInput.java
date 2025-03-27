@@ -70,6 +70,12 @@ public class AdminInput implements InputPort {
     
     System.out.println("Ingrese la edad de la persona"); 
     int age = personValidator.ageValidator(Utils.getReader().nextLine()); 
+
+    System.out.println("Ingrese el userName de la persona");
+		String userName = userValidator.userNameValidator(Utils.getReader().nextLine());
+		
+    System.out.println("Ingrese la contraseña de la persona");
+		String password = userValidator.passwordValidator(Utils.getReader().nextLine());
     
     Person newPerson = new Person();
     newPerson.setDocument(document);
@@ -77,27 +83,12 @@ public class AdminInput implements InputPort {
     newPerson.setAge(age);
     newPerson.setRole(role);
 
-    // Guardamos la persona
-    administrationService.registerPerson(newPerson);
-    System.out.println("\n Persona correctamente guardada");
-    createLoginInfo(document);    
-  }
-
-  public void createLoginInfo(Long document) throws Exception{
-    System.out.println("Ingrese el userName de la persona");
-		String userName = userValidator.userNameValidator(Utils.getReader().nextLine());
-		
-    System.out.println("Ingrese la contraseña de la persona");
-		String password = userValidator.passwordValidator(Utils.getReader().nextLine());
-
     Login newLoginInfo = new Login();
     newLoginInfo.setUserName(userName);
     newLoginInfo.setPassword(password);
 
-    Person person = personPort.findByDocument(document);
-    newLoginInfo.setPersonId(person);
-
-    administrationService.registerLogin(newLoginInfo);
-    System.out.println("\n User y password correctamente guardados");
+    // Guardamos la persona
+    administrationService.registerPerson(newPerson, newLoginInfo);
+    System.out.println("\n Persona guardada correctamente");
   }
 }
