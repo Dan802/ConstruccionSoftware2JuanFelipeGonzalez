@@ -14,6 +14,6 @@ public class PersonValidator extends SimpleValidator {
 	}
 
 	public Integer ageValidator(String value) throws Exception{
-		return intValidator(value, "\"Edad\"");
+		return intValidator(value, "\"Edad\" ");
 	}
 }

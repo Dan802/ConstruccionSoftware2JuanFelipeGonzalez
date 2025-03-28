@@ -28,4 +28,12 @@ public  class SimpleValidator {
 		}
 	}
 
+	public Double doubleValidator(String value, String element) throws Exception {
+		try {
+			return Double.parseDouble(stringValidator(value, element));
+		}catch(Exception e) {
+			throw new Exception(element + " debe ser un valor numerico");
+		}
+	}
+
 }

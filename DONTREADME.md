@@ -23,7 +23,13 @@ El dominio tiene: Modelos y servicios
 Todos los puertos se deben conectar con un adaptador, es decir,
 van con una clase que implementan ese puerto
 
+Los servicios NO necesitan interfaces
+La historia clínica es un servicio
+Todos los adaptadores llevan la etiqueta @service
+TOod lo que tenga que ver con la bd a los adaptadores :) 
+el repositorio guarda con entidad u objeto? 
 
 # -------------------- Preguntas
 Quien crea los administradores?
 Todos los modelos deben tener un puerto? según yo si, pero pa saber
+Todas las personas con rol de dueño deben tener una mascota asignada?

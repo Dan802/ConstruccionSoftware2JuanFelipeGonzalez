@@ -55,7 +55,7 @@ public class AdminInput implements InputPort {
         return;
       }
 			default:
-				System.out.println("Opcion no valida.");
+				System.out.println("Opción no valida.");
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -89,6 +89,8 @@ public class AdminInput implements InputPort {
     newLoginInfo.setPassword(password);
 
     // Guardamos la persona
+    // Nota: Este metodo no esta partido en dos porque así se guarda en la bd 
+    // si y solo si el documento y username no estan duplicados
     administrationService.registerPerson(newPerson, newLoginInfo);
     System.out.println("\n Persona guardada correctamente.");
   }
