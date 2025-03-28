@@ -30,13 +30,15 @@ import lombok.Setter;
 @NoArgsConstructor
 public class VetInput {
 
+  private final String nextLine = Utils.getReader().nextLine();
+
   // todo Pueden haber dueños sin mascotas?
   private final String MENU = "\nMenu del Veterinario, ingrese la opción:" + 
   "\n 1. Crear dueño." + 
   "\n 2. Crear mascota." +
-  "\n 3. Guardar registro medico" +
-  "\n 4. Consultar historia clinica" +
-  "\n 5. Editar historia clinica." +
+  "\n 3. Guardar registro medico en la historia clínica" +
+  "\n 4. Consultar historia clínica" +
+  "\n 5. Editar historia clínica." +
   "\n 6. Consultar al listado de ordenes." +
   "\n 7. Crear orden." +
   "\n 8. Anular orden (No se deben eliminar)." +
@@ -55,8 +57,6 @@ public class VetInput {
   @Autowired
   private PersonAdapter personAdapter;
   @Autowired
-  private PetPort petPort;
-  @Autowired
   private PetAdapter petAdapter;
 
   public void menu() throws Exception {
@@ -73,6 +73,7 @@ public class VetInput {
         return;
 			}
       case "3" : {
+        this.createMedicalRecord();
         return;
       }
       case "4" : {
@@ -99,6 +100,42 @@ public class VetInput {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+  }
+
+  private void createMedicalRecord() throws Exception{
+    
+    System.out.println("\nIngrese la razón de la consulta");
+    String reason = simpleValidator.stringValidator(nextLine, "\"Razón \" ");
+    System.out.println("The reason is you, nanana o, nanana eiei, you are the music en mi");
+    
+    System.out.println("\nIngrese los sintomas ");
+    String symptoms = simpleValidator.stringValidator(nextLine, "\"Sintomas\" ");
+    
+    System.out.println("\nIngrese el diagnostico ");
+    String diagnosis = simpleValidator.stringValidator(nextLine, "\"Diagnostico\" ");
+    
+    System.out.println("\nIngrese el procedimiento ");
+    String procedure = simpleValidator.stringValidator(nextLine, "\"Procedimiento\" ");
+    
+    System.out.println("\nIngrese la medicina recetada");
+    String medicine = simpleValidator.stringValidator(nextLine, "\"Medicina\" ");
+    
+    System.out.println("\nIngrese la dosis(Texto)");
+    String doseMedication = simpleValidator.stringValidator(nextLine, "\"Dosis\" "); 
+    
+    System.out.println("\nIngrese el historial de vacunas ");
+    String vaccinationHistory = simpleValidator.stringValidator(nextLine, "\"Historial\" ");
+    
+    System.out.println("\nIngrese los medicamentos a los que es alergico");
+    String allergyMedications = simpleValidator.stringValidator(nextLine, "\"Alegico \" ");
+    
+    System.out.println("\nIngrese los detalles del procedimiento");
+    String procedureDetail = simpleValidator.stringValidator(nextLine, "\"Procedimiento\" ");
+    
+    boolean orderCancellation = false;
+    Person veterinary;
+    String ordenId; 
+
   }
 
   private void createPet() throws Exception {

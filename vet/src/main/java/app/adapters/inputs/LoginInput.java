@@ -54,12 +54,12 @@ public class LoginInput implements InputPort{
 		try {
 			System.out.println("\nIngrese su usuario");
 			// String userName = userValidator.userNameValidator(Utils.getReader().nextLine());
-			System.out.println("Usuario Pablo ingresado");
-			String userName = "Pablo";
+			String userName = "luna";
+			System.out.println("Usuario " + userName + " ingresado");
 			System.out.println("\nIngrese su contraseña");
 			//String password = userValidator.passwordValidator(Utils.getReader().nextLine());
-			String password = "Pablo";
-			System.out.println("Contraseña Pablo ingresada");
+			String password = "luna";
+			System.out.println("Contraseña " + password + " ingresada");
 
 			LoginEntity loginEntity = loginRepository.findByUserName(userName);
 			if(!verifyUser(password, loginEntity)) return;

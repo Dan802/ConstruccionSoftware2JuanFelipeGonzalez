@@ -21,7 +21,7 @@ import lombok.Setter;
 @Setter
 public class PetEntity {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name="pet_id")
   private long petId; 
   

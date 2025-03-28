@@ -23,23 +23,30 @@ public class LoginAdapter implements LoginPort{
 
   @Autowired
 	private LoginRepository loginRepository;
-
   @Autowired
   private PersonRepository personRepository;
-
+  @Autowired
   private PersonAdapter personAdapter;
 
 	@Override
-	public Person findByUsername(String username) {
-		LoginEntity personEntity = loginRepository.findByUserName(username);
+	public Login findByUsername(String username) {
+		LoginEntity loginEntity = loginRepository.findByUserName(username);
 
-		if(personEntity == null) {
+		if(loginEntity == null) {
       return null;
     }
 
-		return null;
-    // return personAdapter(personEntity); todo
+   return loginAdapter(loginEntity); 
 	}
+
+  private Login loginAdapter(LoginEntity loginEntity) {
+    Login login = new Login();
+    login.setLoginId(loginEntity.getLoginId());
+    login.setPassword(loginEntity.getPassword());
+    login.setPersonId(personAdapter.findByDocument(loginEntity.getPersonId().getDocument()));
+    login.setUserName(loginEntity.getUserName());
+    return login;
+  }
 
   @Override
   public void save(Login login) {

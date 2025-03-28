@@ -3,8 +3,8 @@ package app.domain.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import app.adapters.person.PersonAdapter;
 import app.domain.models.Person;
-import app.ports.PersonPort;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,17 +16,17 @@ import lombok.Setter;
 public class VeterinaryService {
 
   @Autowired
-  public PersonPort personPort;
+  public PersonAdapter personAdapter;
 
   public void registerPetOwner(Person person) throws Exception{
-    if(personPort.existPerson(person.getDocument())){
+    if(personAdapter.existPerson(person.getDocument())){
       throw new Exception("Ya existe una persona con esa cedula");
     }
-    personPort.savePerson(person);
+    personAdapter.savePerson(person);
   }
 
   public Person savePetOwner(Person petOwner) {
-    Person person = personPort.savePerson(petOwner);
+    Person person = personAdapter.savePerson(petOwner);
     return person;
   }
 }

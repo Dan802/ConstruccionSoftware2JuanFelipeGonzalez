@@ -3,6 +3,8 @@ package app.domain.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import app.adapters.login.LoginAdapter;
+import app.adapters.person.PersonAdapter;
 import app.domain.models.Login;
 import app.domain.models.Person;
 import app.ports.LoginPort;
@@ -18,22 +20,21 @@ import lombok.Setter;
 public class AdministrationService {
   
   @Autowired
-  public PersonPort personPort;
-
+  public PersonAdapter personAdapter;
   @Autowired
-  public LoginPort loginPort;
+  public LoginAdapter loginAdapter;
 
   public void registerPerson(Person newPerson, Login login) throws Exception{
-    if(personPort.existPerson(newPerson.getDocument())){
+    if(personAdapter.existPerson(newPerson.getDocument())){
       throw new Exception("Ya existe una persona con esa cedula");
     }
-    
-    if (loginPort.findByUsername(login.getUserName()) != null){
+
+    if (loginAdapter.findByUsername(login.getUserName()) != null){
       throw new Exception("Ya existe ese username registrado");
     }
 
-    Person person = personPort.savePerson(newPerson);
+    Person person = personAdapter.savePerson(newPerson);
     login.setPersonId(person);
-    loginPort.save(login);
+    loginAdapter.save(login);
   }
 }
