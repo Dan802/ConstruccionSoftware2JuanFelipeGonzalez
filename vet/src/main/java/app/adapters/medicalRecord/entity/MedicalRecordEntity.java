@@ -27,11 +27,11 @@ public class MedicalRecordEntity {
   private Long date;
   
   @JoinColumn(name="vet_document")
-  @ManyToOne // UN vet puede tener MUCHAS historias clinicas
+  @ManyToOne // MUCHAS historias clinicas pueden tener el mismo vet
   private PersonEntity vetDocument; 
 
   @JoinColumn(name="pet_id")
-  @ManyToOne
+  @ManyToOne // Muchas historias clinicas pueden pertenecer a una mascota
   private PetEntity petId;
   
   @Column(name="reason")

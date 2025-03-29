@@ -37,28 +37,37 @@ public class AdminInput implements InputPort {
 
   @Override
   public void menu() throws Exception {
+    boolean controlVble = true;
+    do {
+      controlVble = menu2();
+    } while (controlVble);
+  }
 
+  public boolean menu2() {
+    System.out.println(MENU);
+    String option = Utils.getReader().nextLine();
+  
     try {
-			System.out.println(MENU);
-			String option = Utils.getReader().nextLine();
 			switch (option) {
 			case "1": {
         this.createPerson("Vendedor");
-        return;
+        return true;
 			}
 			case "2" :{
         this.createPerson("Veterinario");
-        return;
+        return true;
 			}
       case "3" : {
         System.out.println("Has salido exitosamente.");
-        return;
+        return false;
       }
 			default:
 				System.out.println("Opción no valida.");
+        return true;
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+      return true;
 		}
   }
 
