@@ -1,5 +1,7 @@
 package app.domain.models;
 
+import java.sql.Date;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,7 +11,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MedicalRecord { //Historia Clínica
   private long medicalRecordId;
+  private Date date;
   private Person vetDocument; // Médico que lo atendió
+  private Pet petId; // Mascota a quien le hacemos el registo
   private String reason; // Motivo de consulta
   private String symptoms; // Sintomatologia
   private String diagnosis; // Diagnostico
@@ -22,11 +26,13 @@ public class MedicalRecord { //Historia Clínica
   private String procedureDetail; // Detalle del procedimiento
   private boolean orderCancellation; // Anulación orden
   
-  public MedicalRecord(long medicalRecordId, Person vetDocument, String reason, String symptoms, String diagnosis,
-      String procedures, String medicine, String doseMedication, String ordenId, String vaccinationHistory,
-      String allergyMedications, String procedureDetail, boolean orderCancellation) {
+  public MedicalRecord(long medicalRecordId, Date date, Person vetDocument, Pet petId, String reason, String symptoms,
+      String diagnosis, String procedures, String medicine, String doseMedication, String ordenId,
+      String vaccinationHistory, String allergyMedications, String procedureDetail, boolean orderCancellation) {
     this.medicalRecordId = medicalRecordId;
+    this.date = date;
     this.vetDocument = vetDocument;
+    this.petId = petId;
     this.reason = reason;
     this.symptoms = symptoms;
     this.diagnosis = diagnosis;

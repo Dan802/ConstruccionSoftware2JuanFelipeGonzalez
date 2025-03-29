@@ -7,4 +7,5 @@ import app.domain.models.Pet;
 
 public interface PetRepository extends JpaRepository<PetEntity, Long> {
   public void save(Pet pet);
+  public PetEntity findByPetId(Long petId);
 }

@@ -49,7 +49,7 @@ public class PersonAdapter implements PersonPort {
     return personAdapter(personEntity);
   }
 
-  private Person personAdapter(PersonEntity personEntity) {
+  public Person personAdapter(PersonEntity personEntity) {
 		Person person = new Person();
 		person.setDocument(personEntity.getDocument());
 		person.setName(personEntity.getName());

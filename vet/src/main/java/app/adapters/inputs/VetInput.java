@@ -1,5 +1,6 @@
 package app.adapters.inputs;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,12 @@ import app.adapters.inputs.utils.PersonValidator;
 import app.adapters.inputs.utils.SimpleValidator;
 import app.adapters.inputs.utils.UserValidator;
 import app.adapters.inputs.utils.Utils;
+import app.adapters.login.entity.LoginEntity;
+import app.adapters.medicalRecord.MedicalRecordAdapter;
+import app.adapters.medicalRecord.repository.MedicalRecordRepository;
 import app.adapters.person.PersonAdapter;
 import app.adapters.pet.PetAdapter;
+import app.domain.models.Login;
 import app.domain.models.MedicalRecord;
 import app.domain.models.Order;
 import app.domain.models.Person;
@@ -30,8 +35,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class VetInput {
 
-  private final String nextLine = Utils.getReader().nextLine();
-
   // todo Pueden haber dueños sin mascotas?
   private final String MENU = "\nMenu del Veterinario, ingrese la opción:" + 
   "\n 1. Crear dueño." + 
@@ -41,7 +44,7 @@ public class VetInput {
   "\n 5. Editar historia clínica." +
   "\n 6. Consultar al listado de ordenes." +
   "\n 7. Crear orden." +
-  "\n 8. Anular orden (No se deben eliminar)." +
+  "\n 8. Anular orden." +
   "\n 9. Salir.";
 
   @Autowired
@@ -58,8 +61,11 @@ public class VetInput {
   private PersonAdapter personAdapter;
   @Autowired
   private PetAdapter petAdapter;
+  @Autowired
+  private MedicalRecordAdapter meReAdapter;
+  private MedicalRecord medicalRecord;
 
-  public void menu() throws Exception {
+  public void menu(Login login) throws Exception {
     try {
 			System.out.println(MENU);
 			String option = Utils.getReader().nextLine();
@@ -73,7 +79,7 @@ public class VetInput {
         return;
 			}
       case "3" : {
-        this.createMedicalRecord();
+        this.createMedicalRecord(login);
         return;
       }
       case "4" : {
@@ -102,40 +108,63 @@ public class VetInput {
 		}
   }
 
-  private void createMedicalRecord() throws Exception{
-    
+  private void createMedicalRecord(Login login) throws Exception{
     System.out.println("\nIngrese la razón de la consulta");
-    String reason = simpleValidator.stringValidator(nextLine, "\"Razón \" ");
+    String reason = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Razón \" ");
     System.out.println("The reason is you, nanana o, nanana eiei, you are the music en mi");
     
     System.out.println("\nIngrese los sintomas ");
-    String symptoms = simpleValidator.stringValidator(nextLine, "\"Sintomas\" ");
+    String symptoms = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Sintomas\" ");
     
     System.out.println("\nIngrese el diagnostico ");
-    String diagnosis = simpleValidator.stringValidator(nextLine, "\"Diagnostico\" ");
+    String diagnosis = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Diagnostico\" ");
     
     System.out.println("\nIngrese el procedimiento ");
-    String procedure = simpleValidator.stringValidator(nextLine, "\"Procedimiento\" ");
+    String procedure = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Procedimiento\" ");
     
     System.out.println("\nIngrese la medicina recetada");
-    String medicine = simpleValidator.stringValidator(nextLine, "\"Medicina\" ");
+    String medicine = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Medicina\" ");
     
     System.out.println("\nIngrese la dosis(Texto)");
-    String doseMedication = simpleValidator.stringValidator(nextLine, "\"Dosis\" "); 
+    String doseMedication = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Dosis\" "); 
     
     System.out.println("\nIngrese el historial de vacunas ");
-    String vaccinationHistory = simpleValidator.stringValidator(nextLine, "\"Historial\" ");
+    String vaccinationHistory = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Historial\" ");
     
     System.out.println("\nIngrese los medicamentos a los que es alergico");
-    String allergyMedications = simpleValidator.stringValidator(nextLine, "\"Alegico \" ");
+    String allergyMedications = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Alegico \" ");
     
     System.out.println("\nIngrese los detalles del procedimiento");
-    String procedureDetail = simpleValidator.stringValidator(nextLine, "\"Procedimiento\" ");
+    String procedureDetail = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Procedimiento\" ");
     
     boolean orderCancellation = false;
-    Person veterinary;
-    String ordenId; 
+    
+    Person veterinary = personAdapter.findByDocument(login.getPersonId().getDocument());
+    // todo Quiero guardar la mascota en la historia clinica
+    // Pero como busco la mascota? el id no lo sabe la gente
+    // Y el dueño puede tener muchos ids
+    long verylong = 1;
+    Pet pet = petAdapter.findByPetId(verylong);
+    Date sqlDate = new java.sql.Date(0);
+    Date javaDate = new Date(0);
 
+    MedicalRecord meRe = new MedicalRecord();
+    meRe.setDate(sqlDate);
+    meRe.setVetDocument(veterinary);
+    meRe.setPetId(pet);
+    meRe.setReason(reason);
+    meRe.setSymptoms(symptoms);
+    meRe.setDiagnosis(diagnosis);
+    meRe.setProcedures(procedure);
+    meRe.setMedicine(medicine);
+    meRe.setDoseMedication(doseMedication);
+    meRe.setOrdenId(sqlDate.toString() + javaDate);
+    meRe.setVaccinationHistory(vaccinationHistory);
+    meRe.setAllergyMedications(allergyMedications);
+    meRe.setProcedureDetail(procedureDetail);
+    meRe.setOrderCancellation(orderCancellation);
+    meReAdapter.save(meRe);
+    System.out.println("\nLa historia clínica ha sido guardada correctamente.");
   }
 
   private void createPet() throws Exception {

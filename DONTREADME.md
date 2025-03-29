@@ -30,6 +30,6 @@ TOod lo que tenga que ver con la bd a los adaptadores :)
 el repositorio guarda con entidad u objeto? 
 
 # -------------------- Preguntas
-Quien crea los administradores?
 Todos los modelos deben tener un puerto? según yo si, pero pa saber
-Todas las personas con rol de dueño deben tener una mascota asignada?
+Cómo se edita un registro? 
+cómo guardar la mascota con la historia clinica

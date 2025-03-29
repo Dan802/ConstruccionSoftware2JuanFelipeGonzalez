@@ -3,6 +3,8 @@ package app.adapters.pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import app.adapters.login.entity.LoginEntity;
+import app.adapters.person.PersonAdapter;
 import app.adapters.person.entity.PersonEntity;
 import app.adapters.pet.entity.PetEntity;
 import app.adapters.pet.repository.PetRepository;
@@ -19,6 +21,8 @@ import lombok.Setter;
 @Service
 public class PetAdapter implements PetPort{
 
+  @Autowired
+  private PersonAdapter personAdapter;
   @Autowired
   private PetRepository petRepository;
 
@@ -42,5 +46,29 @@ public class PetAdapter implements PetPort{
     personEntity.setAge(person.getAge());
     personEntity.setRole(person.getRole());
     return personEntity;
+  }
+
+  @Override
+  public Pet findByPetId(Long petId) {
+    PetEntity petEntity = petRepository.findByPetId(petId);
+		if(petEntity == null) return null;
+
+   return petAdapter(petEntity); 
+  }
+
+  private Pet petAdapter(PetEntity petEntity) {
+    Pet pet = new Pet();
+    Person person = personAdapter.personAdapter(petEntity.getDocumentOwner());
+    
+    pet.setAge(petEntity.getAge());
+    pet.setDescription(petEntity.getDescription());
+    pet.setDocumentOwner(person);
+    pet.setName(petEntity.getName());
+    pet.setPetId(petEntity.getPetId());
+    pet.setRace(petEntity.getRace());
+    pet.setSpecie(petEntity.getSpecie());
+    pet.setWeight(petEntity.getWeight());
+
+    return pet;
   }
 }

@@ -4,7 +4,7 @@ import app.domain.models.MedicalRecord;
 
 public interface MedicalRecordPort {
   // Crear la historia clinica
-  public MedicalRecord save(MedicalRecord medicalRecord);
+  public void save(MedicalRecord medicalRecord);
 
   // Consultar historia clinica
   public MedicalRecord findByPetId(String petId);

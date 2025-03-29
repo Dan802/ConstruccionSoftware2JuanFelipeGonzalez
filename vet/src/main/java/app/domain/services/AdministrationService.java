@@ -20,9 +20,9 @@ import lombok.Setter;
 public class AdministrationService {
   
   @Autowired
-  public PersonAdapter personAdapter;
+  private PersonAdapter personAdapter;
   @Autowired
-  public LoginAdapter loginAdapter;
+  private LoginAdapter loginAdapter;
 
   public void registerPerson(Person newPerson, Login login) throws Exception{
     if(personAdapter.existPerson(newPerson.getDocument())){

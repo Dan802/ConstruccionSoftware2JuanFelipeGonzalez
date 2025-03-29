@@ -1,7 +1,9 @@
 package app.adapters.inputs;
 
+import app.adapters.login.LoginAdapter;
 import app.adapters.login.entity.LoginEntity;
 import app.adapters.login.repository.LoginRepository;
+import app.domain.models.Login;
 import app.adapters.inputs.utils.UserValidator;
 import app.adapters.inputs.utils.Utils;
 
@@ -27,6 +29,8 @@ public class LoginInput implements InputPort{
 	private VetInput vetInput;
 	@Autowired
 	private LoginRepository loginRepository;
+	@Autowired
+	private LoginAdapter loginAdapter;
 
   @Override
   public void menu() throws Exception {
@@ -61,10 +65,10 @@ public class LoginInput implements InputPort{
 			String password = "luna";
 			System.out.println("Contraseña " + password + " ingresada");
 
-			LoginEntity loginEntity = loginRepository.findByUserName(userName);
-			if(!verifyUser(password, loginEntity)) return;
+			Login login = loginAdapter.findByUsername(userName);
+			if(!verifyUser(password, login)) return;
 
-			switch (loginEntity.getPersonId().getRole()) {
+			switch (login.getPersonId().getRole()) {
 				case "Administrador": {
 					adminInput.menu();
 					return;
@@ -73,7 +77,7 @@ public class LoginInput implements InputPort{
 					return;
 				}
 				case "Veterinario": {
-					vetInput.menu();
+					vetInput.menu(login);
 					return;
 				}
 				default: {
@@ -87,7 +91,7 @@ public class LoginInput implements InputPort{
 		}
 	}
 
-	private boolean verifyUser(String password, LoginEntity loginEntity) throws Exception{
+	private boolean verifyUser(String password, Login loginEntity) throws Exception{
 		if(loginEntity == null) {
 			System.out.println("\nEl usuario no existe, intentelo de nuevo");
 			return false;

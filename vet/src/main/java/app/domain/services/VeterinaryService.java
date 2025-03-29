@@ -16,7 +16,7 @@ import lombok.Setter;
 public class VeterinaryService {
 
   @Autowired
-  public PersonAdapter personAdapter;
+  private PersonAdapter personAdapter;
 
   public void registerPetOwner(Person person) throws Exception{
     if(personAdapter.existPerson(person.getDocument())){

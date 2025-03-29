@@ -39,7 +39,7 @@ public class LoginAdapter implements LoginPort{
    return loginAdapter(loginEntity); 
 	}
 
-  private Login loginAdapter(LoginEntity loginEntity) {
+  public Login loginAdapter(LoginEntity loginEntity) {
     Login login = new Login();
     login.setLoginId(loginEntity.getLoginId());
     login.setPassword(loginEntity.getPassword());

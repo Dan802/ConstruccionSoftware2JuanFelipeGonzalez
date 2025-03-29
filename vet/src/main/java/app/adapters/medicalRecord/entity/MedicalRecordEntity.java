@@ -1,6 +1,9 @@
 package app.adapters.medicalRecord.entity;
 
+import java.sql.Date;
+
 import app.adapters.person.entity.PersonEntity;
+import app.adapters.pet.entity.PetEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,9 +27,16 @@ public class MedicalRecordEntity {
   @Column(name="medical_record_id")
   private long medicalRecordId;
   
+  @Column(name="date")
+  private Date date;
+  
   @JoinColumn(name="vet_document")
   @ManyToOne // UN vet puede tener MUCHAS historias clinicas
   private PersonEntity vetDocument; 
+
+  @JoinColumn(name="pet_id")
+  @OneToOne
+  private PetEntity petId;
   
   @Column(name="reason")
   private String reason; 
@@ -46,7 +57,8 @@ public class MedicalRecordEntity {
   private String doseMedication;  
   
   @Column(name="orden_id")
-  private String ordenId; // TODO si es un string? 
+  // @GeneratedValue(strategy = GenerationType.UUID) Todo como lo genero entonces? 
+  private String ordenId; 
   
   @Column(name="vaccination_history")
   private String vaccinationHistory; 

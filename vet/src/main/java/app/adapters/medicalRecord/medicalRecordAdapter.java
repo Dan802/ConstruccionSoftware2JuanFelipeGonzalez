@@ -16,43 +16,38 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class medicalRecordAdapter implements MedicalRecordPort {
+public class MedicalRecordAdapter implements MedicalRecordPort {
 
   @Autowired
   public MedicalRecordRepository meReRepository;
 
   @Override
-  public MedicalRecord save(MedicalRecord meRecord) {
-    MedicalRecordEntity meReEntity = new MedicalRecordEntity();
+  public void save(MedicalRecord meRecord) {
 
-    meReEntity.setAllergyMedications(meRecord.getAllergyMedications());
-    meReEntity.setDiagnosis(meRecord.getDiagnosis());
-    meReEntity.setDoseMedication(meRecord.getDoseMedication());
-    meReEntity.setMedicine(meRecord.getMedicine());
-    meReEntity.setOrdenId(meRecord.getOrdenId());
-    // Todo por que no hay get para un boolean? 
-    // meReEntity.setOrderCancellation(meRecord.getOrderCancellation()); 
-    meReEntity.setOrderCancellation(false);
-    meReEntity.setProcedures(meRecord.getProcedures());
-    meReEntity.setProcedureDetail(meRecord.getProcedureDetail());
-    meReEntity.setReason(meRecord.getReason());
-    meReEntity.setSymptoms(meRecord.getSymptoms());
-    meReEntity.setVaccinationHistory(meRecord.getVaccinationHistory());
-    
     PersonEntity personEntity = new PersonEntity();
     personEntity.setAge(meRecord.getVetDocument().getAge());
     personEntity.setDocument(meRecord.getVetDocument().getDocument());
     personEntity.setName(meRecord.getVetDocument().getName());
     personEntity.setRole(meRecord.getVetDocument().getRole());
-    
-    meReEntity.setVetDocument(personEntity);
-    meReRepository.save(meReEntity);
-    return MedicalRecordAdapter(meReEntity);
-  }
 
-  private MedicalRecord MedicalRecordAdapter(MedicalRecordEntity medicalRecordEntity) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'MedicalRecordAdapter'");
+    MedicalRecordEntity meReEntity = new MedicalRecordEntity();
+
+    // Todo faltan esas dos
+    // meReEntity.setDate(sqlDate);
+    meReEntity.setVetDocument(personEntity);
+    // meReEntity.setPetId(pet);
+    meReEntity.setAllergyMedications(meRecord.getAllergyMedications());
+    meReEntity.setDiagnosis(meRecord.getDiagnosis());
+    meReEntity.setDoseMedication(meRecord.getDoseMedication());
+    meReEntity.setMedicine(meRecord.getMedicine());
+    meReEntity.setOrdenId(meRecord.getOrdenId());
+    meReEntity.setOrderCancellation(meRecord.isOrderCancellation()); 
+    meReEntity.setProcedures(meRecord.getProcedures());
+    meReEntity.setProcedureDetail(meRecord.getProcedureDetail());
+    meReEntity.setReason(meRecord.getReason());
+    meReEntity.setSymptoms(meRecord.getSymptoms());
+    meReEntity.setVaccinationHistory(meRecord.getVaccinationHistory());
+    meReRepository.save(meReEntity);
   }
 
   @Override
