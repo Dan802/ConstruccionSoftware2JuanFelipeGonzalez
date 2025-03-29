@@ -31,7 +31,7 @@ public class MedicalRecordEntity {
   private PersonEntity vetDocument; 
 
   @JoinColumn(name="pet_id")
-  @OneToOne
+  @ManyToOne
   private PetEntity petId;
   
   @Column(name="reason")
