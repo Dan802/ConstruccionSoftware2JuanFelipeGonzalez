@@ -34,25 +34,32 @@ public class LoginInput implements InputPort{
 
   @Override
   public void menu() throws Exception {
-    System.out.println("Ingrese la opcion que desea:\n 1. iniciar sesion \n 2. salir");
-		//String option = Utils.getReader().nextLine();
-		String option = "1"; //Todo Descomentar linea de arriba
+    boolean controlVble = true;
+    do {
+      controlVble = menu2();
+    } while (controlVble);
+  }
+
+	private boolean menu2() {
+		System.out.println("\nIngrese la opcion que desea:\n 1. Iniciar sesion \n 2. Salir");
+		String option = Utils.getReader().nextLine();
+		// String option = "1"; //Todo Descomentar linea de arriba
 		
 		switch (option) {
 			case "1": {
 				this.login();
-				return;
+				return true;
 			}
 			case "2": {
 				System.out.println("Cyao");
-				return;
+				return false;
 			}
 			default: {
-				System.out.println("Ha elegido una opción invalida, se detiene la ejecucion.");
-				return;
+				System.out.println("Ha elegido una opción invalida, no sea pendejo :)");
+				return true;
 			}
 		}
-  }
+	}
 
   private void login() {
 		try {

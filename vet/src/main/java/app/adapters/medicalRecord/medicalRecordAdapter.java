@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import app.adapters.medicalRecord.entity.MedicalRecordEntity;
 import app.adapters.medicalRecord.repository.MedicalRecordRepository;
 import app.adapters.person.entity.PersonEntity;
+import app.adapters.pet.entity.PetEntity;
 import app.domain.models.MedicalRecord;
 import app.ports.MedicalRecordPort;
 import lombok.Getter;
@@ -30,12 +31,21 @@ public class MedicalRecordAdapter implements MedicalRecordPort {
     personEntity.setName(meRecord.getVetDocument().getName());
     personEntity.setRole(meRecord.getVetDocument().getRole());
 
+    PetEntity petEntity = new PetEntity();
+    petEntity.setAge(meRecord.getPetId().getAge());
+    petEntity.setDescription(meRecord.getPetId().getDescription());
+    petEntity.setDocumentOwner(personEntity);
+    petEntity.setName(meRecord.getPetId().getName());
+    petEntity.setPetId(meRecord.getPetId().getPetId());
+    petEntity.setRace(meRecord.getPetId().getRace());
+    petEntity.setSpecie(meRecord.getPetId().getSpecie());
+    petEntity.setWeight(meRecord.getPetId().getWeight());
+
     MedicalRecordEntity meReEntity = new MedicalRecordEntity();
 
-    // Todo faltan esas dos
-    // meReEntity.setDate(sqlDate);
+    meReEntity.setDate(meRecord.getDate());
     meReEntity.setVetDocument(personEntity);
-    // meReEntity.setPetId(pet);
+    meReEntity.setPetId(petEntity);
     meReEntity.setAllergyMedications(meRecord.getAllergyMedications());
     meReEntity.setDiagnosis(meRecord.getDiagnosis());
     meReEntity.setDoseMedication(meRecord.getDoseMedication());

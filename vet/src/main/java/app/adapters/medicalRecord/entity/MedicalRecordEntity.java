@@ -23,12 +23,8 @@ import lombok.Setter;
 public class MedicalRecordEntity {
   
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name="medical_record_id")
-  private long medicalRecordId;
-  
   @Column(name="date")
-  private Date date;
+  private Long date;
   
   @JoinColumn(name="vet_document")
   @ManyToOne // UN vet puede tener MUCHAS historias clinicas
@@ -58,7 +54,7 @@ public class MedicalRecordEntity {
   
   @Column(name="orden_id")
   // @GeneratedValue(strategy = GenerationType.UUID) Todo como lo genero entonces? 
-  private String ordenId; 
+  private Long ordenId; 
   
   @Column(name="vaccination_history")
   private String vaccinationHistory; 

@@ -19,7 +19,7 @@ public class Main implements CommandLineRunner{
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println();
+        /*System.out.println();
         System.out.println("**********************************************************************");
         System.out.println("**********************************************************************");
         System.out.println("**********************************************************************");
@@ -28,7 +28,7 @@ public class Main implements CommandLineRunner{
         String[] beanNames = beanFactory.getBeanDefinitionNames();
         for (String beanName : beanNames) {
             System.out.println(beanName);
-        }
+        }*/
 
         System.out.println();
         System.out.println();

@@ -45,7 +45,7 @@ public class VetInput {
   "\n 6. Consultar al listado de ordenes." +
   "\n 7. Crear orden." +
   "\n 8. Anular orden." +
-  "\n 9. Salir.";
+  "\n 9. Cerrar sesión.";
 
   @Autowired
   private PersonValidator personValidator;
@@ -66,45 +66,54 @@ public class VetInput {
   private MedicalRecord medicalRecord;
 
   public void menu(Login login) throws Exception {
+    boolean controlVble = true;
+    do {
+      controlVble = menu2(login);
+    } while (controlVble);
+  }
+
+  public boolean menu2(Login login) {
     try {
 			System.out.println(MENU);
 			String option = Utils.getReader().nextLine();
 			switch (option) {
 			case "1": {
         this.createPetOwner();
-        return;
+        return true;
 			}
 			case "2" :{
         this.createPet();
-        return;
+        return true;
 			}
       case "3" : {
         this.createMedicalRecord(login);
-        return;
+        return true;
       }
       case "4" : {
-        return;
+        return true;
       }
       case "5" : {
-        return;
+        return true;
       }
       case "6" : {
-        return;
+        return true;
       }
       case "7" : {
-        return;
+        return true;
       }
       case "8" : {
-        return;
+        return true;
       }
       case "9" : {
-        return;
+        return false;
       }
 			default:
-				System.out.println("Opcion no valida.");
+				System.out.println("Opción no valida.");
+        return true;
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+      System.out.println(e.getMessage());
+      return true;
 		}
   }
 
@@ -140,16 +149,24 @@ public class VetInput {
     boolean orderCancellation = false;
     
     Person veterinary = personAdapter.findByDocument(login.getPersonId().getDocument());
-    // todo Quiero guardar la mascota en la historia clinica
-    // Pero como busco la mascota? el id no lo sabe la gente
-    // Y el dueño puede tener muchos ids
-    long verylong = 1;
-    Pet pet = petAdapter.findByPetId(verylong);
+
+    Pet pet = new Pet();
+    do {
+      System.out.println("\nIngrese el id de la mascota");      
+      Long petId = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"petId\" ");
+      pet = petAdapter.findByPetId(petId);
+
+      if(pet == null) {
+        System.out.println("No hay una mascota con ese id, intente de nuevo.");
+      }
+    } while (pet == null);
+
     Date sqlDate = new java.sql.Date(0);
     Date javaDate = new Date(0);
+    Long milisecondsDate = System.currentTimeMillis();
 
     MedicalRecord meRe = new MedicalRecord();
-    meRe.setDate(sqlDate);
+    meRe.setDate(milisecondsDate);
     meRe.setVetDocument(veterinary);
     meRe.setPetId(pet);
     meRe.setReason(reason);
@@ -158,7 +175,7 @@ public class VetInput {
     meRe.setProcedures(procedure);
     meRe.setMedicine(medicine);
     meRe.setDoseMedication(doseMedication);
-    meRe.setOrdenId(sqlDate.toString() + javaDate);
+    meRe.setOrdenId(milisecondsDate);
     meRe.setVaccinationHistory(vaccinationHistory);
     meRe.setAllergyMedications(allergyMedications);
     meRe.setProcedureDetail(procedureDetail);
@@ -221,5 +238,4 @@ public class VetInput {
     veterinaryService.registerPetOwner(newPerson);
     System.out.println("\n El dueño ha sido guardado correctamente.");
   }
-  
 }

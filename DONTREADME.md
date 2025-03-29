@@ -32,4 +32,5 @@ el repositorio guarda con entidad u objeto?
 # -------------------- Preguntas
 Todos los modelos deben tener un puerto? según yo si, pero pa saber
 Cómo se edita un registro? 
-cómo guardar la mascota con la historia clinica
+Debería crear pruebas unitarias para la entrega, pasar = 5
+Hará pr a la entrega?

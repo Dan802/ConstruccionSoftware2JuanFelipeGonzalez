@@ -10,8 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class MedicalRecord { //Historia Clínica
-  private long medicalRecordId;
-  private Date date;
+  private Long date;
   private Person vetDocument; // Médico que lo atendió
   private Pet petId; // Mascota a quien le hacemos el registo
   private String reason; // Motivo de consulta
@@ -20,16 +19,15 @@ public class MedicalRecord { //Historia Clínica
   private String procedures; // Procedimiento
   private String medicine; // Medicamento
   private String doseMedication;  // Dosis de medicamento
-  private String ordenId; // Se usará para la autorización de venta de medicamentos
+  private Long ordenId; // Se usará para la autorización de venta de medicamentos
   private String vaccinationHistory; // Historial de vacunación
   private String allergyMedications; // Medicamentos a los que presenta alergia
   private String procedureDetail; // Detalle del procedimiento
   private boolean orderCancellation; // Anulación orden
   
-  public MedicalRecord(long medicalRecordId, Date date, Person vetDocument, Pet petId, String reason, String symptoms,
-      String diagnosis, String procedures, String medicine, String doseMedication, String ordenId,
-      String vaccinationHistory, String allergyMedications, String procedureDetail, boolean orderCancellation) {
-    this.medicalRecordId = medicalRecordId;
+  public MedicalRecord(Long date, Person vetDocument, Pet petId, String reason, String symptoms, String diagnosis,
+      String procedures, String medicine, String doseMedication, Long ordenId, String vaccinationHistory,
+      String allergyMedications, String procedureDetail, boolean orderCancellation) {
     this.date = date;
     this.vetDocument = vetDocument;
     this.petId = petId;
@@ -44,5 +42,5 @@ public class MedicalRecord { //Historia Clínica
     this.allergyMedications = allergyMedications;
     this.procedureDetail = procedureDetail;
     this.orderCancellation = orderCancellation;
-  }
+  }  
 }
