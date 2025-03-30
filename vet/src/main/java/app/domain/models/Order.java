@@ -1,7 +1,5 @@
 package app.domain.models;
 
-import java.util.Date;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,20 +8,22 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Order {
-  private long orderId;
+  private Long orderId;
+  private MedicalRecord medicalRecordId;
   private Pet petId; // Id mascota
   private Person documentOwner; // Cedula dueño
   private Person documentVet; // Cedula vet que ordena
-  private String medicineName; // Nombre medicamento
-  private Date createdDate; // Fecha de generacion
+  private MedicalRecord medicine; // Nombre medicamento
+  private Long createdDate; // Fecha de generacion
   
-  public Order(long orderId, Pet petId, Person documentOwner, Person documentVet, String medicineName,
-      Date createdDate) {
+  public Order(Long orderId, MedicalRecord medicalRecordId, Pet petId, Person documentOwner, Person documentVet,
+      MedicalRecord medicine, Long createdDate) {
     this.orderId = orderId;
+    this.medicalRecordId = medicalRecordId;
     this.petId = petId;
     this.documentOwner = documentOwner;
     this.documentVet = documentVet;
-    this.medicineName = medicineName;
+    this.medicine = medicine;
     this.createdDate = createdDate;
   }
 }

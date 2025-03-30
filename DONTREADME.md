@@ -1,3 +1,6 @@
+# Main
+*vet/src/main/java/app/Main.java*
+
 # Flujo
 1. Crea la carpeta de app.domains.models y crea los diferentes usuarios.
 Empezar por el principal pa que luego los otros que heredan esten completos.
@@ -21,16 +24,12 @@ El dominio tiene: Modelos y servicios
 ⦁	Modelos: Todas las entidades presentes en mi negocio
 ⦁	Servicios: Son las reglas de negocio
 Todos los puertos se deben conectar con un adaptador, es decir,
-van con una clase que implementan ese puerto
+van con una clase que implementa ese puerto
 
 Los servicios NO necesitan interfaces
 La historia clínica es un servicio
 Todos los adaptadores llevan la etiqueta @service
-TOod lo que tenga que ver con la bd a los adaptadores :) 
-el repositorio guarda con entidad u objeto? 
+Todo lo que tenga que ver con la bd a los adaptadores :) 
 
 # -------------------- Preguntas
-Todos los modelos deben tener un puerto? según yo si, pero pa saber
 Cómo se edita un registro? save pero con la primarykey seteada
-Debería crear pruebas unitarias para la entrega, pasar = 5
-Hará pr a la entrega? pa eso es la sustentación 

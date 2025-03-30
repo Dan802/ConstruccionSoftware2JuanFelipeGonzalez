@@ -42,8 +42,8 @@ public class LoginInput implements InputPort{
 
 	private boolean menu2() {
 		System.out.println("\nIngrese la opción que desea:\n 1. Iniciar sesion \n 2. Salir");
-		String option = Utils.getReader().nextLine();
-		// String option = "1"; //Todo Descomentar linea de arriba
+		// String option = Utils.getReader().nextLine();
+		String option = "1"; //! borrar
 		
 		switch (option) {
 			case "1": {
@@ -71,10 +71,12 @@ public class LoginInput implements InputPort{
   private void login() {
 		try {
 			System.out.println("\nIngrese su usuario");
-			String userName = userValidator.userNameValidator(Utils.getReader().nextLine());
+			// String userName = userValidator.userNameValidator(Utils.getReader().nextLine());
+			String userName = "alfonso"; //! borrar
 			System.out.println("Usuario " + userName + " ingresado");
 			System.out.println("\nIngrese su contraseña");
-			String password = userValidator.passwordValidator(Utils.getReader().nextLine());
+			// String password = userValidator.passwordValidator(Utils.getReader().nextLine());
+			String password = "alfonso"; //! borrar
 			System.out.println("Contraseña " + password + " ingresada");
 
 			Login login = loginAdapter.findByUsername(userName);

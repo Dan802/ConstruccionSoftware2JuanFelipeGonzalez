@@ -1,8 +1,5 @@
 package app.adapters.inputs;
 
-import java.sql.Date;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,9 +7,8 @@ import app.adapters.inputs.utils.PersonValidator;
 import app.adapters.inputs.utils.SimpleValidator;
 import app.adapters.inputs.utils.UserValidator;
 import app.adapters.inputs.utils.Utils;
-import app.adapters.login.entity.LoginEntity;
 import app.adapters.medicalRecord.MedicalRecordAdapter;
-import app.adapters.medicalRecord.repository.MedicalRecordRepository;
+import app.adapters.order.OrderAdapter;
 import app.adapters.person.PersonAdapter;
 import app.adapters.pet.PetAdapter;
 import app.domain.models.Login;
@@ -22,9 +18,6 @@ import app.domain.models.Person;
 import app.domain.models.Pet;
 import app.domain.services.PetService;
 import app.domain.services.VeterinaryService;
-import app.ports.PersonPort;
-import app.ports.PetPort;
-import ch.qos.logback.classic.pattern.Util;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -41,10 +34,9 @@ public class VetInput {
   "\n 3. Guardar registro medico en la historia clínica" +
   "\n 4. Consultar historia clínica (ingresando los milisegundos)" +
   "\n 5. Editar historia clínica" +
-  "\n 6. Crear orden" +
-  "\n 7. Consultar el listado de ordenes" +
-  "\n 8. Anular orden" +
-  "\n 9. Cerrar sesión";
+  "\n 6. Consultar el listado de ordenes" +
+  "\n 7. Anular orden" +
+  "\n 8. Cerrar sesión";
 
   @Autowired
   private PersonValidator personValidator;
@@ -62,6 +54,8 @@ public class VetInput {
   private PetAdapter petAdapter;
   @Autowired
   private MedicalRecordAdapter meReAdapter;
+  @Autowired
+  private OrderAdapter orderAdapter;
 
   public void menu(Login login) throws Exception {
     boolean controlVble = true;
@@ -92,6 +86,7 @@ public class VetInput {
         return true;
       }
       case "5" : {
+        this.editMedicalRecord();
         return true;
       }
       case "6" : {
@@ -101,9 +96,6 @@ public class VetInput {
         return true;
       }
       case "8" : {
-        return true;
-      }
-      case "9" : {
         return false;
       }
 			default:
@@ -116,62 +108,23 @@ public class VetInput {
 		}
   }
 
-  private void searchMedicalRecord() throws Exception {
-    System.out.println("\nIngrese el id de la historia clínica (milisegundos PK)");
-    Long miliseconds = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"Id de la historia clínica\" ");
-    MedicalRecord meRe = meReAdapter.findByDate(miliseconds);
+  private void createOrder(MedicalRecord meRe, Pet pet, Person owner, Person vet) {
+    
+    Long milisecondsDate = System.currentTimeMillis();
 
-    String meRePrint = 
-    "\nId de la historia clínica: " + meRe.getDate() +
-    "\nMédico que lo atendió: " + meRe.getVetDocument().getName() +
-    "\nMascota atendida: " + meRe.getPetId().getName() +
-    "\nMotivo de consulta: " + meRe.getReason() +
-    "\nSintomatologia: " + meRe.getSymptoms() +
-    "\nDiagnostico: " + meRe.getDiagnosis() +
-    "\nProcedimiento: " + meRe.getProcedures() +
-    "\nMedicamento: " + meRe.getMedicine() +
-    "\nDosis de medicamento: " + meRe.getDoseMedication() +
-    "\nId para la orden: " + meRe.getOrdenId() +
-    "\nHistorial de vacunación: " + meRe.getVaccinationHistory() +
-    "\nMedicamentos a los que presenta alergia: " + meRe.getAllergyMedications() +
-    "\nDetalle del procedimiento: " + meRe.getProcedureDetail() +
-    "\n¿Orden anulada? " + (meRe.isOrderCancellation() ? "Si" : "No");
-
-    System.out.println(meRePrint);
+    Order order = new Order();
+    order.setMedicalRecordId(meRe);
+    order.setPetId(pet);
+    order.setDocumentOwner(owner);
+    order.setDocumentVet(vet);
+    order.setMedicine(meRe);
+    order.setCreatedDate(milisecondsDate);
+    
+    orderAdapter.save(order);
+    System.out.println("\nSe ha creado una nueva orden con referencia a la historia clínica correctamente.");
   }
 
   private void createMedicalRecord(Login login) throws Exception{
-    System.out.println("\nIngrese la razón de la consulta");
-    String reason = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Razón \" ");
-    System.out.println("The reason is you, nanana o, nanana eiei, you are the music en mi");
-    
-    System.out.println("\nIngrese los sintomas ");
-    String symptoms = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Sintomas\" ");
-    
-    System.out.println("\nIngrese el diagnostico ");
-    String diagnosis = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Diagnostico\" ");
-    
-    System.out.println("\nIngrese el procedimiento ");
-    String procedure = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Procedimiento\" ");
-    
-    System.out.println("\nIngrese la medicina recetada");
-    String medicine = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Medicina\" ");
-    
-    System.out.println("\nIngrese la dosis(Texto)");
-    String doseMedication = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Dosis\" "); 
-    
-    System.out.println("\nIngrese el historial de vacunas ");
-    String vaccinationHistory = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Historial\" ");
-    
-    System.out.println("\nIngrese los medicamentos a los que es alergico");
-    String allergyMedications = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Alegico \" ");
-    
-    System.out.println("\nIngrese los detalles del procedimiento");
-    String procedureDetail = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Procedimiento\" ");
-    
-    boolean orderCancellation = false;
-    
-    Person veterinary = personAdapter.findByDocument(login.getPersonId().getDocument());
 
     Pet pet = new Pet();
     do {
@@ -184,6 +137,40 @@ public class VetInput {
       }
     } while (pet == null);
 
+    //#region Datos
+    System.out.println("\nIngrese la razón de la consulta");
+    String reason = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Razón \" ");
+    System.out.println("The reason is you, nanana o, nanana eiei, you are the music en mi");
+    
+    System.out.println("\nIngrese los sintomas ");
+    String symptoms = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Sintomas\" ");
+    
+    System.out.println("\nIngrese el diagnostico ");
+    String diagnosis = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Diagnostico\" ");
+    
+    System.out.println("\nIngrese el procedimiento (opcional) ");
+    String procedure = Utils.getReader().nextLine();
+    
+    System.out.println("\nIngrese la medicina recetada (opcional)");
+    String medicine = Utils.getReader().nextLine();
+    
+    System.out.println("\nIngrese la dosis del medicamento (opcional)");
+    String doseMedication = Utils.getReader().nextLine(); 
+    
+    System.out.println("\nIngrese el historial de vacunas ");
+    String vaccinationHistory = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Historial\" ");
+    
+    System.out.println("\nIngrese los medicamentos a los que es alergico");
+    String allergyMedications = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Alegico \" ");
+    
+    System.out.println("\nIngrese los detalles del procedimiento");
+    String procedureDetail = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Procedimiento\" ");
+    //#endregion Datos
+    
+    boolean orderCancellation = false;
+    
+    Person veterinary = personAdapter.findByDocument(login.getPersonId().getDocument());
+    
     Long milisecondsDate = System.currentTimeMillis();
 
     MedicalRecord meRe = new MedicalRecord();
@@ -203,6 +190,8 @@ public class VetInput {
     meRe.setOrderCancellation(orderCancellation);
     meReAdapter.save(meRe);
     System.out.println("\nLa historia clínica ha sido guardada correctamente.");
+
+    createOrder(meRe, pet, pet.getDocumentOwner(), veterinary);
   }
 
   private void createPet() throws Exception {
@@ -238,6 +227,137 @@ public class VetInput {
 
     petAdapter.save(newPet);
     System.out.println("\nLa mascota ha sido añadida correctamente.");
+  }
+
+  private void editMedicalRecord() throws Exception {
+    MedicalRecord meRe = searchMedicalRecord();
+    int opcion;
+    do {
+      System.out.println("\nElija el campo que desea editar (Número)");
+      opcion = simpleValidator.intValidator(Utils.getReader().nextLine(), "\"Opción\" ");  
+
+      switch (opcion) {
+        case 1:
+        // Pa que o que cambiar el id? mucho lio pa na
+        System.out.println("\nEl id de la historia clínica no se puede modificar");
+        return;
+
+        case 2:
+        System.out.println("\nIngrese el documento del nuevo veterinario");
+        Long documentOwner = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"Documento \" ");
+        meRe.setVetDocument(null); //todo buscar y pasar la persona
+        break;
+
+        case 3:
+        System.out.println("\nIngrese el id de la mascota");
+        Long petId = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"Petid \" ");
+        meRe.setPetId(null); // todo buscar y pasar la mascota
+        break;
+
+        case 4:
+        System.out.println("\nIngrese la razón de la consulta");
+        String reason = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Razón \" ");
+        meRe.setReason(reason);
+        break;
+
+        case 5:
+        System.out.println("\nIngrese los sintomas ");
+        String symptoms = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Sintomas\" ");
+        meRe.setSymptoms(symptoms);
+        break;
+
+        case 6:
+        System.out.println("\nIngrese el diagnostico ");
+        String diagnosis = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Diagnostico\" ");
+        meRe.setDiagnosis(diagnosis);
+        break;
+
+        case 7:
+        System.out.println("\nIngrese el procedimiento (opcional)");
+        String procedure = Utils.getReader().nextLine();
+        meRe.setProcedures(procedure);
+        break;
+
+        case 8:
+        System.out.println("\nIngrese la medicina recetada (opcional)");
+        String medicine = Utils.getReader().nextLine();
+        meRe.setMedicine(medicine);
+        break;
+
+        case 9:
+        System.out.println("\nIngrese la dosis (opcional)");
+        String doseMedication = Utils.getReader().nextLine(); 
+        meRe.setDoseMedication(doseMedication);
+        break;
+
+        case 10:
+        System.out.println("\nSi continua se creará una nueva orden y se perderá referencia con la anterior, desea continuar?");
+        //todo Crear nuevo id
+        break;        
+
+        case 11:
+        System.out.println("\nIngrese el historial de vacunas ");
+        String vaccinationHistory = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Historial\" ");
+        meRe.setVaccinationHistory(vaccinationHistory);
+        break;
+
+        case 12:
+        System.out.println("\nIngrese los medicamentos a los que es alergico");
+        String allergyMedications = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Alegico \" ");
+        meRe.setAllergyMedications(allergyMedications);
+        break;
+
+        case 13:
+        System.out.println("\nIngrese los detalles del procedimiento");
+        String procedureDetail = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Procedimiento\" ");
+        meRe.setProcedureDetail(procedureDetail);
+        break;
+
+        case 14:
+        System.out.println("¿Desea anular la orden? (si/no)");
+        // todo anular la orden
+
+        default:
+        System.out.println("Opción no valida, no seas pendejo :)");
+        break;
+      }
+    
+      meReAdapter.save(meRe);
+      System.out.println("\nLa historia clínica ha sido editada correctamente.");
+    } while (opcion < 0 && opcion > 15);
+  }
+
+  private String isNull(String dato) {
+    if(dato == null || dato == "" || dato.length() == 0) {
+      return "NA";
+    } else {
+      return dato;
+    }
+  }
+
+  private MedicalRecord searchMedicalRecord() throws Exception {
+    System.out.println("\nIngrese el id de la historia clínica (milisegundos PK)");
+    Long miliseconds = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"Id de la historia clínica\" ");
+    MedicalRecord meRe = meReAdapter.findByDate(miliseconds);
+
+    String meRePrint = 
+    "\n1. Id de la historia clínica: " + meRe.getDate() +
+    "\n2. Médico que lo atendió: " + meRe.getVetDocument().getName() +
+    "\n3. Mascota atendida: " + meRe.getPetId().getName() +
+    "\n4. Motivo de consulta: " + meRe.getReason() +
+    "\n5. Sintomatologia: " + meRe.getSymptoms() +
+    "\n6. Diagnostico: " + meRe.getDiagnosis() +
+    "\n7. Procedimiento (opcional): " + isNull(meRe.getProcedures())  +
+    "\n8. Medicamento (opcional): " + isNull(meRe.getMedicine()) +
+    "\n9. Dosis de medicamento (opcional): " + isNull(meRe.getDoseMedication()) +
+    "\n10. Id para la orden: " + meRe.getOrdenId() +
+    "\n11. Historial de vacunación: " + meRe.getVaccinationHistory() +
+    "\n12. Medicamentos a los que presenta alergia: " + meRe.getAllergyMedications() +
+    "\n13. Detalle del procedimiento: " + meRe.getProcedureDetail() +
+    "\n14. ¿Orden anulada? " + (meRe.isOrderCancellation() ? "Si" : "No");
+
+    System.out.println(meRePrint);
+    return meRe;
   }
 
   private void createPetOwner() throws Exception {
