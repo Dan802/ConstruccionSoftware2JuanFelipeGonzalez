@@ -42,5 +42,5 @@ public class MedicalRecord { //Historia Clínica
     this.allergyMedications = allergyMedications;
     this.procedureDetail = procedureDetail;
     this.orderCancellation = orderCancellation;
-  }  
+  }
 }

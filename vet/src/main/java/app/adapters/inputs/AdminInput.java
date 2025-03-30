@@ -62,7 +62,7 @@ public class AdminInput implements InputPort {
         return false;
       }
 			default:
-				System.out.println("Opción no valida.");
+				System.out.println("Opción no valida, no sea pendejo :)");
         return true;
 			}
 		} catch (Exception e) {

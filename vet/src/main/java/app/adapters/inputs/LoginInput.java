@@ -41,7 +41,7 @@ public class LoginInput implements InputPort{
   }
 
 	private boolean menu2() {
-		System.out.println("\nIngrese la opcion que desea:\n 1. Iniciar sesion \n 2. Salir");
+		System.out.println("\nIngrese la opción que desea:\n 1. Iniciar sesion \n 2. Salir");
 		String option = Utils.getReader().nextLine();
 		// String option = "1"; //Todo Descomentar linea de arriba
 		
@@ -51,7 +51,14 @@ public class LoginInput implements InputPort{
 				return true;
 			}
 			case "2": {
-				System.out.println("Cyao");
+				final String BARBIE = """
+						\nGracias a todos por venir.
+						Mil besos, mil besos, mil besos, mil besitos, besos, mil besos. 
+						Y porfa... depositen todas sus envolturas y vasos de refresco en el depósito de basura más cercano.
+						Gracias, vuelvan pronto, mil besitos.
+						Fue un placer.
+						""";
+				System.out.println(BARBIE);
 				return false;
 			}
 			default: {

@@ -7,8 +7,5 @@ public interface MedicalRecordPort {
   public void save(MedicalRecord medicalRecord);
 
   // Consultar historia clinica
-  public MedicalRecord findByPetId(String petId);
-
-  // Editar historia clinica
-  public MedicalRecord updateMedicalHistory(MedicalRecord medicalRecord); // Todo como se edita? 
+  public MedicalRecord findByDate(Long date);
 }

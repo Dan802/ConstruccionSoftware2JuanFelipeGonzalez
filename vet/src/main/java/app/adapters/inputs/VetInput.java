@@ -35,17 +35,16 @@ import lombok.Setter;
 @NoArgsConstructor
 public class VetInput {
 
-  // todo Pueden haber dueños sin mascotas?
   private final String MENU = "\nMenu del Veterinario, ingrese la opción:" + 
-  "\n 1. Crear dueño." + 
-  "\n 2. Crear mascota." +
+  "\n 1. Crear dueño" + 
+  "\n 2. Crear mascota" +
   "\n 3. Guardar registro medico en la historia clínica" +
-  "\n 4. Consultar historia clínica" +
-  "\n 5. Editar historia clínica." +
-  "\n 6. Consultar al listado de ordenes." +
-  "\n 7. Crear orden." +
-  "\n 8. Anular orden." +
-  "\n 9. Cerrar sesión.";
+  "\n 4. Consultar historia clínica (ingresando los milisegundos)" +
+  "\n 5. Editar historia clínica" +
+  "\n 6. Crear orden" +
+  "\n 7. Consultar el listado de ordenes" +
+  "\n 8. Anular orden" +
+  "\n 9. Cerrar sesión";
 
   @Autowired
   private PersonValidator personValidator;
@@ -63,7 +62,6 @@ public class VetInput {
   private PetAdapter petAdapter;
   @Autowired
   private MedicalRecordAdapter meReAdapter;
-  private MedicalRecord medicalRecord;
 
   public void menu(Login login) throws Exception {
     boolean controlVble = true;
@@ -90,6 +88,7 @@ public class VetInput {
         return true;
       }
       case "4" : {
+        this.searchMedicalRecord();
         return true;
       }
       case "5" : {
@@ -108,13 +107,37 @@ public class VetInput {
         return false;
       }
 			default:
-				System.out.println("Opción no valida.");
+				System.out.println("Opción no valida, no sea pendejo :)");
         return true;
 			}
 		} catch (Exception e) {
       System.out.println(e.getMessage());
       return true;
 		}
+  }
+
+  private void searchMedicalRecord() throws Exception {
+    System.out.println("\nIngrese el id de la historia clínica (milisegundos PK)");
+    Long miliseconds = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"Id de la historia clínica\" ");
+    MedicalRecord meRe = meReAdapter.findByDate(miliseconds);
+
+    String meRePrint = 
+    "\nId de la historia clínica: " + meRe.getDate() +
+    "\nMédico que lo atendió: " + meRe.getVetDocument().getName() +
+    "\nMascota atendida: " + meRe.getPetId().getName() +
+    "\nMotivo de consulta: " + meRe.getReason() +
+    "\nSintomatologia: " + meRe.getSymptoms() +
+    "\nDiagnostico: " + meRe.getDiagnosis() +
+    "\nProcedimiento: " + meRe.getProcedures() +
+    "\nMedicamento: " + meRe.getMedicine() +
+    "\nDosis de medicamento: " + meRe.getDoseMedication() +
+    "\nId para la orden: " + meRe.getOrdenId() +
+    "\nHistorial de vacunación: " + meRe.getVaccinationHistory() +
+    "\nMedicamentos a los que presenta alergia: " + meRe.getAllergyMedications() +
+    "\nDetalle del procedimiento: " + meRe.getProcedureDetail() +
+    "\n¿Orden anulada? " + (meRe.isOrderCancellation() ? "Si" : "No");
+
+    System.out.println(meRePrint);
   }
 
   private void createMedicalRecord(Login login) throws Exception{
@@ -161,8 +184,6 @@ public class VetInput {
       }
     } while (pet == null);
 
-    Date sqlDate = new java.sql.Date(0);
-    Date javaDate = new Date(0);
     Long milisecondsDate = System.currentTimeMillis();
 
     MedicalRecord meRe = new MedicalRecord();
