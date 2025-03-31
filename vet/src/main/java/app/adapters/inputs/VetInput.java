@@ -33,8 +33,8 @@ public class VetInput {
   "\n 2. Crear mascota" +
   "\n 3. Guardar registro medico en la historia clínica" +
   "\n 4. Consultar historia clínica (ingresando los milisegundos)" +
-  "\n 5. Editar historia clínica" +
-  "\n 6. Consultar el listado de ordenes" +
+  "\n 5. Editar historia clínica (ingresando los milisegundos)" +
+  "\n 6. Consultar orden (ingresando el id de la orden)" +
   "\n 7. Anular orden" +
   "\n 8. Cerrar sesión";
 
@@ -55,7 +55,7 @@ public class VetInput {
   @Autowired
   private MedicalRecordAdapter meReAdapter;
   @Autowired
-  private OrderAdapter orderAdapter;
+  private OrderAdapter orderAdapter;  
 
   public void menu(Login login) throws Exception {
     boolean controlVble = true;
@@ -82,7 +82,7 @@ public class VetInput {
         return true;
       }
       case "4" : {
-        this.searchMedicalRecord();
+        this.showMedicalRecord();
         return true;
       }
       case "5" : {
@@ -90,9 +90,11 @@ public class VetInput {
         return true;
       }
       case "6" : {
+        this.searchOrder();
         return true;
       }
       case "7" : {
+        this.cancelOrder();
         return true;
       }
       case "8" : {
@@ -106,6 +108,58 @@ public class VetInput {
       System.out.println(e.getMessage());
       return true;
 		}
+  }
+
+  private void cancelOrder() throws Exception{
+    MedicalRecord medicalRecord = searchMedicalRecord();
+    if(medicalRecord == null) {
+      System.out.println("\nNo se encontró la historia clínica.");
+      return;
+    }
+
+    medicalRecord.setOrderCancellation(true); 
+    meReAdapter.save(medicalRecord);
+    System.out.println("\nLa orden ha sido anulada correctamente.");
+  }
+
+  private Order searchOrder() throws Exception {
+    System.out.println("\nIngrese el id de la orden");
+    Long orderId = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"Order Id\" ");
+    Order order = orderAdapter.findByOrderId(orderId);
+
+    if(order == null) {
+      System.out.println("\nNo se encontró la orden.");
+      return null;
+    }
+
+    String orderPrint = 
+      "\n 1. Order Id: " + order.getOrderId() +
+      "\n 2. Id Historia clinica: " + order.getMedicalRecordId().getDate() +
+      "\n 3. Id Mascota: " + order.getPetId().getPetId() +
+      "\n 4. Documento del dueño: " + order.getDocumentOwner().getDocument()+
+      "\n 5. Documento del vet: " + order.getDocumentVet().getDocument() +
+      "\n 6. Medicinas: " + order.getMedicalRecordId().getMedicine() +
+      "\n 7. Fecha de creación: " + + order.getCreatedDate();
+
+    System.out.println(orderPrint);
+    return order;
+  }
+
+  private MedicalRecord searchMedicalRecord() throws Exception {
+    System.out.println("\nIngrese el id de la historia clínica (milisegundos PK)");
+    Long miliseconds = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"Id de la historia clínica\" ");
+    MedicalRecord meRe = meReAdapter.findByDate(miliseconds);
+
+    if(meRe == null) {
+      System.out.println("\nNo se encontró la historia clínica");
+      return null;
+    }
+    return meRe;
+  }
+
+  private void showMedicalRecord() throws Exception {
+    MedicalRecord medicalRecord = searchMedicalRecord();
+    veterinaryService.printMedicalRecord(medicalRecord);
   }
 
   private void createOrder(MedicalRecord meRe, Pet pet, Person owner, Person vet) {
@@ -316,6 +370,7 @@ public class VetInput {
         case 14:
         System.out.println("¿Desea anular la orden? (si/no)");
         // todo anular la orden
+        break;
 
         default:
         System.out.println("Opción no valida, no seas pendejo :)");
@@ -327,38 +382,7 @@ public class VetInput {
     } while (opcion < 0 && opcion > 15);
   }
 
-  private String isNull(String dato) {
-    if(dato == null || dato == "" || dato.length() == 0) {
-      return "NA";
-    } else {
-      return dato;
-    }
-  }
-
-  private MedicalRecord searchMedicalRecord() throws Exception {
-    System.out.println("\nIngrese el id de la historia clínica (milisegundos PK)");
-    Long miliseconds = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"Id de la historia clínica\" ");
-    MedicalRecord meRe = meReAdapter.findByDate(miliseconds);
-
-    String meRePrint = 
-    "\n1. Id de la historia clínica: " + meRe.getDate() +
-    "\n2. Médico que lo atendió: " + meRe.getVetDocument().getName() +
-    "\n3. Mascota atendida: " + meRe.getPetId().getName() +
-    "\n4. Motivo de consulta: " + meRe.getReason() +
-    "\n5. Sintomatologia: " + meRe.getSymptoms() +
-    "\n6. Diagnostico: " + meRe.getDiagnosis() +
-    "\n7. Procedimiento (opcional): " + isNull(meRe.getProcedures())  +
-    "\n8. Medicamento (opcional): " + isNull(meRe.getMedicine()) +
-    "\n9. Dosis de medicamento (opcional): " + isNull(meRe.getDoseMedication()) +
-    "\n10. Id para la orden: " + meRe.getOrdenId() +
-    "\n11. Historial de vacunación: " + meRe.getVaccinationHistory() +
-    "\n12. Medicamentos a los que presenta alergia: " + meRe.getAllergyMedications() +
-    "\n13. Detalle del procedimiento: " + meRe.getProcedureDetail() +
-    "\n14. ¿Orden anulada? " + (meRe.isOrderCancellation() ? "Si" : "No");
-
-    System.out.println(meRePrint);
-    return meRe;
-  }
+  
 
   private void createPetOwner() throws Exception {
     System.out.println("\nIngrese el documento del dueño"); 

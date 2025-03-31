@@ -36,4 +36,11 @@ public  class SimpleValidator {
 		}
 	}
 
+	public String isNull(String dato) {
+    if(dato == null || dato == "" || dato.length() == 0) {
+      return "No Aplica";
+    } else {
+      return dato;
+    }
+  }
 }
