@@ -116,10 +116,12 @@ public class VetInput {
       System.out.println("\nNo se encontró la historia clínica.");
       return;
     }
+    setOrderCancellation(medicalRecord);
+  }
 
+  private void setOrderCancellation (MedicalRecord medicalRecord) {
     medicalRecord.setOrderCancellation(true); 
-    meReAdapter.save(medicalRecord);
-    System.out.println("\nLa orden ha sido anulada correctamente.");
+    veterinaryService.saveMedicalRecord(medicalRecord);
   }
 
   private Order searchOrder() throws Exception {
@@ -131,17 +133,7 @@ public class VetInput {
       System.out.println("\nNo se encontró la orden.");
       return null;
     }
-
-    String orderPrint = 
-      "\n 1. Order Id: " + order.getOrderId() +
-      "\n 2. Id Historia clinica: " + order.getMedicalRecordId().getDate() +
-      "\n 3. Id Mascota: " + order.getPetId().getPetId() +
-      "\n 4. Documento del dueño: " + order.getDocumentOwner().getDocument()+
-      "\n 5. Documento del vet: " + order.getDocumentVet().getDocument() +
-      "\n 6. Medicinas: " + order.getMedicalRecordId().getMedicine() +
-      "\n 7. Fecha de creación: " + + order.getCreatedDate();
-
-    System.out.println(orderPrint);
+    veterinaryService.printOrder(order);
     return order;
   }
 
@@ -191,10 +183,9 @@ public class VetInput {
       }
     } while (pet == null);
 
-    //#region Datos
     System.out.println("\nIngrese la razón de la consulta");
     String reason = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Razón \" ");
-    System.out.println("The reason is you, nanana o, nanana eiei, you are the music en mi");
+    System.out.println("Developer note: The reason is you, nanana o, nanana eiei, you are the music en mi");
     
     System.out.println("\nIngrese los sintomas ");
     String symptoms = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Sintomas\" ");
@@ -219,7 +210,6 @@ public class VetInput {
     
     System.out.println("\nIngrese los detalles del procedimiento");
     String procedureDetail = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Procedimiento\" ");
-    //#endregion Datos
     
     boolean orderCancellation = false;
     
@@ -368,8 +358,7 @@ public class VetInput {
         break;
 
         case 14:
-        System.out.println("¿Desea anular la orden? (si/no)");
-        // todo anular la orden
+        setOrderCancellation(meRe);
         break;
 
         default:
@@ -381,8 +370,6 @@ public class VetInput {
       System.out.println("\nLa historia clínica ha sido editada correctamente.");
     } while (opcion < 0 && opcion > 15);
   }
-
-  
 
   private void createPetOwner() throws Exception {
     System.out.println("\nIngrese el documento del dueño"); 

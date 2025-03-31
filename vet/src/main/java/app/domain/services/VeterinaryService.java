@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 
 import app.adapters.inputs.utils.SimpleValidator;
 import app.adapters.inputs.utils.Utils;
+import app.adapters.medicalRecord.MedicalRecordAdapter;
 import app.adapters.person.PersonAdapter;
 import app.domain.models.MedicalRecord;
+import app.domain.models.Order;
 import app.domain.models.Person;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +24,8 @@ public class VeterinaryService {
   private PersonAdapter personAdapter;
   @Autowired 
   private SimpleValidator simpleValidator;
+  @Autowired
+  private MedicalRecordAdapter meReAdapter;
 
   public void registerPetOwner(Person person) throws Exception{
     if(personAdapter.existPerson(person.getDocument())){
@@ -33,6 +37,11 @@ public class VeterinaryService {
   public Person savePetOwner(Person petOwner) {
     Person person = personAdapter.savePerson(petOwner);
     return person;
+  }
+
+  public void saveMedicalRecord(MedicalRecord medicalRecord) {
+    meReAdapter.save(medicalRecord);
+    System.out.println("\nLa orden ha sido anulada correctamente.");
   }
 
   public void printMedicalRecord(MedicalRecord meRe) {
@@ -53,5 +62,18 @@ public class VeterinaryService {
       "\n14. ¿Orden anulada? " + (meRe.isOrderCancellation() ? "Si" : "No");
 
     System.out.println(meRePrint);
+  }
+
+  public void printOrder(Order order) {
+    String orderPrint = 
+      "\n 1. Order Id: " + order.getOrderId() +
+      "\n 2. Id Historia clinica: " + order.getMedicalRecordId().getDate() +
+      "\n 3. Id Mascota: " + order.getPetId().getPetId() +
+      "\n 4. Documento del dueño: " + order.getDocumentOwner().getDocument()+
+      "\n 5. Documento del vet: " + order.getDocumentVet().getDocument() +
+      "\n 6. Medicinas: " + order.getMedicalRecordId().getMedicine() +
+      "\n 7. Fecha de creación: " + + order.getCreatedDate();
+
+    System.out.println(orderPrint);
   }
 }
