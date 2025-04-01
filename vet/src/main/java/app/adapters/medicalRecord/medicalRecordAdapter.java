@@ -70,7 +70,6 @@ public class MedicalRecordAdapter implements MedicalRecordPort {
   }
 
   public MedicalRecord medicalRecordAdapter(MedicalRecordEntity meReEntity) {
-    // Todo Optimizar
     Person person = new Person();
     person.setAge(meReEntity.getVetDocument().getAge());
     person.setDocument(meReEntity.getVetDocument().getDocument());

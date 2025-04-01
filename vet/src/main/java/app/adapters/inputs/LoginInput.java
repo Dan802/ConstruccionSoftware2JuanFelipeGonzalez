@@ -1,7 +1,6 @@
 package app.adapters.inputs;
 
 import app.adapters.login.LoginAdapter;
-import app.adapters.login.entity.LoginEntity;
 import app.adapters.login.repository.LoginRepository;
 import app.domain.models.Login;
 import app.adapters.inputs.utils.UserValidator;
@@ -44,8 +43,7 @@ public class LoginInput implements InputPort{
 
 	private boolean menu2() {
 		System.out.println("\nIngrese la opción que desea:\n 1. Iniciar sesion \n 2. Salir");
-		// String option = Utils.getReader().nextLine();
-		String option = "1"; //! borrar
+		String option = Utils.getReader().nextLine();
 		
 		switch (option) {
 			case "1": {
@@ -73,15 +71,12 @@ public class LoginInput implements InputPort{
   private void login() {
 		try {
 			System.out.println("\nIngrese su usuario");
-			// String userName = userValidator.userNameValidator(Utils.getReader().nextLine());
-			String userName = "alfonso"; //! borrar
-			userName = "jota"; //! borrar
+			String userName = userValidator.userNameValidator(Utils.getReader().nextLine());
 			System.out.println("Usuario " + userName + " ingresado");
+			
 			System.out.println("\nIngrese su contraseña");
-			// String password = userValidator.passwordValidator(Utils.getReader().nextLine());
-			String password = "alfonso"; //! borrar
-			password = "jota"; //! borrar
-			System.out.println("Contraseña " + password + " ingresada");
+			String password = userValidator.passwordValidator(Utils.getReader().nextLine());
+			System.out.println("Contraseña *** ingresada");
 
 			Login login = loginAdapter.findByUsername(userName);
 			if(!verifyUser(password, login)) return;

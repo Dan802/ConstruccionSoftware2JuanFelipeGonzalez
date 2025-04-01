@@ -77,7 +77,7 @@ public class SellerInput implements InputPort{
 	}
 
   private void sellMedicine() {
-    System.out.println("todo triste");
+    System.out.println("WIP");
   }
 
   private void supplyMedicines() throws Exception{

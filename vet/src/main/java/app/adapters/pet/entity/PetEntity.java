@@ -1,9 +1,6 @@
 package app.adapters.pet.entity;
 
-import org.hibernate.annotations.ManyToAny;
-
 import app.adapters.person.entity.PersonEntity;
-import app.domain.models.Person;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

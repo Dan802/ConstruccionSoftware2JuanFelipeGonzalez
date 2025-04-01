@@ -285,20 +285,38 @@ public class VetInput {
 
       switch (opcion) {
         case 1:
-        // Pa que o que cambiar el id? mucho lio pa na
         System.out.println("\nEl id de la historia clínica no se puede modificar");
         return;
 
         case 2:
-        System.out.println("\nIngrese el documento del nuevo veterinario");
-        Long documentOwner = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"Documento \" ");
-        meRe.setVetDocument(null); //todo buscar y pasar la persona
+          System.out.println("ADVERTENCIA: Esta a punto de cambiar el veterinario al cual referencia la historia clínica");
+
+          Person person = new Person();
+            do {
+              System.out.println("\nIngrese el documento del vet");      
+              Long personId = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"personId\" ");
+              person = personAdapter.findByDocument(personId);
+
+              if(person == null) {
+                System.out.println("No hay un vet con ese documento, intente de nuevo.");
+              }
+            } while (person == null);
+            meRe.setVetDocument(person);
         break;
 
         case 3:
-        System.out.println("\nIngrese el id de la mascota");
-        Long petId = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"Petid \" ");
-        meRe.setPetId(null); // todo buscar y pasar la mascota
+          System.out.println("ADVERTENCIA: Esta a punto de cambiar la mascota a la cual referencia la historia clínica");
+          Pet pet = new Pet();
+          do {
+            System.out.println("\nIngrese el id de la mascota");      
+            Long petId = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"petId\" ");
+            pet = petAdapter.findByPetId(petId);
+
+            if(pet == null) {
+              System.out.println("No hay una mascota con ese id, intente de nuevo.");
+            }
+          } while (pet == null);
+          meRe.setPetId(pet);
         break;
 
         case 4:
@@ -339,7 +357,7 @@ public class VetInput {
 
         case 10:
         System.out.println("\nSi continua se creará una nueva orden y se perderá referencia con la anterior, desea continuar?");
-        //todo Crear nuevo id
+        //createOrder(meRe, pet, pet.getDocumentOwner(), veterinary);
         break;        
 
         case 11:

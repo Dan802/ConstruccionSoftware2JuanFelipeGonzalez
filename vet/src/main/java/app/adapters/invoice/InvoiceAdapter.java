@@ -2,7 +2,6 @@ package app.adapters.invoice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import app.adapters.invoice.entity.InvoiceEntity;
 import app.adapters.invoice.repository.InvoiceRepository;
 import app.adapters.medicalRecord.repository.MedicalRecordRepository;

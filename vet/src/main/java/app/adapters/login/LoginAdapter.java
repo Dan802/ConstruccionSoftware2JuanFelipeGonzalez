@@ -9,7 +9,6 @@ import app.adapters.person.PersonAdapter;
 import app.adapters.person.entity.PersonEntity;
 import app.adapters.person.repository.PersonRepository;
 import app.domain.models.Login;
-import app.domain.models.Person;
 import app.ports.LoginPort;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
