@@ -17,10 +17,10 @@ public class Invoice { // Factura
   private String productName; // Nombre del producto
   private double price; // Valor
   private int count; // Cantidad
-  private Date dateCreated; // Fecha
+  private Long dateCreated; // Fecha
   
   public Invoice(long invoiceId, Pet petId, Person ownerId, Order orderId, String productName, double price, int count,
-      Date dateCreated) {
+  Long dateCreated) {
     this.invoiceId = invoiceId;
     this.petId = petId;
     this.ownerId = ownerId;

@@ -56,7 +56,7 @@ public class PetAdapter implements PetPort{
    return petAdapter(petEntity); 
   }
 
-  private Pet petAdapter(PetEntity petEntity) {
+  public Pet petAdapter(PetEntity petEntity) {
     Pet pet = new Pet();
     Person person = personAdapter.personAdapter(petEntity.getDocumentOwner());
     

@@ -31,11 +31,11 @@ public class VeterinaryService {
     if(personAdapter.existPerson(person.getDocument())){
       throw new Exception("Ya existe una persona con esa cedula");
     }
-    personAdapter.savePerson(person);
+    personAdapter.save(person);
   }
 
   public Person savePetOwner(Person petOwner) {
-    Person person = personAdapter.savePerson(petOwner);
+    Person person = personAdapter.save(petOwner);
     return person;
   }
 
@@ -66,13 +66,13 @@ public class VeterinaryService {
 
   public void printOrder(Order order) {
     String orderPrint = 
-      "\n 1. Order Id: " + order.getOrderId() +
-      "\n 2. Id Historia clinica: " + order.getMedicalRecordId().getDate() +
-      "\n 3. Id Mascota: " + order.getPetId().getPetId() +
-      "\n 4. Documento del dueño: " + order.getDocumentOwner().getDocument()+
-      "\n 5. Documento del vet: " + order.getDocumentVet().getDocument() +
-      "\n 6. Medicinas: " + order.getMedicalRecordId().getMedicine() +
-      "\n 7. Fecha de creación: " + + order.getCreatedDate();
+      "\n1. Order Id: " + order.getOrderId() +
+      "\n2. Id Historia clinica: " + order.getMedicalRecordId().getDate() +
+      "\n3. Mascota: " + order.getPetId().getName() +
+      "\n4. Dueño: " + order.getDocumentOwner().getName()+
+      "\n5. Veterinario: " + order.getDocumentVet().getName() +
+      "\n6. Medicinas recetadas: " + order.getMedicalRecordId().getMedicine() +
+      "\n7. Fecha de creación: " + + order.getCreatedDate();
 
     System.out.println(orderPrint);
   }

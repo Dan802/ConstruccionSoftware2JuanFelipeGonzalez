@@ -33,7 +33,7 @@ public class AdministrationService {
       throw new Exception("Ya existe ese username registrado");
     }
 
-    Person person = personAdapter.savePerson(newPerson);
+    Person person = personAdapter.save(newPerson);
     login.setPersonId(person);
     loginAdapter.save(login);
   }

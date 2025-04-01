@@ -31,7 +31,7 @@ public class PersonAdapter implements PersonPort {
   }
 
   @Override
-  public Person savePerson(Person person) {
+  public Person save(Person person) {
     PersonEntity personEntity = new PersonEntity();
     personEntity.setDocument(person.getDocument());
 		personEntity.setName(person.getName());

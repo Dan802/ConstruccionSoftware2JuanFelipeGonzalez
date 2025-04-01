@@ -28,12 +28,14 @@ public class LoginInput implements InputPort{
 	@Autowired
 	private VetInput vetInput;
 	@Autowired
+	private SellerInput sellerInput;
+	@Autowired
 	private LoginRepository loginRepository;
 	@Autowired
 	private LoginAdapter loginAdapter;
 
   @Override
-  public void menu() throws Exception {
+	public void menu() throws Exception {
     boolean controlVble = true;
     do {
       controlVble = menu2();
@@ -73,10 +75,12 @@ public class LoginInput implements InputPort{
 			System.out.println("\nIngrese su usuario");
 			// String userName = userValidator.userNameValidator(Utils.getReader().nextLine());
 			String userName = "alfonso"; //! borrar
+			userName = "jota"; //! borrar
 			System.out.println("Usuario " + userName + " ingresado");
 			System.out.println("\nIngrese su contraseña");
 			// String password = userValidator.passwordValidator(Utils.getReader().nextLine());
 			String password = "alfonso"; //! borrar
+			password = "jota"; //! borrar
 			System.out.println("Contraseña " + password + " ingresada");
 
 			Login login = loginAdapter.findByUsername(userName);
@@ -88,6 +92,7 @@ public class LoginInput implements InputPort{
 					return;
 				}
 				case "Vendedor": {
+					sellerInput.menu();
 					return;
 				}
 				case "Veterinario": {

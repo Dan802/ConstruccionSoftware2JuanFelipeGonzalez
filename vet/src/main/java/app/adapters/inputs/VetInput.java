@@ -151,6 +151,8 @@ public class VetInput {
 
   private void showMedicalRecord() throws Exception {
     MedicalRecord medicalRecord = searchMedicalRecord();
+    if(medicalRecord == null) return;
+
     veterinaryService.printMedicalRecord(medicalRecord);
   }
 
@@ -275,6 +277,7 @@ public class VetInput {
 
   private void editMedicalRecord() throws Exception {
     MedicalRecord meRe = searchMedicalRecord();
+    veterinaryService.printMedicalRecord(meRe);
     int opcion;
     do {
       System.out.println("\nElija el campo que desea editar (Número)");
@@ -389,5 +392,6 @@ public class VetInput {
 
     veterinaryService.registerPetOwner(newPerson);
     System.out.println("\n El dueño ha sido guardado correctamente.");
+
   }
 }

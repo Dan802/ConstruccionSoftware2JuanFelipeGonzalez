@@ -30,6 +30,7 @@ Los servicios NO necesitan interfaces
 La historia clínica es un servicio
 Todos los adaptadores llevan la etiqueta @service
 Todo lo que tenga que ver con la bd a los adaptadores :) 
+Los puertos pueden llevar save, el que no lo necesita es el repository
 
 # -------------------- Preguntas
 Cómo se edita un registro? save pero con la primarykey seteada

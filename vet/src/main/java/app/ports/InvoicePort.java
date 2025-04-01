@@ -1,5 +1,7 @@
 package app.ports;
 
+import app.domain.models.Invoice;
+
 public interface InvoicePort {
-  public void save(InvoicePort invoicePort);
+  public Invoice save(Invoice invoice);
 }

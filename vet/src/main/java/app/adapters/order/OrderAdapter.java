@@ -80,19 +80,13 @@ public class OrderAdapter implements OrderPort {
   }
 
   @Override
-  public List<Order> getAllOrders() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getAllOrders'");
-  }
-
-  @Override
   public Order findByOrderId(Long orderId) {
     OrderEntity orderEntity = orderRepository.findByOrderId(orderId);
     if(orderEntity == null) return null;
     return orderAdapter(orderEntity);
   }
 
-  private Order orderAdapter(OrderEntity orderEntity) {
+  public Order orderAdapter(OrderEntity orderEntity) {
     Person ownerEntity = new Person();
     ownerEntity.setAge(orderEntity.getDocumentOwner().getAge());
     ownerEntity.setDocument(orderEntity.getDocumentOwner().getDocument());
@@ -136,7 +130,7 @@ public class OrderAdapter implements OrderPort {
     order.setDocumentOwner(ownerEntity);
     order.setDocumentVet(vetEntity);
     order.setMedicalRecordId(meReEntity);
-    order.setOrderId(meReEntity.getOrdenId());
+    order.setOrderId(orderEntity.getOrderId());
     order.setPetId(petEntity);
     return order;
   }

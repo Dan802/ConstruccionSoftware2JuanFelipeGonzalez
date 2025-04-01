@@ -60,6 +60,7 @@ public class LoginAdapter implements LoginPort{
     loginEntity.setPersonId(personEntity);
     loginEntity.setUserName(login.getUserName());
     loginEntity.setPassword(login.getPassword());
+    
     loginRepository.save(loginEntity);
   }
 }
