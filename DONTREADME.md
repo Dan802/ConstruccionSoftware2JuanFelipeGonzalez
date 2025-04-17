@@ -23,14 +23,23 @@ Toda la app es manejada por el Dominio
 El dominio tiene: Modelos y servicios
 ⦁	Modelos: Todas las entidades presentes en mi negocio
 ⦁	Servicios: Son las reglas de negocio
-Todos los puertos se deben conectar con un adaptador, es decir,
+* Todos los puertos se deben conectar con un adaptador, es decir,
 van con una clase que implementa ese puerto
+* Los dominios llaman a los puertos
 
 Los servicios NO necesitan interfaces
 La historia clínica es un servicio
 Todos los adaptadores llevan la etiqueta @service
 Todo lo que tenga que ver con la bd a los adaptadores :) 
 Los puertos pueden llevar save, el que no lo necesita es el repository
+
+Los datos ingresan por input, del input al services, y del services al adapter
+
+todo:
+una historia clinica solo puede tener una orden
+y una orden solo puede tener una historia clínica
+la relacion es 1 a 1? 
+pero y si yo quiero acceder a la historia desde una orden y viceversa? 
 
 # -------------------- Preguntas
 Cómo se edita un registro? save pero con la primarykey seteada

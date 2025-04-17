@@ -52,7 +52,7 @@ public class MedicalRecordAdapter implements MedicalRecordPort {
     meReEntity.setDiagnosis(meRecord.getDiagnosis());
     meReEntity.setDoseMedication(meRecord.getDoseMedication());
     meReEntity.setMedicine(meRecord.getMedicine());
-    meReEntity.setOrdenId(meRecord.getOrdenId());
+    // meReEntity.setOrdenId(meRecord.getOrdenId());
     meReEntity.setOrderCancellation(meRecord.isOrderCancellation()); 
     meReEntity.setProcedures(meRecord.getProcedures());
     meReEntity.setProcedureDetail(meRecord.getProcedureDetail());
@@ -92,7 +92,7 @@ public class MedicalRecordAdapter implements MedicalRecordPort {
     meRe.setDiagnosis(meReEntity.getDiagnosis());
     meRe.setDoseMedication(meReEntity.getDoseMedication());
     meRe.setMedicine(meReEntity.getMedicine());
-    meRe.setOrdenId(meReEntity.getOrdenId());
+    // meRe.setOrdenId(meReEntity.getOrdenId());
     meRe.setOrderCancellation(meReEntity.isOrderCancellation());
     meRe.setPetId(pet);
     meRe.setProcedureDetail(meReEntity.getProcedureDetail());

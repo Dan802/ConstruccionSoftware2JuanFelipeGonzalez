@@ -25,12 +25,8 @@ public class OrderEntity {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name="order_id")
+  @Column(name="medical_record_id")
   private Long orderId;
-
-  @JoinColumn(name="medical_record_id")
-  @OneToOne // UNA orden pertenece a UNA historia clinica
-  private MedicalRecordEntity medicalRecordId;
 
   @JoinColumn(name="pet")
   @ManyToOne // MUCHAS ordenes pueden tener la misma mascota

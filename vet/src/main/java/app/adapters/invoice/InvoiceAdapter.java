@@ -61,13 +61,14 @@ public class InvoiceAdapter implements InvoicePort {
     petEntity.setSpecie(invoice.getOrderId().getPetId().getSpecie());
     petEntity.setWeight(invoice.getOrderId().getPetId().getWeight());
 
-    OrderEntity orderEntity = orderRepository.findByOrderId(invoice.getOrderId().getOrderId());
+    // Todo arreglar
+    // OrderEntity orderEntity = orderRepository.findByOrderId(invoice.getOrderId().getOrderId());
 
     InvoiceEntity invoiceEntity = new InvoiceEntity();
     invoiceEntity.setCount(invoice.getCount());
     invoiceEntity.setDateCreated(invoice.getDateCreated());
     invoiceEntity.setInvoiceId(invoice.getInvoiceId());
-    invoiceEntity.setOrderId(orderEntity);
+    // invoiceEntity.setOrderId(orderEntity);
     invoiceEntity.setOwnerId(ownerEntity);
     invoiceEntity.setPetId(petEntity);
     invoiceEntity.setPrice(invoice.getPrice());

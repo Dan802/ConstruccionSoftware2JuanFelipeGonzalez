@@ -1,15 +1,19 @@
 package app.domain.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import app.adapters.inputs.utils.SimpleValidator;
 import app.adapters.inputs.utils.Utils;
 import app.adapters.medicalRecord.MedicalRecordAdapter;
+import app.adapters.order.OrderAdapter;
 import app.adapters.person.PersonAdapter;
+import app.adapters.pet.PetAdapter;
 import app.domain.models.MedicalRecord;
 import app.domain.models.Order;
 import app.domain.models.Person;
+import app.domain.models.Pet;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,24 +30,212 @@ public class VeterinaryService {
   private SimpleValidator simpleValidator;
   @Autowired
   private MedicalRecordAdapter meReAdapter;
+  @Autowired
+  private PetAdapter petAdapter;
+  @Autowired
+  private OrderAdapter orderAdapter;  
 
-  public void registerPetOwner(Person person) throws Exception{
-    if(personAdapter.existPerson(person.getDocument())){
-      throw new Exception("Ya existe una persona con esa cedula");
+  //#region CREATE
+  public void savePetOwner(long document, String name, int age) {
+
+    String role = "Dueño";
+    Person newPerson = new Person(document, name, age, role);
+
+    personAdapter.save(newPerson);
+    System.out.println("\n El dueño ha sido guardado correctamente.");
+  }
+  
+  public Pet savePet(Person person, String name, int age, String specie, String race, String description, double weight) {
+      Pet newPet = new Pet();
+      newPet.setName(name);
+      newPet.setDocumentOwner(person);
+      newPet.setAge(age);
+      newPet.setSpecie(specie);
+      newPet.setRace(race);
+      newPet.setDescription(description);
+      newPet.setWeight(weight);
+
+      petAdapter.save(newPet);
+      System.out.println("\nLa mascota ha sido añadida correctamente.");
+      return newPet;
     }
-    personAdapter.save(person);
+
+  public void saveMedicalRecord(MedicalRecord medicalRecord, String msg) {
+    meReAdapter.save(medicalRecord);
+    System.out.println(msg);
   }
 
-  public Person savePetOwner(Person petOwner) {
-    Person person = personAdapter.save(petOwner);
+  public void saveMedicalRecord(Long milisecondsDate, Person veterinary, Pet pet, String reason, String symptoms, String diagnosis, String procedure, String medicine, String doseMedication, Long milisecondsDate2, String vaccinationHistory, String allergyMedications, String procedureDetail) {
+    boolean orderCancellation = false;
+    MedicalRecord meRe = new MedicalRecord(milisecondsDate, veterinary, pet, reason, symptoms, diagnosis, procedure, medicine, doseMedication, milisecondsDate, vaccinationHistory, allergyMedications, procedureDetail, orderCancellation);
+
+    meReAdapter.save(meRe);
+    System.out.println("\nLa historia clínica ha sido guardada correctamente.");
+
+    saveOrder(meRe, pet, pet.getDocumentOwner(), veterinary, null);
+  }
+
+  public void createOrder(MedicalRecord meRe) {
+    System.out.println("\nNota: Se creará una nueva orden y se perderá referencia con la orden anterior");
+    saveOrder(meRe, meRe.getPetId(), meRe.getPetId().getDocumentOwner(), meRe.getVetDocument(), meRe.getOrdenId());
+  }
+  
+  private void saveOrder(MedicalRecord meRe, Pet pet, Person owner, Person vet, Long ms) {
+    
+    if(ms== null) {
+      ms = System.currentTimeMillis();
+    } 
+
+    Order order = new Order(meRe.getOrdenId(), pet,owner, vet, meRe, ms);
+    
+    orderAdapter.save(order);
+    System.out.println("\nSe ha creado una nueva orden con referencia a la historia clínica correctamente.");
+  }
+  //#endregion CREATE
+  
+  //#region UPDATED
+  public void changeVet(MedicalRecord medicalRecord) throws Exception {
+    System.out.println("ADVERTENCIA: Esta a punto de cambiar el veterinario al cual referencia la historia clínica");
+    System.out.println("\nIngrese el documento del vet");      
+    Long personId = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"personId\" ");
+
+    Person person = personAdapter.findByDocument(personId);
+
+    if(person == null) {
+      throw new Exception("No hay un vet con ese documento, intente de nuevo");
+    }
+
+    medicalRecord.setVetDocument(person);
+    saveMedicalRecord(medicalRecord, "El vet ha sido cambiado exitosamente");
+  }
+
+  public void changePet(MedicalRecord meRe) throws Exception {
+    System.out.println("ADVERTENCIA: Esta a punto de cambiar la mascota a la cual referencia la historia clínica");
+    System.out.println("\nIngrese el id de la mascota");      
+    Long petId = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"petId\" ");
+
+    Pet pet = petAdapter.findByPetId(petId);
+
+    if(pet == null) 
+      throw new Exception("No hay una mascota con ese id, intente de nuevo.");
+    
+    meRe.setPetId(pet);
+    saveMedicalRecord(meRe, "La mascota ha sido cambiada exitosamente");
+  }
+
+  public void changeReason(MedicalRecord meRe) throws Exception {
+    System.out.println("\nIngrese la razón de la consulta");
+    String reason = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Razón \" ");
+    meRe.setReason(reason);
+    saveMedicalRecord(meRe, "La razón ha sido cambiada exitosamente");
+  }
+
+  public void changeSymptoms(MedicalRecord meRe) throws Exception {
+    System.out.println("\nIngrese los sintomas ");
+    String symptoms = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Sintomas\" ");
+    meRe.setSymptoms(symptoms);
+    saveMedicalRecord(meRe, "La razón ha sido cambiada exitosamente");
+  }
+
+  public void changeDiagnosis(MedicalRecord meRe) throws Exception {
+    System.out.println("\nIngrese el diagnostico ");
+    String diagnosis = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Diagnostico\" ");
+    meRe.setDiagnosis(diagnosis);
+    saveMedicalRecord(meRe, "La razón ha sido cambiada exitosamente");
+  }
+
+  public void changeMedicine(MedicalRecord meRe) throws Exception {
+    System.out.println("\nIngrese la medicina recetada (opcional)");
+    String medicine = simpleValidator.stringValidator(Utils.getReader().nextLine(), "");
+    meRe.setMedicine(medicine);
+    saveMedicalRecord(meRe, "La razón ha sido cambiada exitosamente");
+  }
+
+  public void changeDoseMedication(MedicalRecord meRe) throws Exception {
+    System.out.println("\nIngrese la dosis (opcional)");
+    String doseMedication = simpleValidator.stringValidator(Utils.getReader().nextLine(), "") ;
+    meRe.setDoseMedication(doseMedication);
+    saveMedicalRecord(meRe, "La razón ha sido cambiada exitosamente");
+  }
+
+  public void changeProcedure(MedicalRecord meRe) throws Exception {
+    System.out.println("\nIngrese el procedimiento (opcional)");
+    String procedure = simpleValidator.stringValidator(Utils.getReader().nextLine(), "");
+    meRe.setProcedures(procedure);
+    saveMedicalRecord(meRe, "La razón ha sido cambiada exitosamente");
+  }
+
+  public void changeVaccinationHistory(MedicalRecord meRe) throws Exception {
+    System.out.println("\nIngrese el historial de vacunas ");
+    String vaccinationHistory = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Historial\" ");
+    meRe.setVaccinationHistory(vaccinationHistory);
+    saveMedicalRecord(meRe, "El historial de vacunas ha sido cambiada exitosamente");
+  }
+
+  public void changeAllergyMedications(MedicalRecord meRe) throws Exception {
+    System.out.println("\nIngrese los medicamentos a los que es alergico");
+    String allergyMedications = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Alegico \" ");
+    meRe.setAllergyMedications(allergyMedications);
+    saveMedicalRecord(meRe, "Los medicamentos a los que es alergico han sido cambiados exitosamente");
+  }
+
+  public void changeProcedureDeatils(MedicalRecord meRe) throws Exception {
+    System.out.println("\nIngrese los detalles del procedimiento");
+    String procedureDetail = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Procedimiento\" ");
+    meRe.setProcedureDetail(procedureDetail);
+    saveMedicalRecord(meRe, "Los detalles del procedimiento han sido cambiados exitosamente");
+  }
+
+  public void changeOrderCancellation(MedicalRecord meRe) throws Exception {
+    meRe.setOrderCancellation(true); 
+    saveMedicalRecord(meRe, "\\n La orden ha sido anulada correctamente.");
+  }
+  //#endregion UPDATED
+
+  //#region SEARCH
+  
+  // Si existe devuelve la persona
+  public Person existsPerson(long document, String msg) throws Exception {
+    Person person = personAdapter.findByDocument(document);
+    if(person == null) throw new Exception(msg);
     return person;
   }
 
-  public void saveMedicalRecord(MedicalRecord medicalRecord) {
-    meReAdapter.save(medicalRecord);
-    System.out.println("\nLa orden ha sido anulada correctamente.");
+  // Si existe devuelve error
+  public void notExistsPerson(long document, String msg) throws Exception {
+    Person person = personAdapter.findByDocument(document);
+    if(person != null) throw new Exception(msg);
   }
 
+  public Pet searchPet(long petId) throws Exception{
+    Pet pet = petAdapter.findByPetId(petId);
+    if(pet == null) throw new Exception("No hay una mascota registrada con ese id");
+    return pet;
+  }
+
+  public MedicalRecord searchMedicalRecord() throws Exception {
+    System.out.println("\nIngrese el id de la historia clínica (milisegundos PK)");
+    Long miliseconds = simpleValidator.longValidator(simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Id de la historia clínica\" "), "");
+    MedicalRecord meRe = meReAdapter.findByDate(miliseconds);
+
+    if(meRe == null) throw new Exception("\nNo se encontró la historia clínica");
+    return meRe;
+  }
+
+  public Order searchOrder() throws Exception {
+    System.out.println("\nIngrese el id de la orden");
+    Long orderId = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"Order Id\" ");
+    Order order = orderAdapter.findByOrderId(orderId);
+
+    if(order == null) 
+      throw new Exception("\nNo se encontró la orden.");
+
+    printOrder(order);
+    return order;
+  }
+  //#endregion SEARCH
+
+  //#region PRINT
   public void printMedicalRecord(MedicalRecord meRe) {
     String meRePrint = 
       "\n1. Id de la historia clínica: " + meRe.getDate() +
@@ -55,7 +247,7 @@ public class VeterinaryService {
       "\n7. Procedimiento (opcional): " + simpleValidator.isNull(meRe.getProcedures())  +
       "\n8. Medicamento (opcional): " + simpleValidator.isNull(meRe.getMedicine()) +
       "\n9. Dosis de medicamento (opcional): " + simpleValidator.isNull(meRe.getDoseMedication()) +
-      "\n10. Id para la orden: " + meRe.getOrdenId() +
+      "\n10. Id de la orden: " + meRe.getOrdenId() +
       "\n11. Historial de vacunación: " + meRe.getVaccinationHistory() +
       "\n12. Medicamentos a los que presenta alergia: " + meRe.getAllergyMedications() +
       "\n13. Detalle del procedimiento: " + meRe.getProcedureDetail() +
@@ -67,13 +259,19 @@ public class VeterinaryService {
   public void printOrder(Order order) {
     String orderPrint = 
       "\n1. Order Id: " + order.getOrderId() +
-      "\n2. Id Historia clinica: " + order.getMedicalRecordId().getDate() +
+      // "\n2. Id Historia clinica: " + order.getMedicalRecordId().getDate() +
       "\n3. Mascota: " + order.getPetId().getName() +
       "\n4. Dueño: " + order.getDocumentOwner().getName()+
       "\n5. Veterinario: " + order.getDocumentVet().getName() +
-      "\n6. Medicinas recetadas: " + order.getMedicalRecordId().getMedicine() +
+      // "\n6. Medicinas recetadas: " + order.getMedicalRecordId().getMedicine() +
       "\n7. Fecha de creación: " + + order.getCreatedDate();
 
     System.out.println(orderPrint);
   }
+  
+  public void showMedicalRecord() throws Exception {
+    MedicalRecord medicalRecord = searchMedicalRecord();
+    printMedicalRecord(medicalRecord);
+  }
+  //#endregion PRINT
 }

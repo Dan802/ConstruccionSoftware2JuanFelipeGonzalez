@@ -51,26 +51,26 @@ public class OrderAdapter implements OrderPort {
     petEntity.setWeight(order.getPetId().getWeight());
 
     MedicalRecordEntity meReEntity = new MedicalRecordEntity();
-    meReEntity.setDate(order.getMedicalRecordId().getDate());
+    // meReEntity.setDate(order.getMedicalRecordId().getDate());
     meReEntity.setVetDocument(vetEntity);
     meReEntity.setPetId(petEntity);
-    meReEntity.setAllergyMedications(order.getMedicalRecordId().getAllergyMedications());
-    meReEntity.setDiagnosis(order.getMedicalRecordId().getDiagnosis());
-    meReEntity.setDoseMedication(order.getMedicalRecordId().getDoseMedication());
-    meReEntity.setMedicine(order.getMedicalRecordId().getMedicine());
-    meReEntity.setOrdenId(order.getMedicalRecordId().getOrdenId());
-    meReEntity.setOrderCancellation(order.getMedicalRecordId().isOrderCancellation()); 
-    meReEntity.setProcedures(order.getMedicalRecordId().getProcedures());
-    meReEntity.setProcedureDetail(order.getMedicalRecordId().getProcedureDetail());
-    meReEntity.setReason(order.getMedicalRecordId().getReason());
-    meReEntity.setSymptoms(order.getMedicalRecordId().getSymptoms());
-    meReEntity.setVaccinationHistory(order.getMedicalRecordId().getVaccinationHistory());
+    // meReEntity.setAllergyMedications(order.getMedicalRecordId().getAllergyMedications());
+    // meReEntity.setDiagnosis(order.getMedicalRecordId().getDiagnosis());
+    // meReEntity.setDoseMedication(order.getMedicalRecordId().getDoseMedication());
+    // meReEntity.setMedicine(order.getMedicalRecordId().getMedicine());
+    // meReEntity.setOrdenId(order.getMedicalRecordId().getOrdenId());
+    // meReEntity.setOrderCancellation(order.getMedicalRecordId().isOrderCancellation()); 
+    // meReEntity.setProcedures(order.getMedicalRecordId().getProcedures());
+    // meReEntity.setProcedureDetail(order.getMedicalRecordId().getProcedureDetail());
+    // meReEntity.setReason(order.getMedicalRecordId().getReason());
+    // meReEntity.setSymptoms(order.getMedicalRecordId().getSymptoms());
+    // meReEntity.setVaccinationHistory(order.getMedicalRecordId().getVaccinationHistory());
     
     OrderEntity orderEntity = new OrderEntity();
     orderEntity.setCreatedDate(order.getCreatedDate());
     orderEntity.setDocumentOwner(ownerEntity);
     orderEntity.setDocumentVet(vetEntity);
-    orderEntity.setMedicalRecordId(meReEntity);
+    // orderEntity.setMedicalRecordId(meReEntity);
     orderEntity.setMedicine(meReEntity);
     orderEntity.setPet(petEntity);
 
@@ -108,27 +108,27 @@ public class OrderAdapter implements OrderPort {
     petEntity.setWeight(orderEntity.getPet().getWeight());
 
     MedicalRecord meReEntity = new MedicalRecord();
-    meReEntity.setDate(orderEntity.getMedicalRecordId().getDate());
+    // meReEntity.setDate(orderEntity.getMedicalRecordId().getDate());
     meReEntity.setVetDocument(vetEntity);
     meReEntity.setPetId(petEntity);
-    meReEntity.setAllergyMedications(orderEntity.getMedicalRecordId().getAllergyMedications());
-    meReEntity.setDiagnosis(orderEntity.getMedicalRecordId().getDiagnosis());
-    meReEntity.setDoseMedication(orderEntity.getMedicalRecordId().getDoseMedication());
-    meReEntity.setMedicine(orderEntity.getMedicalRecordId().getMedicine());
-    meReEntity.setOrdenId(orderEntity.getMedicalRecordId().getOrdenId());
-    meReEntity.setOrderCancellation(orderEntity.getMedicalRecordId().isOrderCancellation()); 
-    meReEntity.setProcedures(orderEntity.getMedicalRecordId().getProcedures());
-    meReEntity.setProcedureDetail(orderEntity.getMedicalRecordId().getProcedureDetail());
-    meReEntity.setReason(orderEntity.getMedicalRecordId().getReason());
-    meReEntity.setSymptoms(orderEntity.getMedicalRecordId().getSymptoms());
-    meReEntity.setVaccinationHistory(orderEntity.getMedicalRecordId().getVaccinationHistory());
+    // meReEntity.setAllergyMedications(orderEntity.getMedicalRecordId().getAllergyMedications());
+    // meReEntity.setDiagnosis(orderEntity.getMedicalRecordId().getDiagnosis());
+    // meReEntity.setDoseMedication(orderEntity.getMedicalRecordId().getDoseMedication());
+    // meReEntity.setMedicine(orderEntity.getMedicalRecordId().getMedicine());
+    // meReEntity.setOrdenId(orderEntity.getMedicalRecordId().getOrdenId());
+    // meReEntity.setOrderCancellation(orderEntity.getMedicalRecordId().isOrderCancellation()); 
+    // meReEntity.setProcedures(orderEntity.getMedicalRecordId().getProcedures());
+    // meReEntity.setProcedureDetail(orderEntity.getMedicalRecordId().getProcedureDetail());
+    // meReEntity.setReason(orderEntity.getMedicalRecordId().getReason());
+    // meReEntity.setSymptoms(orderEntity.getMedicalRecordId().getSymptoms());
+    // meReEntity.setVaccinationHistory(orderEntity.getMedicalRecordId().getVaccinationHistory());
 
     Order order = new Order();
     order.setCreatedDate(orderEntity.getCreatedDate());
     order.setDocumentOwner(ownerEntity);
     order.setDocumentVet(vetEntity);
-    order.setMedicalRecordId(meReEntity);
-    order.setOrderId(orderEntity.getOrderId());
+    // order.setMedicalRecordId(meReEntity);
+    // order.setOrderId(orderEntity.getOrderId());
     order.setPetId(petEntity);
     return order;
   }

@@ -89,14 +89,16 @@ public class SellerInput implements InputPort{
       return;
     }
     
-    if(order.getMedicalRecordId().getMedicine().length() == 0) {
-      System.out.println("\nNo hay medicinas asociadas a la orden suministrada.");
-      return;
-    }
+    // todo arreglar
+    // if(order.getMedicalRecordId().getMedicine().length() == 0) {
+    //   System.out.println("\nNo hay medicinas asociadas a la orden suministrada.");
+    //   return;
+    // }
 
     // Suministrar = vender, creo, por ende generamos una factura
     System.out.println("\nLos medicamentos asociados a la orden son: ");
-    System.out.println(order.getMedicalRecordId().getMedicine());
+    // todo arreglar
+    // System.out.println(order.getMedicalRecordId().getMedicine());
 
     System.out.println("\nIngrese la cantidad que el usuario va a llevar");
     int count = simpleValidator.intValidator(Utils.getReader().nextLine(), "\"Cantidad \" ");
@@ -112,7 +114,7 @@ public class SellerInput implements InputPort{
     invoice.setOrderId(order);
     invoice.setPetId(order.getPetId());
     invoice.setPrice(price);
-    invoice.setProductName(order.getMedicalRecordId().getMedicine());
+    // invoice.setProductName(order.getMedicalRecordId().getMedicine());
     
     Invoice savedInvoice = invoiceAdapter.save(invoice);
 
@@ -120,7 +122,8 @@ public class SellerInput implements InputPort{
     System.out.println("\n1. Id de la factura: " + savedInvoice.getInvoiceId());  
     System.out.println("2. Mascota: " + savedInvoice.getPetId().getName());  
     System.out.println("3. Dueño: " + savedInvoice.getOwnerId().getName());  
-    System.out.println("4. Id de la orden: " + savedInvoice.getOrderId().getOrderId());  
+    // todo arreglar
+    // System.out.println("4. Id de la orden: " + savedInvoice.getOrderId().getOrderId());  
     System.out.println("5. Nombre del medicamento: " + savedInvoice.getProductName());  
     System.out.println("6. Precio: " + savedInvoice.getPrice());  
     System.out.println("7. Cantidad: " + savedInvoice.getCount());  
