@@ -78,13 +78,16 @@ public class InvoiceAdapter implements InvoicePort {
   }
 
   public Invoice invoiceAdapter(InvoiceEntity invoiceEntity) {
+
+
+    // Todo fix no llamar adapters desde otra adapter
     Invoice invoice = new Invoice();
     invoice.setCount(invoiceEntity.getCount());
     invoice.setDateCreated(invoiceEntity.getDateCreated());
     invoice.setInvoiceId(invoiceEntity.getInvoiceId());
-    invoice.setOrderId(orderAdapter.orderAdapter(invoiceEntity.getOrderId()));
-    invoice.setOwnerId(personAdapter.personAdapter(invoiceEntity.getOwnerId()));
-    invoice.setPetId(petAdapter.petAdapter(invoiceEntity.getPetId()));
+    // invoice.setOrderId(orderAdapter.orderAdapter(invoiceEntity.getOrderId()));
+    // invoice.setOwnerId(personAdapter.personAdapter(invoiceEntity.getOwnerId()));
+    // invoice.setPetId(petAdapter.petAdapter(invoiceEntity.getPetId()));
     invoice.setPrice(invoiceEntity.getPrice());
     invoice.setProductName(invoiceEntity.getProductName());
     return invoice;

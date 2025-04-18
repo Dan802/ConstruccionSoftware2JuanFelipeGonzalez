@@ -25,7 +25,7 @@ public class OrderEntity {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name="medical_record_id")
+  @Column(name="order_id")
   private Long orderId;
 
   @JoinColumn(name="pet")

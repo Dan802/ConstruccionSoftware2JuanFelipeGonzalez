@@ -6,6 +6,5 @@ import app.adapters.medicalRecord.entity.MedicalRecordEntity;
 import app.domain.models.MedicalRecord;
 
 public interface MedicalRecordRepository extends JpaRepository<MedicalRecordEntity, Long> {
-  public MedicalRecordEntity save(MedicalRecord medicalRecord);
   public MedicalRecordEntity findByDate(Long miliseconds);
 }

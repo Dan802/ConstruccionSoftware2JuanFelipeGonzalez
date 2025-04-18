@@ -30,12 +30,13 @@ public class VetInput {
   private final String MENU = "\nMenu del Veterinario, ingrese la opción:" + 
   "\n 1. Crear dueño" + 
   "\n 2. Crear mascota" +
-  "\n 3. Guardar registro medico en la historia clínica" +
+  "\n 3. Crear historia clínica" +
   "\n 4. Consultar historia clínica (ingresando los milisegundos)" +
   "\n 5. Editar historia clínica (ingresando los milisegundos)" +
-  "\n 6. Consultar orden (ingresando el id de la orden)" +
-  "\n 7. Anular orden" +
-  "\n 8. Cerrar sesión";
+  "\n 6. Crear orden" +
+  "\n 7. Consultar orden (ingresando el id de la orden)" +
+  "\n 8. Anular orden" +
+  "\n 9. Cerrar sesión";
 
   @Autowired
   private PersonValidator personValidator;
@@ -88,15 +89,19 @@ public class VetInput {
           this.editMedicalRecord();
           return true;
         }
-        case "6" : {
-          veterinaryService.searchOrder();
+        case "6": {
+          this.createOrder();
           return true;
         }
         case "7" : {
-          this.cancelOrder();
+          veterinaryService.searchOrder();
           return true;
         }
         case "8" : {
+          this.cancelOrder();
+          return true;
+        }
+        case "9" : {
           return false;
         }
         default:
@@ -113,7 +118,7 @@ public class VetInput {
     System.out.println("\nIngrese el documento del dueño"); 
     long document = personValidator.documentValidator(Utils.getReader().nextLine()); 
     
-    // Todo: Primero se puede consultar y luego seguir?
+    //? Primero se puede consultar y luego seguir?
     veterinaryService.notExistsPerson(document, "Ya existe una persona con esa cedula");
 
     System.out.println("Ingrese el nombre del dueño"); 
@@ -155,44 +160,61 @@ public class VetInput {
 
   private void createMedicalRecord(Login login) throws Exception{
 
-    System.out.println("\nIngrese el id de la mascota");      
-    Long petId = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"petId\" ");
-    
     // Validamos que exista la mascota (Mejor UX)
-    Pet pet = veterinaryService.searchPet(petId);
+    Pet pet = veterinaryService.searchPet();
 
     System.out.println("\nIngrese la razón de la consulta");
-    String reason = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Razón \" ");
+    // String reason = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Razón \" ");
+    String reason = "Vomita mucho y tiene fiebre"; //! todo borrar
     
     System.out.println("\nIngrese los sintomas ");
-    String symptoms = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Sintomas\" ");
-    
+    // String symptoms = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Sintomas\" ");
+    String symptoms = "Vomito excesivo"; //! todo borrar
+
     System.out.println("\nIngrese el diagnostico ");
-    String diagnosis = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Diagnostico\" ");
-    
+    // String diagnosis = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Diagnostico\" ");
+    String diagnosis = "Probable daño estomacal"; //! todo borrar
+
     System.out.println("\nIngrese el procedimiento (opcional) ");
-    String procedure = Utils.getReader().nextLine();
-    
+    // String procedure = Utils.getReader().nextLine();
+    String procedure = "Lavado de estomago"; //! todo borrar
+
     System.out.println("\nIngrese la medicina recetada (opcional)");
-    String medicine = Utils.getReader().nextLine();
-    
+    // String medicine = Utils.getReader().nextLine();
+    String medicine = "Una pastilla de las rosadas"; //! todo borrar
+
     System.out.println("\nIngrese la dosis del medicamento (opcional)");
-    String doseMedication = Utils.getReader().nextLine(); 
-    
+    // String doseMedication = Utils.getReader().nextLine(); 
+    String doseMedication = "1 cada 12h * 5días"; //! todo borrar
+
     System.out.println("\nIngrese el historial de vacunas ");
-    String vaccinationHistory = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Historial\" ");
-    
+    // String vaccinationHistory = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Historial\" ");
+    String vaccinationHistory = "Todas"; //! todo borrar
+
     System.out.println("\nIngrese los medicamentos a los que es alergico");
-    String allergyMedications = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Alegico \" ");
-    
+    // String allergyMedications = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Alegico \" ");
+    String allergyMedications = "Lo averiguaremos"; //! todo borrar
+
     System.out.println("\nIngrese los detalles del procedimiento");
-    String procedureDetail = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Procedimiento\" ");
-    
+    // String procedureDetail = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Procedimiento\" ");
+    String procedureDetail = "Se debe lavar el estomago con jabón rey y mucha agua"; //! todo borrar
+
     Person veterinary = personAdapter.findByDocument(login.getPersonId().getDocument());
     
-    Long milisecondsDate = System.currentTimeMillis();
+    MedicalRecord meRe = veterinaryService.saveMedicalRecord(null, veterinary, pet, reason, symptoms, diagnosis, procedure, medicine, doseMedication, vaccinationHistory, allergyMedications, procedureDetail);
+    veterinaryService.saveOrder(null, pet, meRe.getPetId().getDocumentOwner(), veterinary, meRe, null);
+  }
 
-    veterinaryService.saveMedicalRecord(milisecondsDate, veterinary, pet, reason, symptoms, diagnosis, procedure, medicine, doseMedication, milisecondsDate, vaccinationHistory, allergyMedications, procedureDetail);
+  private void createOrder() throws Exception {
+    Pet pet = veterinaryService.searchPet();
+    MedicalRecord meRe = veterinaryService.searchMedicalRecord();
+
+    //* Nota: La relación es 1:1, por ende, 
+    //* no se pueden crear mas ordenes con la misma referencia 
+    //* a la historia clínica
+    // veterinaryService.saveOrder(null, pet, meRe.getPetId().getDocumentOwner(), meRe.getVetDocument(), meRe, null);
+
+    System.out.println("\nSe ha guardado la orden exitosamente");
   }
 
   private void editMedicalRecord() throws Exception {
@@ -245,22 +267,18 @@ public class VetInput {
         break;
 
         case 10:
-          veterinaryService.createOrder(meRe);
+          veterinaryService.changeVaccinationHistory(meRe);
         break;        
 
         case 11:
-          veterinaryService.changeVaccinationHistory(meRe);
-        break;
-
-        case 12:
           veterinaryService.changeAllergyMedications(meRe);
         break;
 
-        case 13:
+        case 12:
           veterinaryService.changeProcedureDeatils(meRe);
         break;
 
-        case 14:
+        case 13:
           veterinaryService.changeOrderCancellation(meRe);
         break;
 

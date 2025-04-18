@@ -65,31 +65,39 @@ public class VeterinaryService {
     System.out.println(msg);
   }
 
-  public void saveMedicalRecord(Long milisecondsDate, Person veterinary, Pet pet, String reason, String symptoms, String diagnosis, String procedure, String medicine, String doseMedication, Long milisecondsDate2, String vaccinationHistory, String allergyMedications, String procedureDetail) {
+  public MedicalRecord saveMedicalRecord(Long milisecondsDate, Person veterinary, Pet pet, String reason, String symptoms, String diagnosis, String procedure, String medicine, String doseMedication, String vaccinationHistory, String allergyMedications, String procedureDetail) {
+    
+    if(milisecondsDate == null) {
+      milisecondsDate = System.currentTimeMillis();
+    }
+
     boolean orderCancellation = false;
-    MedicalRecord meRe = new MedicalRecord(milisecondsDate, veterinary, pet, reason, symptoms, diagnosis, procedure, medicine, doseMedication, milisecondsDate, vaccinationHistory, allergyMedications, procedureDetail, orderCancellation);
 
-    meReAdapter.save(meRe);
+    MedicalRecord meRe = new MedicalRecord(milisecondsDate,veterinary, pet, reason,symptoms,diagnosis, procedure, medicine, doseMedication, vaccinationHistory, allergyMedications, procedureDetail, orderCancellation);
+    meRe = meReAdapter.save(meRe);
+    
     System.out.println("\nLa historia clínica ha sido guardada correctamente.");
-
-    saveOrder(meRe, pet, pet.getDocumentOwner(), veterinary, null);
+    return meRe;
   }
 
   public void createOrder(MedicalRecord meRe) {
-    System.out.println("\nNota: Se creará una nueva orden y se perderá referencia con la orden anterior");
-    saveOrder(meRe, meRe.getPetId(), meRe.getPetId().getDocumentOwner(), meRe.getVetDocument(), meRe.getOrdenId());
+    System.out.println("\nNota: Se creará una nueva orden, ambas ordenes quedan en el sistema");
+    System.out.println(meRe.getPetId().getDocumentOwner());
+    System.out.println(meRe.getVetDocument());
+
+    saveOrder( null, meRe.getPetId(), meRe.getPetId().getDocumentOwner(), meRe.getVetDocument(), meRe , null);
   }
   
-  private void saveOrder(MedicalRecord meRe, Pet pet, Person owner, Person vet, Long ms) {
-    
+  public Order saveOrder(Long orderId, Pet pet, Person owner, Person vet, MedicalRecord meRe, Long ms) {
     if(ms== null) {
       ms = System.currentTimeMillis();
     } 
 
-    Order order = new Order(meRe.getOrdenId(), pet,owner, vet, meRe, ms);
+    Order order = new Order(orderId, pet, owner, vet, meRe, ms);
+    order = orderAdapter.save(order);
+    System.out.println("\nSe ha guardado la orden exitosamente");
     
-    orderAdapter.save(order);
-    System.out.println("\nSe ha creado una nueva orden con referencia a la historia clínica correctamente.");
+    return order;
   }
   //#endregion CREATE
   
@@ -207,7 +215,10 @@ public class VeterinaryService {
     if(person != null) throw new Exception(msg);
   }
 
-  public Pet searchPet(long petId) throws Exception{
+  public Pet searchPet() throws Exception{
+    System.out.println("\nIngrese el id de la mascota");      
+    Long petId = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"petId\" ");
+    
     Pet pet = petAdapter.findByPetId(petId);
     if(pet == null) throw new Exception("No hay una mascota registrada con ese id");
     return pet;
@@ -247,11 +258,10 @@ public class VeterinaryService {
       "\n7. Procedimiento (opcional): " + simpleValidator.isNull(meRe.getProcedures())  +
       "\n8. Medicamento (opcional): " + simpleValidator.isNull(meRe.getMedicine()) +
       "\n9. Dosis de medicamento (opcional): " + simpleValidator.isNull(meRe.getDoseMedication()) +
-      "\n10. Id de la orden: " + meRe.getOrdenId() +
-      "\n11. Historial de vacunación: " + meRe.getVaccinationHistory() +
-      "\n12. Medicamentos a los que presenta alergia: " + meRe.getAllergyMedications() +
-      "\n13. Detalle del procedimiento: " + meRe.getProcedureDetail() +
-      "\n14. ¿Orden anulada? " + (meRe.isOrderCancellation() ? "Si" : "No");
+      "\n10. Historial de vacunación: " + meRe.getVaccinationHistory() +
+      "\n11. Medicamentos a los que presenta alergia: " + meRe.getAllergyMedications() +
+      "\n12. Detalle del procedimiento: " + meRe.getProcedureDetail() +
+      "\n13. ¿Orden anulada? " + (meRe.isOrderCancellation() ? "Si" : "No");
 
     System.out.println(meRePrint);
   }
@@ -259,12 +269,12 @@ public class VeterinaryService {
   public void printOrder(Order order) {
     String orderPrint = 
       "\n1. Order Id: " + order.getOrderId() +
-      // "\n2. Id Historia clinica: " + order.getMedicalRecordId().getDate() +
-      "\n3. Mascota: " + order.getPetId().getName() +
-      "\n4. Dueño: " + order.getDocumentOwner().getName()+
-      "\n5. Veterinario: " + order.getDocumentVet().getName() +
-      // "\n6. Medicinas recetadas: " + order.getMedicalRecordId().getMedicine() +
-      "\n7. Fecha de creación: " + + order.getCreatedDate();
+      "\n2. Mascota: " + order.getPetId().getName() +
+      "\n3. Dueño: " + order.getDocumentOwner().getName()+
+      "\n4. Veterinario: " + order.getDocumentVet().getName() +
+      "\n5. Medicinas recetadas: " + order.getMedicine().getMedicine() +
+      "\n6. Fecha de creación: " + order.getCreatedDate() +
+      "\n7. ¿Orden Cancelada?" + (order.getMedicine().isOrderCancellation() ? "Si" : "No");
 
     System.out.println(orderPrint);
   }

@@ -25,18 +25,24 @@ public class MedicalRecordAdapter implements MedicalRecordPort {
   public MedicalRecordRepository meReRepository;
 
   @Override
-  public void save(MedicalRecord meRecord) {
+  public MedicalRecord save(MedicalRecord meRecord) {
 
-    PersonEntity personEntity = new PersonEntity();
-    personEntity.setAge(meRecord.getVetDocument().getAge());
-    personEntity.setDocument(meRecord.getVetDocument().getDocument());
-    personEntity.setName(meRecord.getVetDocument().getName());
-    personEntity.setRole(meRecord.getVetDocument().getRole());
+    PersonEntity vetEntity = new PersonEntity();
+    vetEntity.setAge(meRecord.getVetDocument().getAge());
+    vetEntity.setDocument(meRecord.getVetDocument().getDocument());
+    vetEntity.setName(meRecord.getVetDocument().getName());
+    vetEntity.setRole(meRecord.getVetDocument().getRole());
+
+    PersonEntity ownerEntity = new PersonEntity();
+    ownerEntity.setAge(meRecord.getPetId().getDocumentOwner().getAge());
+    ownerEntity.setDocument(meRecord.getPetId().getDocumentOwner().getDocument());
+    ownerEntity.setName(meRecord.getPetId().getDocumentOwner().getName());
+    ownerEntity.setRole(meRecord.getPetId().getDocumentOwner().getRole());
 
     PetEntity petEntity = new PetEntity();
     petEntity.setAge(meRecord.getPetId().getAge());
     petEntity.setDescription(meRecord.getPetId().getDescription());
-    petEntity.setDocumentOwner(personEntity);
+    petEntity.setDocumentOwner(ownerEntity);
     petEntity.setName(meRecord.getPetId().getName());
     petEntity.setPetId(meRecord.getPetId().getPetId());
     petEntity.setRace(meRecord.getPetId().getRace());
@@ -46,20 +52,20 @@ public class MedicalRecordAdapter implements MedicalRecordPort {
     MedicalRecordEntity meReEntity = new MedicalRecordEntity();
 
     meReEntity.setDate(meRecord.getDate());
-    meReEntity.setVetDocument(personEntity);
+    meReEntity.setVetDocument(vetEntity);
     meReEntity.setPetId(petEntity);
     meReEntity.setAllergyMedications(meRecord.getAllergyMedications());
     meReEntity.setDiagnosis(meRecord.getDiagnosis());
     meReEntity.setDoseMedication(meRecord.getDoseMedication());
     meReEntity.setMedicine(meRecord.getMedicine());
-    // meReEntity.setOrdenId(meRecord.getOrdenId());
     meReEntity.setOrderCancellation(meRecord.isOrderCancellation()); 
     meReEntity.setProcedures(meRecord.getProcedures());
     meReEntity.setProcedureDetail(meRecord.getProcedureDetail());
     meReEntity.setReason(meRecord.getReason());
     meReEntity.setSymptoms(meRecord.getSymptoms());
     meReEntity.setVaccinationHistory(meRecord.getVaccinationHistory());
-    meReRepository.save(meReEntity);
+    
+    return medicalRecordAdapter(meReRepository.save(meReEntity));
   }
 
   @Override
@@ -71,10 +77,10 @@ public class MedicalRecordAdapter implements MedicalRecordPort {
 
   public MedicalRecord medicalRecordAdapter(MedicalRecordEntity meReEntity) {
     Person person = new Person();
-    person.setAge(meReEntity.getVetDocument().getAge());
-    person.setDocument(meReEntity.getVetDocument().getDocument());
-    person.setName(meReEntity.getVetDocument().getName());
-    person.setRole(meReEntity.getVetDocument().getRole());
+    person.setAge(meReEntity.getPetId().getDocumentOwner().getAge());
+    person.setDocument(meReEntity.getPetId().getDocumentOwner().getDocument());
+    person.setName(meReEntity.getPetId().getDocumentOwner().getName());
+    person.setRole(meReEntity.getPetId().getDocumentOwner().getRole());
 
     Pet pet = new Pet();
     pet.setAge(meReEntity.getPetId().getAge());
@@ -92,7 +98,6 @@ public class MedicalRecordAdapter implements MedicalRecordPort {
     meRe.setDiagnosis(meReEntity.getDiagnosis());
     meRe.setDoseMedication(meReEntity.getDoseMedication());
     meRe.setMedicine(meReEntity.getMedicine());
-    // meRe.setOrdenId(meReEntity.getOrdenId());
     meRe.setOrderCancellation(meReEntity.isOrderCancellation());
     meRe.setPetId(pet);
     meRe.setProcedureDetail(meReEntity.getProcedureDetail());

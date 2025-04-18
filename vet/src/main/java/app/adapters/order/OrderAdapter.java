@@ -27,7 +27,7 @@ public class OrderAdapter implements OrderPort {
   private OrderRepository orderRepository;
 
   @Override
-  public void save(Order order) {
+  public Order save(Order order) {
     PersonEntity ownerEntity = new PersonEntity();
     ownerEntity.setAge(order.getDocumentOwner().getAge());
     ownerEntity.setDocument(order.getDocumentOwner().getDocument());
@@ -51,30 +51,28 @@ public class OrderAdapter implements OrderPort {
     petEntity.setWeight(order.getPetId().getWeight());
 
     MedicalRecordEntity meReEntity = new MedicalRecordEntity();
-    // meReEntity.setDate(order.getMedicalRecordId().getDate());
+    meReEntity.setDate(order.getMedicine().getDate());
     meReEntity.setVetDocument(vetEntity);
     meReEntity.setPetId(petEntity);
-    // meReEntity.setAllergyMedications(order.getMedicalRecordId().getAllergyMedications());
-    // meReEntity.setDiagnosis(order.getMedicalRecordId().getDiagnosis());
-    // meReEntity.setDoseMedication(order.getMedicalRecordId().getDoseMedication());
-    // meReEntity.setMedicine(order.getMedicalRecordId().getMedicine());
-    // meReEntity.setOrdenId(order.getMedicalRecordId().getOrdenId());
-    // meReEntity.setOrderCancellation(order.getMedicalRecordId().isOrderCancellation()); 
-    // meReEntity.setProcedures(order.getMedicalRecordId().getProcedures());
-    // meReEntity.setProcedureDetail(order.getMedicalRecordId().getProcedureDetail());
-    // meReEntity.setReason(order.getMedicalRecordId().getReason());
-    // meReEntity.setSymptoms(order.getMedicalRecordId().getSymptoms());
-    // meReEntity.setVaccinationHistory(order.getMedicalRecordId().getVaccinationHistory());
+    meReEntity.setAllergyMedications(order.getMedicine().getAllergyMedications());
+    meReEntity.setDiagnosis(order.getMedicine().getDiagnosis());
+    meReEntity.setDoseMedication(order.getMedicine().getDoseMedication());
+    meReEntity.setMedicine(order.getMedicine().getMedicine());
+    meReEntity.setOrderCancellation(order.getMedicine().isOrderCancellation()); 
+    meReEntity.setProcedures(order.getMedicine().getProcedures());
+    meReEntity.setProcedureDetail(order.getMedicine().getProcedureDetail());
+    meReEntity.setReason(order.getMedicine().getReason());
+    meReEntity.setSymptoms(order.getMedicine().getSymptoms());
+    meReEntity.setVaccinationHistory(order.getMedicine().getVaccinationHistory());
     
     OrderEntity orderEntity = new OrderEntity();
     orderEntity.setCreatedDate(order.getCreatedDate());
     orderEntity.setDocumentOwner(ownerEntity);
     orderEntity.setDocumentVet(vetEntity);
-    // orderEntity.setMedicalRecordId(meReEntity);
     orderEntity.setMedicine(meReEntity);
     orderEntity.setPet(petEntity);
 
-    orderRepository.save(orderEntity);
+    return orderAdapter(orderRepository.save(orderEntity));
   }
 
   @Override
@@ -84,52 +82,52 @@ public class OrderAdapter implements OrderPort {
     return orderAdapter(orderEntity);
   }
 
-  public Order orderAdapter(OrderEntity orderEntity) {
-    Person ownerEntity = new Person();
-    ownerEntity.setAge(orderEntity.getDocumentOwner().getAge());
-    ownerEntity.setDocument(orderEntity.getDocumentOwner().getDocument());
-    ownerEntity.setName(orderEntity.getDocumentOwner().getName());
-    ownerEntity.setRole(orderEntity.getDocumentOwner().getRole());
+  private Order orderAdapter(OrderEntity orderEntity) {
+    Person ownerPerson = new Person();
+    ownerPerson.setAge(orderEntity.getDocumentOwner().getAge());
+    ownerPerson.setDocument(orderEntity.getDocumentOwner().getDocument());
+    ownerPerson.setName(orderEntity.getDocumentOwner().getName());
+    ownerPerson.setRole(orderEntity.getDocumentOwner().getRole());
 
-    Person vetEntity = new Person();
-    vetEntity.setAge(orderEntity.getDocumentVet().getAge());
-    vetEntity.setDocument(orderEntity.getDocumentVet().getDocument());
-    vetEntity.setName(orderEntity.getDocumentVet().getName());
-    vetEntity.setRole(orderEntity.getDocumentVet().getRole());
+    Person vetPerson = new Person();
+    vetPerson.setAge(orderEntity.getDocumentVet().getAge());
+    vetPerson.setDocument(orderEntity.getDocumentVet().getDocument());
+    vetPerson.setName(orderEntity.getDocumentVet().getName());
+    vetPerson.setRole(orderEntity.getDocumentVet().getRole());
 
-    Pet petEntity = new Pet();
-    petEntity.setAge(orderEntity.getPet().getAge());
-    petEntity.setDescription(orderEntity.getPet().getDescription());
-    petEntity.setDocumentOwner(ownerEntity);
-    petEntity.setName(orderEntity.getPet().getName());
-    petEntity.setPetId(orderEntity.getPet().getPetId());
-    petEntity.setRace(orderEntity.getPet().getRace());
-    petEntity.setSpecie(orderEntity.getPet().getSpecie());
-    petEntity.setWeight(orderEntity.getPet().getWeight());
+    Pet pet = new Pet();
+    pet.setAge(orderEntity.getPet().getAge());
+    pet.setDescription(orderEntity.getPet().getDescription());
+    pet.setDocumentOwner(ownerPerson);
+    pet.setName(orderEntity.getPet().getName());
+    pet.setPetId(orderEntity.getPet().getPetId());
+    pet.setRace(orderEntity.getPet().getRace());
+    pet.setSpecie(orderEntity.getPet().getSpecie());
+    pet.setWeight(orderEntity.getPet().getWeight());
 
-    MedicalRecord meReEntity = new MedicalRecord();
-    // meReEntity.setDate(orderEntity.getMedicalRecordId().getDate());
-    meReEntity.setVetDocument(vetEntity);
-    meReEntity.setPetId(petEntity);
-    // meReEntity.setAllergyMedications(orderEntity.getMedicalRecordId().getAllergyMedications());
-    // meReEntity.setDiagnosis(orderEntity.getMedicalRecordId().getDiagnosis());
-    // meReEntity.setDoseMedication(orderEntity.getMedicalRecordId().getDoseMedication());
-    // meReEntity.setMedicine(orderEntity.getMedicalRecordId().getMedicine());
-    // meReEntity.setOrdenId(orderEntity.getMedicalRecordId().getOrdenId());
-    // meReEntity.setOrderCancellation(orderEntity.getMedicalRecordId().isOrderCancellation()); 
-    // meReEntity.setProcedures(orderEntity.getMedicalRecordId().getProcedures());
-    // meReEntity.setProcedureDetail(orderEntity.getMedicalRecordId().getProcedureDetail());
-    // meReEntity.setReason(orderEntity.getMedicalRecordId().getReason());
-    // meReEntity.setSymptoms(orderEntity.getMedicalRecordId().getSymptoms());
-    // meReEntity.setVaccinationHistory(orderEntity.getMedicalRecordId().getVaccinationHistory());
+    MedicalRecord meRe = new MedicalRecord();
+    meRe.setDate(orderEntity.getMedicine().getDate());
+    meRe.setVetDocument(vetPerson);
+    meRe.setPetId(pet);
+    meRe.setAllergyMedications(orderEntity.getMedicine().getAllergyMedications());
+    meRe.setDiagnosis(orderEntity.getMedicine().getDiagnosis());
+    meRe.setDoseMedication(orderEntity.getMedicine().getDoseMedication());
+    meRe.setMedicine(orderEntity.getMedicine().getMedicine());
+    meRe.setOrderCancellation(orderEntity.getMedicine().isOrderCancellation()); 
+    meRe.setProcedures(orderEntity.getMedicine().getProcedures());
+    meRe.setProcedureDetail(orderEntity.getMedicine().getProcedureDetail());
+    meRe.setReason(orderEntity.getMedicine().getReason());
+    meRe.setSymptoms(orderEntity.getMedicine().getSymptoms());
+    meRe.setVaccinationHistory(orderEntity.getMedicine().getVaccinationHistory());
 
     Order order = new Order();
     order.setCreatedDate(orderEntity.getCreatedDate());
-    order.setDocumentOwner(ownerEntity);
-    order.setDocumentVet(vetEntity);
-    // order.setMedicalRecordId(meReEntity);
-    // order.setOrderId(orderEntity.getOrderId());
-    order.setPetId(petEntity);
+    order.setDocumentOwner(ownerPerson);
+    order.setDocumentVet(vetPerson);
+    order.setMedicine(meRe);
+    order.setOrderId(orderEntity.getOrderId());
+    order.setPetId(pet);
+    
     return order;
   }
 }
