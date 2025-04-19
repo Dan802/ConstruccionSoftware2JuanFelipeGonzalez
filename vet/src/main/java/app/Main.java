@@ -45,7 +45,6 @@ public class Main implements CommandLineRunner{
     public static void main(String[] args) {
         System.out.println("Hello world!");
         SpringApplication.run(Main.class, args);
-        System.out.println();
-        System.out.println("***  Fin  ***");
+        System.out.println("\n***  Fin  ***");
     }
 }

@@ -7,15 +7,10 @@ import app.adapters.inputs.utils.PersonValidator;
 import app.adapters.inputs.utils.SimpleValidator;
 import app.adapters.inputs.utils.UserValidator;
 import app.adapters.inputs.utils.Utils;
-import app.adapters.medicalRecord.MedicalRecordAdapter;
-import app.adapters.order.OrderAdapter;
-import app.adapters.person.PersonAdapter;
-import app.adapters.pet.PetAdapter;
 import app.domain.models.Login;
 import app.domain.models.MedicalRecord;
 import app.domain.models.Person;
 import app.domain.models.Pet;
-import app.domain.services.PetService;
 import app.domain.services.VeterinaryService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,16 +41,6 @@ public class VetInput {
   private SimpleValidator simpleValidator;
   @Autowired
   private VeterinaryService veterinaryService;
-  @Autowired
-  private PetService petService;
-  @Autowired
-  private PersonAdapter personAdapter;
-  @Autowired
-  private PetAdapter petAdapter;
-  @Autowired
-  private MedicalRecordAdapter meReAdapter;
-  @Autowired
-  private OrderAdapter orderAdapter;  
 
   public void menu(Login login) throws Exception {
     boolean controlVble = true;
@@ -113,13 +98,6 @@ public class VetInput {
       System.out.println(e.getMessage());
       return true;
 		}
-  }
-
-  private void searchOrder() throws Exception {
-    System.out.println("\nIngrese el id de la orden");
-    Long orderId = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"Order Id\" ");
-
-    veterinaryService.searchOrder(orderId);
   }
 
   private void createPetOwner() throws Exception {
@@ -207,10 +185,22 @@ public class VetInput {
     // String procedureDetail = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Procedimiento\" ");
     String procedureDetail = "Se debe lavar el estomago con jabón rey y mucha agua"; //! todo borrar
 
-    Person veterinary = personAdapter.findByDocument(login.getPersonId().getDocument());
-    
+    Person veterinary = veterinaryService.searchPerson(login);
+
     MedicalRecord meRe = veterinaryService.saveMedicalRecord(null, veterinary, pet, reason, symptoms, diagnosis, procedure, medicine, doseMedication, vaccinationHistory, allergyMedications, procedureDetail);
     veterinaryService.saveOrder(null, pet, meRe.getPetId().getDocumentOwner(), veterinary, meRe, null);
+  }
+
+  private void createOrder() throws Exception {
+    Pet pet = veterinaryService.searchPet();
+    MedicalRecord meRe = searchMedicalRecord();
+    // ToDo
+    //* Nota: La relación es 1:1, por ende, 
+    //* no se pueden crear mas ordenes con la misma referencia 
+    //* a la historia clínica
+    // veterinaryService.saveOrder(null, pet, meRe.getPetId().getDocumentOwner(), meRe.getVetDocument(), meRe, null);
+
+    System.out.println("\nSe ha guardado la orden exitosamente");
   }
 
   private MedicalRecord searchMedicalRecord() throws Exception {
@@ -219,16 +209,11 @@ public class VetInput {
     return veterinaryService.searchMedicalRecord(miliseconds);
   }
 
-  private void createOrder() throws Exception {
-    Pet pet = veterinaryService.searchPet();
-    MedicalRecord meRe = searchMedicalRecord();
+  private void searchOrder() throws Exception {
+    System.out.println("\nIngrese el id de la orden");
+    Long orderId = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"Order Id\" ");
 
-    //* Nota: La relación es 1:1, por ende, 
-    //* no se pueden crear mas ordenes con la misma referencia 
-    //* a la historia clínica
-    // veterinaryService.saveOrder(null, pet, meRe.getPetId().getDocumentOwner(), meRe.getVetDocument(), meRe, null);
-
-    System.out.println("\nSe ha guardado la orden exitosamente");
+    veterinaryService.searchOrder(orderId);
   }
 
   private void editMedicalRecord() throws Exception {

@@ -10,6 +10,7 @@ import app.adapters.medicalRecord.MedicalRecordAdapter;
 import app.adapters.order.OrderAdapter;
 import app.adapters.person.PersonAdapter;
 import app.adapters.pet.PetAdapter;
+import app.domain.models.Login;
 import app.domain.models.MedicalRecord;
 import app.domain.models.Order;
 import app.domain.models.Person;
@@ -133,35 +134,35 @@ public class VeterinaryService {
     System.out.println("\nIngrese los sintomas ");
     String symptoms = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Sintomas\" ");
     meRe.setSymptoms(symptoms);
-    saveMedicalRecord(meRe, "La razón ha sido cambiada exitosamente");
+    saveMedicalRecord(meRe, "Los sintomas han sido cambiados exitosamente");
   }
 
   public void changeDiagnosis(MedicalRecord meRe) throws Exception {
     System.out.println("\nIngrese el diagnostico ");
     String diagnosis = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Diagnostico\" ");
     meRe.setDiagnosis(diagnosis);
-    saveMedicalRecord(meRe, "La razón ha sido cambiada exitosamente");
+    saveMedicalRecord(meRe, "El diagnostico ha sido cambiado exitosamente");
   }
 
   public void changeMedicine(MedicalRecord meRe) throws Exception {
     System.out.println("\nIngrese la medicina recetada (opcional)");
     String medicine = simpleValidator.stringValidator(Utils.getReader().nextLine(), "");
     meRe.setMedicine(medicine);
-    saveMedicalRecord(meRe, "La razón ha sido cambiada exitosamente");
+    saveMedicalRecord(meRe, "La medicina ha sido cambiada exitosamente");
   }
 
   public void changeDoseMedication(MedicalRecord meRe) throws Exception {
     System.out.println("\nIngrese la dosis (opcional)");
     String doseMedication = simpleValidator.stringValidator(Utils.getReader().nextLine(), "") ;
     meRe.setDoseMedication(doseMedication);
-    saveMedicalRecord(meRe, "La razón ha sido cambiada exitosamente");
+    saveMedicalRecord(meRe, "La dosis ha sido cambiada exitosamente");
   }
 
   public void changeProcedure(MedicalRecord meRe) throws Exception {
     System.out.println("\nIngrese el procedimiento (opcional)");
     String procedure = simpleValidator.stringValidator(Utils.getReader().nextLine(), "");
     meRe.setProcedures(procedure);
-    saveMedicalRecord(meRe, "La razón ha sido cambiada exitosamente");
+    saveMedicalRecord(meRe, "El procedimiento ha sido cambiado exitosamente");
   }
 
   public void changeVaccinationHistory(MedicalRecord meRe) throws Exception {
@@ -187,20 +188,30 @@ public class VeterinaryService {
 
   public void changeOrderCancellation(MedicalRecord meRe) throws Exception {
     meRe.setOrderCancellation(true); 
-    saveMedicalRecord(meRe, "\\n La orden ha sido anulada correctamente.");
+    saveMedicalRecord(meRe, "\nLa orden ha sido anulada correctamente");
   }
   //#endregion UPDATED
 
   //#region SEARCH
-  
-  // Si existe devuelve la persona
+  /**
+   * Si existe devuelve la persona
+   * @param document
+   * @param msg
+   * @return Person
+   * @throws Exception
+   */
   public Person existsPerson(long document, String msg) throws Exception {
     Person person = personAdapter.findByDocument(document);
     if(person == null) throw new Exception(msg);
     return person;
   }
 
-  // Si existe devuelve error
+  /**
+   * Si la persona existe devuelve error
+   * @param document
+   * @param msg
+   * @throws Exception
+   */
   public void notExistsPerson(long document, String msg) throws Exception {
     Person person = personAdapter.findByDocument(document);
     if(person != null) throw new Exception(msg);
@@ -261,14 +272,19 @@ public class VeterinaryService {
       "\n3. Dueño: " + order.getDocumentOwner().getName()+
       "\n4. Veterinario: " + order.getDocumentVet().getName() +
       "\n5. Medicinas recetadas: " + order.getMedicine().getMedicine() +
+      // ToDo metodo pa convertir ms a fecha
       "\n6. Fecha de creación: " + order.getCreatedDate() +
-      "\n7. ¿Orden Cancelada?" + (order.getMedicine().isOrderCancellation() ? "Si" : "No");
+      "\n7. ¿Orden Cancelada? " + (order.getMedicine().isOrderCancellation() ? "Si" : "No");
 
     System.out.println(orderPrint);
   }
   
   public void showMedicalRecord( MedicalRecord medicalRecord) throws Exception {
     printMedicalRecord(medicalRecord);
+  }
+
+  public Person searchPerson(Login login) {
+    return personAdapter.findByDocument(login.getPersonId().getDocument());
   }
   //#endregion PRINT
 }

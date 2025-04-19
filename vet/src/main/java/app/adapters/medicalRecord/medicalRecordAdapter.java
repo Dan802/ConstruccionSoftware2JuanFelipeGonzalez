@@ -82,6 +82,12 @@ public class MedicalRecordAdapter implements MedicalRecordPort {
     person.setName(meReEntity.getPetId().getDocumentOwner().getName());
     person.setRole(meReEntity.getPetId().getDocumentOwner().getRole());
 
+    Person vetPerson = new Person();
+    vetPerson.setAge(meReEntity.getVetDocument().getAge());
+    vetPerson.setDocument(meReEntity.getVetDocument().getDocument());
+    vetPerson.setName(meReEntity.getVetDocument().getName());
+    vetPerson.setRole(meReEntity.getVetDocument().getRole());
+
     Pet pet = new Pet();
     pet.setAge(meReEntity.getPetId().getAge());
     pet.setDescription(meReEntity.getPetId().getDescription());
@@ -105,7 +111,7 @@ public class MedicalRecordAdapter implements MedicalRecordPort {
     meRe.setReason(meReEntity.getReason());
     meRe.setSymptoms(meReEntity.getSymptoms());
     meRe.setVaccinationHistory(meReEntity.getVaccinationHistory());
-    meRe.setVetDocument(person);
+    meRe.setVetDocument(vetPerson);
 
     return meRe;
   }
