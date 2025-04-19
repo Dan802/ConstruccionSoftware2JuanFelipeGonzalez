@@ -1,8 +1,7 @@
 package app.adapters.inputs;
 
-import app.adapters.login.LoginAdapter;
-import app.adapters.login.repository.LoginRepository;
-import app.domain.models.Login;
+
+import app.domain.services.LoginService;
 import app.adapters.inputs.utils.UserValidator;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +20,9 @@ public class LoginInput implements InputPort{
 
 	@Autowired 
 	private UserValidator userValidator;
+
 	@Autowired
-	private AdminInput adminInput;
-	@Autowired
-	private VetInput vetInput;
-	@Autowired
-	private SellerInput sellerInput;
-	@Autowired
-	private LoginRepository loginRepository;
-	@Autowired
-	private LoginAdapter loginAdapter;
+	private LoginService loginService;
 
   @Override
 	public void menu() throws Exception {
@@ -80,43 +72,10 @@ public class LoginInput implements InputPort{
 			String password = "alfonso1234"; //! Borrar
 			System.out.println("Contraseña *** ingresada");
 
-			Login login = loginAdapter.findByUsername(userName);
-			if(!verifyUser(password, login)) return;
-
-			switch (login.getPersonId().getRole()) {
-				case "Administrador": {
-					adminInput.menu();
-					return;
-				}
-				case "Vendedor": {
-					sellerInput.menu();
-					return;
-				}
-				case "Veterinario": {
-					vetInput.menu(login);
-					return;
-				}
-				default: {
-					System.out.println("Ha habido un error, comunícate con soporte.");
-					System.out.println("Error: El usuario no tiene rol o no coincide con ninguno :( ");
-					return;
-				}
-			}
+			loginService.login(userName, password);
+			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-	}
-
-	private boolean verifyUser(String password, Login loginEntity) throws Exception{
-		if(loginEntity == null) {
-			System.out.println("\nEl usuario no existe, intentelo de nuevo");
-			return false;
-		}
-		if(!password.equals(loginEntity.getPassword())){
-			System.out.println("\nLa contraseña no es correcta");
-			return false;
-		}
-		System.out.println("\nUsted ha ingresado correctamente");
-		return true;
 	}
 }
