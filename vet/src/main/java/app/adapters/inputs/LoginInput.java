@@ -4,7 +4,6 @@ import app.adapters.login.LoginAdapter;
 import app.adapters.login.repository.LoginRepository;
 import app.domain.models.Login;
 import app.adapters.inputs.utils.UserValidator;
-import app.adapters.inputs.utils.Utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -44,7 +43,7 @@ public class LoginInput implements InputPort{
 	private boolean menu2() {
 		System.out.println("\nIngrese la opción que desea:\n 1. Iniciar sesion \n 2. Salir");
 		// String option = Utils.getReader().nextLine();
-		String option = "1"; //! Borrar
+		String option = "1"; //! todo Borrar
 		
 		switch (option) {
 			case "1": {

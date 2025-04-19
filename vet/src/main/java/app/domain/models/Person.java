@@ -19,7 +19,7 @@ public class Person {
         // Medico veterinario
         // Dueño
     
-        public Person(long document, String name, int age, String rol) {
+    public Person(long document, String name, int age, String rol) {
         this.document = document;
         this.name = name;
         this.age = age;
