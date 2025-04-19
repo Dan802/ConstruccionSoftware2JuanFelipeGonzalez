@@ -82,7 +82,8 @@ public class VetInput {
           return true;
         }
         case "4" : {
-          veterinaryService.showMedicalRecord();
+          MedicalRecord medicalRecord = this.searchMedicalRecord();
+          veterinaryService.showMedicalRecord(medicalRecord);
           return true;
         }
         case "5" : {
@@ -94,7 +95,7 @@ public class VetInput {
           return true;
         }
         case "7" : {
-          veterinaryService.searchOrder();
+          this.searchOrder();
           return true;
         }
         case "8" : {
@@ -112,6 +113,13 @@ public class VetInput {
       System.out.println(e.getMessage());
       return true;
 		}
+  }
+
+  private void searchOrder() throws Exception {
+    System.out.println("\nIngrese el id de la orden");
+    Long orderId = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"Order Id\" ");
+
+    veterinaryService.searchOrder(orderId);
   }
 
   private void createPetOwner() throws Exception {
@@ -205,9 +213,15 @@ public class VetInput {
     veterinaryService.saveOrder(null, pet, meRe.getPetId().getDocumentOwner(), veterinary, meRe, null);
   }
 
+  private MedicalRecord searchMedicalRecord() throws Exception {
+    System.out.println("\nIngrese el id de la historia clínica (milisegundos PK)");
+    Long miliseconds = simpleValidator.longValidator(simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Id de la historia clínica\" "), "");
+    return veterinaryService.searchMedicalRecord(miliseconds);
+  }
+
   private void createOrder() throws Exception {
     Pet pet = veterinaryService.searchPet();
-    MedicalRecord meRe = veterinaryService.searchMedicalRecord();
+    MedicalRecord meRe = searchMedicalRecord();
 
     //* Nota: La relación es 1:1, por ende, 
     //* no se pueden crear mas ordenes con la misma referencia 
@@ -220,7 +234,7 @@ public class VetInput {
   private void editMedicalRecord() throws Exception {
     // Buscamos e imprimimos la historia clínica
     // Así el usuario sabe que campo editar
-    MedicalRecord meRe = veterinaryService.searchMedicalRecord();
+    MedicalRecord meRe = searchMedicalRecord();
     veterinaryService.printMedicalRecord(meRe);
 
     int option;
@@ -235,11 +249,11 @@ public class VetInput {
         break;
 
         case 2:
-          veterinaryService.changeVet(meRe);
+          this.changeVet(meRe);
         break;
 
         case 3:
-          veterinaryService.changePet(meRe);
+          this.changePet(meRe);
         break;
 
         case 4:
@@ -289,8 +303,25 @@ public class VetInput {
     } while (option < 0 && option > 15);
   }
 
+  private void changePet(MedicalRecord meRe) throws Exception {
+    System.out.println("ADVERTENCIA: Esta a punto de cambiar la mascota a la cual referencia la historia clínica");
+    System.out.println("\nIngrese el id de la mascota");      
+    Long petId = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"petId\" ");
+
+    veterinaryService.changePet(petId, meRe);
+  }
+
+  private void changeVet(MedicalRecord meRe) throws Exception {
+    System.out.println("ADVERTENCIA: Esta a punto de cambiar el veterinario al cual referencia la historia clínica");
+    
+    System.out.println("\nIngrese el documento del vet");      
+    Long personId = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"personId\" ");
+    
+    veterinaryService.changeVet(personId, meRe);
+  }
+
   private void cancelOrder() throws Exception{
-    MedicalRecord medicalRecord = veterinaryService.searchMedicalRecord();
+    MedicalRecord medicalRecord = searchMedicalRecord();
     veterinaryService.changeOrderCancellation(medicalRecord);
   }
 }

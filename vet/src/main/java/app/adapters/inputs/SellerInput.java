@@ -89,16 +89,14 @@ public class SellerInput implements InputPort{
       return;
     }
     
-    // todo arreglar
-    // if(order.getMedicalRecordId().getMedicine().length() == 0) {
-    //   System.out.println("\nNo hay medicinas asociadas a la orden suministrada.");
-    //   return;
-    // }
+    if(order.getMedicine().getMedicine().length() == 0) {
+      System.out.println("\nNo hay medicinas asociadas a la orden suministrada.");
+      return;
+    }
 
     // Suministrar = vender, creo, por ende generamos una factura
     System.out.println("\nLos medicamentos asociados a la orden son: ");
-    // todo arreglar
-    // System.out.println(order.getMedicalRecordId().getMedicine());
+    System.out.println(order.getMedicine().getMedicine());
 
     System.out.println("\nIngrese la cantidad que el usuario va a llevar");
     int count = simpleValidator.intValidator(Utils.getReader().nextLine(), "\"Cantidad \" ");
@@ -122,8 +120,7 @@ public class SellerInput implements InputPort{
     System.out.println("\n1. Id de la factura: " + savedInvoice.getInvoiceId());  
     System.out.println("2. Mascota: " + savedInvoice.getPetId().getName());  
     System.out.println("3. Dueño: " + savedInvoice.getOwnerId().getName());  
-    // todo arreglar
-    // System.out.println("4. Id de la orden: " + savedInvoice.getOrderId().getOrderId());  
+    System.out.println("4. Id de la orden: " + savedInvoice.getOrderId().getOrderId());  
     System.out.println("5. Nombre del medicamento: " + savedInvoice.getProductName());  
     System.out.println("6. Precio: " + savedInvoice.getPrice());  
     System.out.println("7. Cantidad: " + savedInvoice.getCount());  

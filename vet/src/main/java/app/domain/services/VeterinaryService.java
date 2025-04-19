@@ -82,8 +82,6 @@ public class VeterinaryService {
 
   public void createOrder(MedicalRecord meRe) {
     System.out.println("\nNota: Se creará una nueva orden, ambas ordenes quedan en el sistema");
-    System.out.println(meRe.getPetId().getDocumentOwner());
-    System.out.println(meRe.getVetDocument());
 
     saveOrder( null, meRe.getPetId(), meRe.getPetId().getDocumentOwner(), meRe.getVetDocument(), meRe , null);
   }
@@ -102,14 +100,10 @@ public class VeterinaryService {
   //#endregion CREATE
   
   //#region UPDATED
-  public void changeVet(MedicalRecord medicalRecord) throws Exception {
-    System.out.println("ADVERTENCIA: Esta a punto de cambiar el veterinario al cual referencia la historia clínica");
-    System.out.println("\nIngrese el documento del vet");      
-    Long personId = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"personId\" ");
-
+  public void changeVet(Long personId, MedicalRecord medicalRecord) throws Exception {
     Person person = personAdapter.findByDocument(personId);
-
-    if(person == null) {
+    
+    if(person == null){
       throw new Exception("No hay un vet con ese documento, intente de nuevo");
     }
 
@@ -117,15 +111,12 @@ public class VeterinaryService {
     saveMedicalRecord(medicalRecord, "El vet ha sido cambiado exitosamente");
   }
 
-  public void changePet(MedicalRecord meRe) throws Exception {
-    System.out.println("ADVERTENCIA: Esta a punto de cambiar la mascota a la cual referencia la historia clínica");
-    System.out.println("\nIngrese el id de la mascota");      
-    Long petId = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"petId\" ");
-
+  public void changePet(Long petId, MedicalRecord meRe) throws Exception {
     Pet pet = petAdapter.findByPetId(petId);
 
-    if(pet == null) 
+    if(pet == null) {
       throw new Exception("No hay una mascota con ese id, intente de nuevo.");
+    } 
     
     meRe.setPetId(pet);
     saveMedicalRecord(meRe, "La mascota ha sido cambiada exitosamente");
@@ -224,22 +215,19 @@ public class VeterinaryService {
     return pet;
   }
 
-  public MedicalRecord searchMedicalRecord() throws Exception {
-    System.out.println("\nIngrese el id de la historia clínica (milisegundos PK)");
-    Long miliseconds = simpleValidator.longValidator(simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Id de la historia clínica\" "), "");
+  public MedicalRecord searchMedicalRecord(long miliseconds) throws Exception {
     MedicalRecord meRe = meReAdapter.findByDate(miliseconds);
 
     if(meRe == null) throw new Exception("\nNo se encontró la historia clínica");
     return meRe;
   }
 
-  public Order searchOrder() throws Exception {
-    System.out.println("\nIngrese el id de la orden");
-    Long orderId = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"Order Id\" ");
+  public Order searchOrder(Long orderId) throws Exception {
     Order order = orderAdapter.findByOrderId(orderId);
 
-    if(order == null) 
-      throw new Exception("\nNo se encontró la orden.");
+    if(order == null) {
+      throw new Exception("\nNo se encontró la orden");
+    }
 
     printOrder(order);
     return order;
@@ -279,8 +267,7 @@ public class VeterinaryService {
     System.out.println(orderPrint);
   }
   
-  public void showMedicalRecord() throws Exception {
-    MedicalRecord medicalRecord = searchMedicalRecord();
+  public void showMedicalRecord( MedicalRecord medicalRecord) throws Exception {
     printMedicalRecord(medicalRecord);
   }
   //#endregion PRINT

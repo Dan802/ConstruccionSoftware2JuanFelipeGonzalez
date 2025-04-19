@@ -47,7 +47,6 @@ public class MedicalRecordEntity {
   @Column(name="dose_medication")
   private String doseMedication;  
   
-  
   @Column(name="vaccination_history")
   private String vaccinationHistory; 
   
