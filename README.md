@@ -42,8 +42,5 @@ spring.jpa.hibernate.ddl-auto=update
 4. Correr el proyecto 🤙
 
 ## Herramientas utilizadas 
-- Sudor y lagrimas (97%)
-- Github del profe (1%)
-- Stack Overflow (1%)
-- Imaginación (0,5%)
-- Lógica (0,5%)
+- Sudor y lagrimas (90%)
+- Imaginación y suerte (10%)

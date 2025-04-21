@@ -25,22 +25,20 @@ El dominio tiene: Modelos y servicios
 ⦁	Servicios: Son las reglas de negocio
 * Todos los puertos se deben conectar con un adaptador, es decir,
 van con una clase que implementa ese puerto
-* Los dominios llaman a los puertos
 
 Los servicios NO necesitan interfaces
 La historia clínica es un servicio
-Todos los adaptadores llevan la etiqueta @service
+Todos los adaptadores llevan la etiqueta @service, excepto por los inputs que llevan @component
 Todo lo que tenga que ver con la bd a los adaptadores :) 
 Los puertos pueden llevar save, el que no lo necesita es el repository
 
 Los datos ingresan por input, del input al services, y del services al adapter
 
-todo:
+Para editar registro save pero con la primarykey seteada
+
+# -------------------- Preguntas
 una historia clinica solo puede tener una orden
 y una orden solo puede tener una historia clínica
 la relacion es 1 a 1? 
 pero y si yo quiero acceder a la historia desde una orden y viceversa? 
 no se puede, a la hora de guardar la referencia una de las dos instancias va a estar creada y la otra quedará sin referencia
-
-# -------------------- Preguntas
-Cómo se edita un registro? save pero con la primarykey seteada

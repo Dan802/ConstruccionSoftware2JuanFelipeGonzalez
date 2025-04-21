@@ -7,12 +7,10 @@ import org.springframework.stereotype.Service;
 import app.adapters.inputs.utils.SimpleValidator;
 import app.adapters.inputs.utils.Utils;
 import app.adapters.medicalRecord.MedicalRecordAdapter;
-import app.adapters.order.OrderAdapter;
 import app.adapters.person.PersonAdapter;
 import app.adapters.pet.PetAdapter;
 import app.domain.models.Login;
 import app.domain.models.MedicalRecord;
-import app.domain.models.Order;
 import app.domain.models.Person;
 import app.domain.models.Pet;
 import lombok.Getter;
@@ -33,8 +31,6 @@ public class VeterinaryService {
   private MedicalRecordAdapter meReAdapter;
   @Autowired
   private PetAdapter petAdapter;
-  @Autowired
-  private OrderAdapter orderAdapter;  
 
   //#region CREATE
   public void savePetOwner(long document, String name, int age) {
@@ -79,24 +75,6 @@ public class VeterinaryService {
     
     System.out.println("\nLa historia clínica ha sido guardada correctamente.");
     return meRe;
-  }
-
-  public void createOrder(MedicalRecord meRe) {
-    System.out.println("\nNota: Se creará una nueva orden, ambas ordenes quedan en el sistema");
-
-    saveOrder( null, meRe.getPetId(), meRe.getPetId().getDocumentOwner(), meRe.getVetDocument(), meRe , null);
-  }
-  
-  public Order saveOrder(Long orderId, Pet pet, Person owner, Person vet, MedicalRecord meRe, Long ms) {
-    if(ms== null) {
-      ms = System.currentTimeMillis();
-    } 
-
-    Order order = new Order(orderId, pet, owner, vet, meRe, ms);
-    order = orderAdapter.save(order);
-    System.out.println("\nSe ha guardado la orden exitosamente");
-    
-    return order;
   }
   //#endregion CREATE
   
@@ -232,17 +210,7 @@ public class VeterinaryService {
     if(meRe == null) throw new Exception("\nNo se encontró la historia clínica");
     return meRe;
   }
-
-  public Order searchOrder(Long orderId) throws Exception {
-    Order order = orderAdapter.findByOrderId(orderId);
-
-    if(order == null) {
-      throw new Exception("\nNo se encontró la orden");
-    }
-
-    printOrder(order);
-    return order;
-  }
+  
   //#endregion SEARCH
 
   //#region PRINT
@@ -263,20 +231,6 @@ public class VeterinaryService {
       "\n13. ¿Orden anulada? " + (meRe.isOrderCancellation() ? "Si" : "No");
 
     System.out.println(meRePrint);
-  }
-
-  public void printOrder(Order order) {
-    String orderPrint = 
-      "\n1. Order Id: " + order.getOrderId() +
-      "\n2. Mascota: " + order.getPetId().getName() +
-      "\n3. Dueño: " + order.getDocumentOwner().getName()+
-      "\n4. Veterinario: " + order.getDocumentVet().getName() +
-      "\n5. Medicinas recetadas: " + order.getMedicine().getMedicine() +
-      // ToDo metodo pa convertir ms a fecha
-      "\n6. Fecha de creación: " + order.getCreatedDate() +
-      "\n7. ¿Orden Cancelada? " + (order.getMedicine().isOrderCancellation() ? "Si" : "No");
-
-    System.out.println(orderPrint);
   }
   
   public void showMedicalRecord( MedicalRecord medicalRecord) throws Exception {

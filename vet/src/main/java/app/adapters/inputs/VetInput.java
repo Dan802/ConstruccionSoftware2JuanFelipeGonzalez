@@ -11,6 +11,7 @@ import app.domain.models.Login;
 import app.domain.models.MedicalRecord;
 import app.domain.models.Person;
 import app.domain.models.Pet;
+import app.domain.services.OrderService;
 import app.domain.services.VeterinaryService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,6 +42,8 @@ public class VetInput {
   private SimpleValidator simpleValidator;
   @Autowired
   private VeterinaryService veterinaryService;
+  @Autowired
+  private OrderService orderService;
 
   public void menu(Login login) throws Exception {
     boolean controlVble = true;
@@ -188,7 +191,7 @@ public class VetInput {
     Person veterinary = veterinaryService.searchPerson(login);
 
     MedicalRecord meRe = veterinaryService.saveMedicalRecord(null, veterinary, pet, reason, symptoms, diagnosis, procedure, medicine, doseMedication, vaccinationHistory, allergyMedications, procedureDetail);
-    veterinaryService.saveOrder(null, pet, meRe.getPetId().getDocumentOwner(), veterinary, meRe, null);
+    orderService.saveOrder(null, pet, meRe.getPetId().getDocumentOwner(), veterinary, meRe, null);
   }
 
   private void createOrder() throws Exception {
@@ -213,7 +216,7 @@ public class VetInput {
     System.out.println("\nIngrese el id de la orden");
     Long orderId = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"Order Id\" ");
 
-    veterinaryService.searchOrder(orderId);
+    orderService.searchOrder(orderId);
   }
 
   private void editMedicalRecord() throws Exception {
