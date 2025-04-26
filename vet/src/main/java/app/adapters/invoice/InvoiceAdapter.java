@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import app.adapters.invoice.entity.InvoiceEntity;
 import app.adapters.invoice.repository.InvoiceRepository;
+import app.adapters.medicalRecord.entity.MedicalRecordEntity;
 import app.adapters.medicalRecord.repository.MedicalRecordRepository;
 import app.adapters.order.OrderAdapter;
 import app.adapters.order.entity.OrderEntity;
@@ -36,7 +37,6 @@ public class InvoiceAdapter implements InvoicePort {
   @Autowired
   private MedicalRecordRepository meReRepository;
 
-
   @Override
   public Invoice save(Invoice invoice) {
     PersonEntity ownerEntity = new PersonEntity();
@@ -61,14 +61,34 @@ public class InvoiceAdapter implements InvoicePort {
     petEntity.setSpecie(invoice.getOrderId().getPetId().getSpecie());
     petEntity.setWeight(invoice.getOrderId().getPetId().getWeight());
 
-    // Todo arreglar
-    // OrderEntity orderEntity = orderRepository.findByOrderId(invoice.getOrderId().getOrderId());
+    // ToDo
+    MedicalRecordEntity meReEn = new MedicalRecordEntity();
+    meReEn.setAllergyMedications(invoice.getOrderId().getMedicine().getAllergyMedications());
+    meReEn.setDate(null);
+    meReEn.setDiagnosis(null);
+    meReEn.setDoseMedication(null);
+    meReEn.setMedicine(null);
+    meReEn.setOrderCancellation(false);
+    meReEn.setPetId(petEntity);
+    meReEn.setProcedureDetail(null);
+    meReEn.setProcedures(null);
+    meReEn.setReason(null);
+    meReEn.setSymptoms(null);
+    meReEn.setVaccinationHistory(null);
+
+    OrderEntity orderEntity = new OrderEntity();
+    orderEntity.setCreatedDate(invoice.getOrderId().getCreatedDate());
+    orderEntity.setDocumentOwner(ownerEntity);
+    orderEntity.setDocumentVet(vetEntity);
+    orderEntity.setMedicine(meReEn);
+    orderEntity.setOrderId(invoice.getOrderId().getOrderId());
+    orderEntity.setPet(petEntity);
 
     InvoiceEntity invoiceEntity = new InvoiceEntity();
     invoiceEntity.setCount(invoice.getCount());
     invoiceEntity.setDateCreated(invoice.getDateCreated());
     invoiceEntity.setInvoiceId(invoice.getInvoiceId());
-    // invoiceEntity.setOrderId(orderEntity);
+    invoiceEntity.setOrderId(orderEntity);
     invoiceEntity.setOwnerId(ownerEntity);
     invoiceEntity.setPetId(petEntity);
     invoiceEntity.setPrice(invoice.getPrice());
@@ -78,14 +98,12 @@ public class InvoiceAdapter implements InvoicePort {
   }
 
   public Invoice invoiceAdapter(InvoiceEntity invoiceEntity) {
-
-
     // Todo fix no llamar adapters desde otra adapter
     Invoice invoice = new Invoice();
     invoice.setCount(invoiceEntity.getCount());
     invoice.setDateCreated(invoiceEntity.getDateCreated());
     invoice.setInvoiceId(invoiceEntity.getInvoiceId());
-    // invoice.setOrderId(orderAdapter.orderAdapter(invoiceEntity.getOrderId()));
+    // invoice.setOrderId(invoiceEntity.getOrderId());
     // invoice.setOwnerId(personAdapter.personAdapter(invoiceEntity.getOwnerId()));
     // invoice.setPetId(petAdapter.petAdapter(invoiceEntity.getPetId()));
     invoice.setPrice(invoiceEntity.getPrice());

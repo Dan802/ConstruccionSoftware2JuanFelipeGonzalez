@@ -42,6 +42,7 @@ public class LoginAdapter implements LoginPort{
     Login login = new Login();
     login.setLoginId(loginEntity.getLoginId());
     login.setPassword(loginEntity.getPassword());
+    // ToDo
     login.setPersonId(personAdapter.findByDocument(loginEntity.getPersonId().getDocument()));
     login.setUserName(loginEntity.getUserName());
     return login;

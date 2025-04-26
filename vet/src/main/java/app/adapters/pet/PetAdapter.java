@@ -58,6 +58,8 @@ public class PetAdapter implements PetPort{
 
   public Pet petAdapter(PetEntity petEntity) {
     Pet pet = new Pet();
+
+    //ToDo
     Person person = personAdapter.personAdapter(petEntity.getDocumentOwner());
     
     pet.setAge(petEntity.getAge());
