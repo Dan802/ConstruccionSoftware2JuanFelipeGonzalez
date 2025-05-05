@@ -16,7 +16,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Service
 public class SellerService {
-  // todo: revisar todos los adapters
 
   @Autowired
   private OrderAdapter orderAdapter;

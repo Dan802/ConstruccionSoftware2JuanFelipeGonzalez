@@ -41,7 +41,7 @@ public class OrderEntity {
   private PersonEntity documentVet;
 
   @JoinColumn(name="medicine")
-  @OneToOne // UNA orden contiene UNA medicina
+  @OneToOne // UNA orden pertenece a UNA historia clínica
   private MedicalRecordEntity medicine;
 
   @Column(name="created_date")

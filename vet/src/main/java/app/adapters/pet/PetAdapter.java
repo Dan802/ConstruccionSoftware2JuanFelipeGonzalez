@@ -20,32 +20,27 @@ import lombok.Setter;
 @NoArgsConstructor
 @Service
 public class PetAdapter implements PetPort{
-
-  @Autowired
-  private PersonAdapter personAdapter;
+  
   @Autowired
   private PetRepository petRepository;
 
   @Override
   public void save(Pet pet) {
+    PersonEntity personEntity = new PersonEntity();
+    personEntity.setDocument(pet.getDocumentOwner().getDocument());
+    personEntity.setName(pet.getDocumentOwner().getName());
+    personEntity.setAge(pet.getDocumentOwner().getAge());
+    personEntity.setRole(pet.getDocumentOwner().getRole());
+
     PetEntity petEntity = new PetEntity();
     petEntity.setName(pet.getName());
-    petEntity.setDocumentOwner(personEntityAdapter(pet.getDocumentOwner()));
+    petEntity.setDocumentOwner(personEntity);
     petEntity.setAge(pet.getAge());
     petEntity.setSpecie(pet.getSpecie());
     petEntity.setRace(pet.getRace());
     petEntity.setDescription(pet.getDescription());
     petEntity.setWeight(pet.getWeight());
 		petRepository.save(petEntity);
-  }
-
-  private PersonEntity personEntityAdapter(Person person) {
-    PersonEntity personEntity = new PersonEntity();
-    personEntity.setDocument(person.getDocument());
-    personEntity.setName(person.getName());
-    personEntity.setAge(person.getAge());
-    personEntity.setRole(person.getRole());
-    return personEntity;
   }
 
   @Override
@@ -57,11 +52,14 @@ public class PetAdapter implements PetPort{
   }
 
   public Pet petAdapter(PetEntity petEntity) {
-    Pet pet = new Pet();
-
-    //ToDo
-    Person person = personAdapter.personAdapter(petEntity.getDocumentOwner());
     
+    Person person = new Person();
+    person.setAge(petEntity.getDocumentOwner().getAge());
+    person.setDocument(petEntity.getDocumentOwner().getDocument());
+    person.setName(petEntity.getDocumentOwner().getName());
+    person.setRole(petEntity.getDocumentOwner().getRole());
+    
+    Pet pet = new Pet();
     pet.setAge(petEntity.getAge());
     pet.setDescription(petEntity.getDescription());
     pet.setDocumentOwner(person);

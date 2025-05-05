@@ -19,26 +19,10 @@ public class Main implements CommandLineRunner{
 
     @Override
     public void run(String... args) throws Exception {
-        /*System.out.println();
-        System.out.println("**********************************************************************");
-        System.out.println("**********************************************************************");
-        System.out.println("**********************************************************************");
-
-        System.out.println("Beans registrados en la aplicación:");
-        String[] beanNames = beanFactory.getBeanDefinitionNames();
-        for (String beanName : beanNames) {
-            System.out.println(beanName);
-        }*/
-
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println("**********************************************************************");
+        System.out.println("\n\n\n**********************************************************************");
     	System.out.println("Trae a tu mascota antes de que solo podamos atenderla en espíritu.");
         System.out.println("Consulta hoy y evita un final trágicamente innecesario.");
-        System.out.println();
-        System.out.println("***********************   ¡BIENVENIDO!   ***********************");
-        System.out.println();
+        System.out.println("\n***********************   ¡BIENVENIDO!   ***********************\n");
         loginInput.menu();
     }
 

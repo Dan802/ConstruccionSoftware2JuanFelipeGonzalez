@@ -9,6 +9,7 @@ import app.adapters.person.PersonAdapter;
 import app.adapters.person.entity.PersonEntity;
 import app.adapters.person.repository.PersonRepository;
 import app.domain.models.Login;
+import app.domain.models.Person;
 import app.ports.LoginPort;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,8 +25,6 @@ public class LoginAdapter implements LoginPort{
 	private LoginRepository loginRepository;
   @Autowired
   private PersonRepository personRepository;
-  @Autowired
-  private PersonAdapter personAdapter;
 
 	@Override
 	public Login findByUsername(String username) {
@@ -37,16 +36,6 @@ public class LoginAdapter implements LoginPort{
 
    return loginAdapter(loginEntity); 
 	}
-
-  public Login loginAdapter(LoginEntity loginEntity) {
-    Login login = new Login();
-    login.setLoginId(loginEntity.getLoginId());
-    login.setPassword(loginEntity.getPassword());
-    // ToDo
-    login.setPersonId(personAdapter.findByDocument(loginEntity.getPersonId().getDocument()));
-    login.setUserName(loginEntity.getUserName());
-    return login;
-  }
 
   @Override
   public void save(Login login) {
@@ -62,5 +51,20 @@ public class LoginAdapter implements LoginPort{
     loginEntity.setPassword(login.getPassword());
     
     loginRepository.save(loginEntity);
+  }
+
+  public Login loginAdapter(LoginEntity loginEntity) {
+    Person person = new Person();
+    person.setAge(loginEntity.getPersonId().getAge());
+    person.setDocument(loginEntity.getPersonId().getDocument());
+    person.setName(loginEntity.getPersonId().getName());
+    person.setRole(loginEntity.getPersonId().getRole());
+    
+    Login login = new Login();
+    login.setLoginId(loginEntity.getLoginId());
+    login.setPassword(loginEntity.getPassword());
+    login.setPersonId(person);
+    login.setUserName(loginEntity.getUserName());
+    return login;
   }
 }

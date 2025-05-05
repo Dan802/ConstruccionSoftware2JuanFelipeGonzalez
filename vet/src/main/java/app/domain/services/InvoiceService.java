@@ -39,4 +39,6 @@ public class InvoiceService {
     System.out.println("7. Cantidad: " + savedInvoice.getCount());  
     System.out.println("8. Fecha de creación: " + savedInvoice.getDateCreated());  
   }
+
+  
 }

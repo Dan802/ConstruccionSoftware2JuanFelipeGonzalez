@@ -197,7 +197,6 @@ public class VetInput {
   private void createOrder() throws Exception {
     Pet pet = veterinaryService.searchPet();
     MedicalRecord meRe = searchMedicalRecord();
-    // ToDo
     //* Nota: La relación es 1:1, por ende, 
     //* no se pueden crear mas ordenes con la misma referencia 
     //* a la historia clínica
