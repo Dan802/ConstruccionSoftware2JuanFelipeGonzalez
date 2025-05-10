@@ -42,3 +42,5 @@ y una orden solo puede tener una historia clínica
 la relacion es 1 a 1? 
 pero y si yo quiero acceder a la historia desde una orden y viceversa? 
 no se puede, a la hora de guardar la referencia una de las dos instancias va a estar creada y la otra quedará sin referencia
+
+invoiceAdapter, donde se hace la validación y el registro si la orden es nula? 

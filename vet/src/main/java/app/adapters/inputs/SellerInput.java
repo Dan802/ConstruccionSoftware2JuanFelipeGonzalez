@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import app.adapters.inputs.utils.SimpleValidator;
 import app.adapters.inputs.utils.Utils;
 import app.domain.models.Order;
+import app.domain.models.Pet;
 import app.domain.services.InvoiceService;
 import app.domain.services.OrderService;
 import app.domain.services.SellerService;
@@ -73,9 +74,22 @@ public class SellerInput implements InputPort{
 		}
 	}
 
-  private void sellMedicine() {
-    // ToDO
-    System.out.println("WIP");
+  private void sellMedicine() throws Exception {
+
+    Pet pet = veterinaryService.searchPet();
+
+    System.out.println("\nIngrese el producto que desea llevar el usuario");
+    String product = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Product Name \"");
+
+    System.out.println("Ingrese la cantidad que el usuario va a llevar");
+    int count = simpleValidator.intValidator(Utils.getReader().nextLine(), "\"Cantidad \" ");
+
+    System.out.println("Ingrese el valor de los medicamentos");
+    double price = simpleValidator.doubleValidator(Utils.getReader().nextLine(), "\"Valor \" ");
+    
+    Long milisecondsDate = System.currentTimeMillis();
+
+    invoiceService.saveInvoice(milisecondsDate, count, price, product, pet);
   }
 
   private void supplyMedicines() throws Exception{

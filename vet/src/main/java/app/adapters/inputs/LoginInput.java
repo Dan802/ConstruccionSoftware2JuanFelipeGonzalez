@@ -64,12 +64,12 @@ public class LoginInput implements InputPort{
 		try {
 			System.out.println("\nIngrese su usuario");
 			// String userName = userValidator.userNameValidator(Utils.getReader().nextLine());
-			String userName = "alfonso"; //! Borrar
+			String userName = "amparo"; //! Borrar
 			System.out.println("Usuario " + userName + " ingresado");
 			
 			System.out.println("\nIngrese su contraseña");
 			// String password = userValidator.passwordValidator(Utils.getReader().nextLine());
-			String password = "alfonso1234"; //! Borrar
+			String password = "amparo1234"; //! Borrar
 			System.out.println("Contraseña *** ingresada");
 
 			loginService.login(userName, password);

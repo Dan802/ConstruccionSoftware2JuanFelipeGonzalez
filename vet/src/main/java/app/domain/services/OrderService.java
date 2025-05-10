@@ -46,7 +46,6 @@ public class OrderService {
       throw new Exception("\nNo se encontró la orden");
     }
 
-    printOrder(order);
     return order;
   }
   
