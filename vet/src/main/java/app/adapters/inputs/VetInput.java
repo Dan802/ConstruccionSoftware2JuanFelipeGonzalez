@@ -9,6 +9,7 @@ import app.adapters.inputs.utils.UserValidator;
 import app.adapters.inputs.utils.Utils;
 import app.domain.models.Login;
 import app.domain.models.MedicalRecord;
+import app.domain.models.Order;
 import app.domain.models.Person;
 import app.domain.models.Pet;
 import app.domain.services.OrderService;
@@ -153,40 +154,31 @@ public class VetInput {
     Pet pet = veterinaryService.searchPet();
 
     System.out.println("\nIngrese la razón de la consulta");
-    // String reason = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Razón \" ");
-    String reason = "Vomita mucho y tiene fiebre"; //! todo borrar
+    String reason = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Razón \" ");
     
     System.out.println("\nIngrese los sintomas ");
-    // String symptoms = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Sintomas\" ");
-    String symptoms = "Vomito excesivo"; //! todo borrar
+    String symptoms = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Sintomas\" ");
 
     System.out.println("\nIngrese el diagnostico ");
-    // String diagnosis = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Diagnostico\" ");
-    String diagnosis = "Probable daño estomacal"; //! todo borrar
+    String diagnosis = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Diagnostico\" ");
 
     System.out.println("\nIngrese el procedimiento (opcional) ");
-    // String procedure = Utils.getReader().nextLine();
-    String procedure = "Lavado de estomago"; //! todo borrar
+    String procedure = Utils.getReader().nextLine();
 
     System.out.println("\nIngrese la medicina recetada (opcional)");
-    // String medicine = Utils.getReader().nextLine();
-    String medicine = "Una pastilla de las rosadas"; //! todo borrar
+    String medicine = Utils.getReader().nextLine();
 
     System.out.println("\nIngrese la dosis del medicamento (opcional)");
-    // String doseMedication = Utils.getReader().nextLine(); 
-    String doseMedication = "1 cada 12h * 5días"; //! todo borrar
+    String doseMedication = Utils.getReader().nextLine(); 
 
     System.out.println("\nIngrese el historial de vacunas ");
-    // String vaccinationHistory = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Historial\" ");
-    String vaccinationHistory = "Todas"; //! todo borrar
+    String vaccinationHistory = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Historial\" ");
 
     System.out.println("\nIngrese los medicamentos a los que es alergico");
-    // String allergyMedications = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Alegico \" ");
-    String allergyMedications = "Lo averiguaremos"; //! todo borrar
+    String allergyMedications = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Alegico \" ");
 
     System.out.println("\nIngrese los detalles del procedimiento");
-    // String procedureDetail = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Procedimiento\" ");
-    String procedureDetail = "Se debe lavar el estomago con jabón rey y mucha agua"; //! todo borrar
+    String procedureDetail = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Procedimiento\" ");
 
     Person veterinary = veterinaryService.searchPerson(login);
 
@@ -215,7 +207,8 @@ public class VetInput {
     System.out.println("\nIngrese el id de la orden");
     Long orderId = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"Order Id\" ");
 
-    orderService.searchOrder(orderId);
+    Order order = orderService.searchOrder(orderId);
+    orderService.printOrder(order);
   }
 
   private void editMedicalRecord() throws Exception {

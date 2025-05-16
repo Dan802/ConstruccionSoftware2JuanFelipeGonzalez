@@ -3,6 +3,7 @@ package app.domain.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import app.adapters.inputs.utils.Utils;
 import app.adapters.invoice.InvoiceAdapter;
 import app.domain.models.Invoice;
 import app.domain.models.Order;
@@ -57,6 +58,6 @@ public class InvoiceService {
     System.out.println("5. Nombre del medicamento: " + invoice.getProductName());  
     System.out.println("6. Precio: " + invoice.getPrice());  
     System.out.println("7. Cantidad: " + invoice.getCount());  
-    System.out.println("8. Fecha de creación: " + invoice.getDateCreated());  
+    System.out.println("8. Fecha de creación: " + Utils.mstoDate(invoice.getDateCreated()));  
   }
 }

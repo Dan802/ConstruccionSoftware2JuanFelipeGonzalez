@@ -1,7 +1,5 @@
 package app.domain.services;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import app.adapters.inputs.utils.SimpleValidator;
@@ -217,6 +215,7 @@ public class VeterinaryService {
   public void printMedicalRecord(MedicalRecord meRe) {
     String meRePrint = 
       "\n1. Id de la historia clínica: " + meRe.getDate() +
+      "\n1. Id de la historia clínica: " + Utils.mstoDate(meRe.getDate()) +
       "\n2. Médico que lo atendió: " + meRe.getVetDocument().getName() +
       "\n3. Mascota atendida: " + meRe.getPetId().getName() +
       "\n4. Motivo de consulta: " + meRe.getReason() +

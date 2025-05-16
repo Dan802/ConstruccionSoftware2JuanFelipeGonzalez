@@ -3,6 +3,7 @@ package app.domain.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import app.adapters.inputs.utils.Utils;
 import app.adapters.order.OrderAdapter;
 import app.domain.models.MedicalRecord;
 import app.domain.models.Order;
@@ -56,10 +57,11 @@ public class OrderService {
       "\n3. Dueño: " + order.getDocumentOwner().getName()+
       "\n4. Veterinario: " + order.getDocumentVet().getName() +
       "\n5. Medicinas recetadas: " + order.getMedicine().getMedicine() +
-      // ToDo metodo pa convertir ms a fecha
-      "\n6. Fecha de creación: " + order.getCreatedDate() +
+      "\n6. Fecha de creación: " + Utils.mstoDate(order.getCreatedDate()) +
       "\n7. ¿Orden Cancelada? " + (order.getMedicine().isOrderCancellation() ? "Si" : "No");
 
     System.out.println(orderPrint);
   }
+
+  
 }

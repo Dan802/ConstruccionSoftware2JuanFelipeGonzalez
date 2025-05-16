@@ -12,9 +12,6 @@ import app.adapters.inputs.LoginInput;
 public class Main implements CommandLineRunner{
     
     @Autowired
-    private ListableBeanFactory beanFactory;
-
-    @Autowired
     private LoginInput loginInput;
 
     @Override

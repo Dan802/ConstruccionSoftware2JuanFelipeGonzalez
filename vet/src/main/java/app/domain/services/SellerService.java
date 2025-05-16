@@ -3,9 +3,7 @@ package app.domain.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import app.adapters.invoice.InvoiceAdapter;
 import app.adapters.order.OrderAdapter;
-import app.domain.models.Invoice;
 import app.domain.models.Order;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

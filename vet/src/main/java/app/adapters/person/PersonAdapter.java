@@ -1,13 +1,10 @@
 package app.adapters.person;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import app.adapters.person.entity.PersonEntity;
 import app.adapters.person.repository.PersonRepository;
-import app.domain.models.MedicalRecord;
 import app.domain.models.Person;
 import app.ports.PersonPort;
 import lombok.Getter;

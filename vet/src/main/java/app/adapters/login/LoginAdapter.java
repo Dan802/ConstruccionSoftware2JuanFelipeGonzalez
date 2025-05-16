@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import app.adapters.login.entity.LoginEntity;
 import app.adapters.login.repository.LoginRepository;
-import app.adapters.person.PersonAdapter;
 import app.adapters.person.entity.PersonEntity;
 import app.adapters.person.repository.PersonRepository;
 import app.domain.models.Login;

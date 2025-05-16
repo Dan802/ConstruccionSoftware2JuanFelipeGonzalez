@@ -1,3 +1,5 @@
+create database cs2vet;
+
 insert into person (age, document, name, role) values 
 (34, 12345678, "Mariano Ernesto", "Administrador"),
 (24, 12345679, "Alfonso Rodriguez", "Veterinario"), 

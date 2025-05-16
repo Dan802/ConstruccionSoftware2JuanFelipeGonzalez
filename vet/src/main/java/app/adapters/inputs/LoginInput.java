@@ -3,6 +3,7 @@ package app.adapters.inputs;
 
 import app.domain.services.LoginService;
 import app.adapters.inputs.utils.UserValidator;
+import app.adapters.inputs.utils.Utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -34,8 +35,7 @@ public class LoginInput implements InputPort{
 
 	private boolean menu2() {
 		System.out.println("\nIngrese la opción que desea:\n 1. Iniciar sesion \n 2. Salir");
-		// String option = Utils.getReader().nextLine();
-		String option = "1"; //! todo Borrar
+		String option = Utils.getReader().nextLine();
 		
 		switch (option) {
 			case "1": {
@@ -63,13 +63,11 @@ public class LoginInput implements InputPort{
   private void login() {
 		try {
 			System.out.println("\nIngrese su usuario");
-			// String userName = userValidator.userNameValidator(Utils.getReader().nextLine());
-			String userName = "amparo"; //! Borrar
+			String userName = userValidator.userNameValidator(Utils.getReader().nextLine());
 			System.out.println("Usuario " + userName + " ingresado");
 			
 			System.out.println("\nIngrese su contraseña");
-			// String password = userValidator.passwordValidator(Utils.getReader().nextLine());
-			String password = "amparo1234"; //! Borrar
+			String password = userValidator.passwordValidator(Utils.getReader().nextLine());
 			System.out.println("Contraseña *** ingresada");
 
 			loginService.login(userName, password);
