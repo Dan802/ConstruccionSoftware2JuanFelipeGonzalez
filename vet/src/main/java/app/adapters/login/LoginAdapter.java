@@ -1,5 +1,8 @@
 package app.adapters.login;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +53,18 @@ public class LoginAdapter implements LoginPort{
     loginEntity.setPassword(login.getPassword());
     
     loginRepository.save(loginEntity);
+  }
+
+  @Override
+  public List<Login> getAll() {
+    List<LoginEntity> loginEntities = loginRepository.findAll();
+    List<Login> logins = new ArrayList<Login>();
+
+    for(LoginEntity loginEntity : loginEntities) {
+      logins.add(loginAdapter(loginEntity));
+    }
+
+    return logins;
   }
 
   public Login loginAdapter(LoginEntity loginEntity) {
