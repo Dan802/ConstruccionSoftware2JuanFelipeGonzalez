@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import app.Exceptions.BusinessException;
 import app.Exceptions.NotFoundException;
 
 import app.adapters.login.LoginAdapter;
@@ -30,11 +32,11 @@ public class AdministrationService {
 
   public void registerPerson(Person newPerson, Login login) throws Exception {
     if(personAdapter.existPerson(newPerson.getDocument())){
-      throw new Exception("Ya existe una persona con esa cedula");
+      throw new BusinessException("Ya existe una persona con esa cedula");
     }
 
     if (loginAdapter.findByUsername(login.getUserName()) != null){
-      throw new Exception("Ya existe ese username registrado");
+      throw new BusinessException("Ya existe ese username registrado");
     }
 
     Person person = personAdapter.save(newPerson);

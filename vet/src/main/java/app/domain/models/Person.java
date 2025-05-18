@@ -16,7 +16,7 @@ public class Person {
         // Roles:
         // Administrador
         // Vendedor
-        // Medico veterinario
+        // Veterinario
         // Dueño
     
     public Person(long document, String name, int age, String rol) {
