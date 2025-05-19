@@ -105,46 +105,43 @@ public class VetInput {
   }
 
   private void createPetOwner() throws Exception {
-    System.out.println("\nIngrese el documento del dueño"); 
-    long document = personValidator.documentValidator(Utils.getReader().nextLine()); 
+    // System.out.println("\nIngrese el documento del dueño"); 
+    // long document = personValidator.documentValidator(Utils.getReader().nextLine()); 
     
-    //? Primero se puede consultar y luego seguir?
+    // //? Primero se puede consultar y luego seguir?
 
-    System.out.println("Ingrese el nombre del dueño"); 
-    String name = personValidator.nameValidator(Utils.getReader().nextLine()); 
+    // System.out.println("Ingrese el nombre del dueño"); 
+    // String name = personValidator.nameValidator(Utils.getReader().nextLine()); 
     
-    System.out.println("Ingrese la edad del dueño"); 
-    int age = personValidator.ageValidator(Utils.getReader().nextLine()); 
+    // System.out.println("Ingrese la edad del dueño"); 
+    // int age = personValidator.ageValidator(Utils.getReader().nextLine()); 
 
-    veterinaryService.savePetOwner(document, name, age);
+    // veterinaryService.savePetOwner(document, name, age);
   }
 
   private void createPet() throws Exception {
-    System.out.println("\nIngrese el documento del dueño"); 
-    Long documentOwner = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"Documento del dueño\" ");
+    // System.out.println("\nIngrese el documento del dueño"); 
+    // Long documentOwner = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"Documento del dueño\" ");
     
-    // Validamos que el dueño exista (Mejor UX)
-    Person person = veterinaryService.existsPerson(documentOwner, "No hay un dueño registrado con esa cedula");
+    // System.out.println("\nIngrese el nombre de la mascota"); 
+    // String name = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Nombre\" ");
     
-    System.out.println("\nIngrese el nombre de la mascota"); 
-    String name = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Nombre\" ");
+    // System.out.println("\nIngrese la edad de la mascota"); 
+    // int age = simpleValidator.intValidator(Utils.getReader().nextLine(), "\"Edad\" ");
     
-    System.out.println("\nIngrese la edad de la mascota"); 
-    int age = simpleValidator.intValidator(Utils.getReader().nextLine(), "\"Edad\" ");
+    // System.out.println("\nIngrese la especie de la mascota"); 
+    // String specie = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Especie\" ");
     
-    System.out.println("\nIngrese la especie de la mascota"); 
-    String specie = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Especie\" ");
+    // System.out.println("\nIngrese la raza de la mascota"); 
+    // String race = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Raza\" ");
     
-    System.out.println("\nIngrese la raza de la mascota"); 
-    String race = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Raza\" ");
+    // System.out.println("\nIngrese la descripción de la mascota"); 
+    // String description = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Peso\" ");
     
-    System.out.println("\nIngrese la descripción de la mascota"); 
-    String description = simpleValidator.stringValidator(Utils.getReader().nextLine(), "\"Peso\" ");
-    
-    System.out.println("\nIngrese el peso de la mascota"); 
-    double weight = simpleValidator.doubleValidator(Utils.getReader().nextLine(), "\"Peso\" ");
+    // System.out.println("\nIngrese el peso de la mascota"); 
+    // double weight = simpleValidator.doubleValidator(Utils.getReader().nextLine(), "\"Peso\" ");
 
-    veterinaryService.savePet(person, name, age, specie, race, description, weight);
+    // veterinaryService.savePet(documentOwner, name, age, specie, race, description, weight);
   }
 
   private void createMedicalRecord(Login login) throws Exception{

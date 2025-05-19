@@ -31,14 +31,14 @@ public class MainController {
  3. Salir."
 
 "Menu del Veterinario, ingrese la opción:
- 1. Crear dueño" 
- 2. Crear mascota" +
- 3. Crear historia clínica" +
- 4. Consultar historia clínica (ingresando los milisegundos)" +
- 5. Editar historia clínica (ingresando los milisegundos)" +
- 6. Crear orden" +
- 7. Consultar orden (ingresando el id de la orden)" +
- 8. Anular orden" +
+ 1. Crear dueño" 												POST /createPetOwner
+ 2. Crear mascota" 												POST /createPet
+ 3. Crear historia clínica" 									POST /createMedicalRecord
+ 4. Consultar historia clínica (ingresando los milisegundos)	GET /getMedicalRecord
+ 5. Editar historia clínica (ingresando los milisegundos)		POST /updateMedicalRecord
+ 6. Crear orden" 												POST /createOrder
+ 7. Consultar orden (ingresando el id de la orden)				GET /getOrder
+ 8. Anular orden" 												POST /cancelOrder
  9. Cerrar sesión"
 
 */

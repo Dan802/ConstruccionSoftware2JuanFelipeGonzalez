@@ -35,16 +35,19 @@ public class VeterinaryService {
 
   //#region CREATE
   public void savePetOwner(long document, String name, int age) throws Exception {
-    notExistsPerson(document, "Ya existe una persona con esa cedula");
+    notExistsPerson(document, "There is already a person with that document");
 
     String role = "Dueño";
     Person newPerson = new Person(document, name, age, role);
 
     personAdapter.save(newPerson);
-    System.out.println("\n El dueño ha sido guardado correctamente.");
+    System.out.println("\n The owner has been saved correctly.");
   }
   
-  public Pet savePet(Person person, String name, int age, String specie, String race, String description, double weight) {
+  public Pet savePet(long documentOwner, String name, int age, String specie, String race, String description, double weight) throws Exception {
+      
+      Person person = existsPerson(documentOwner, "There is no owner registered with that document");
+
       Pet newPet = new Pet();
       newPet.setName(name);
       newPet.setDocumentOwner(person);
@@ -55,7 +58,7 @@ public class VeterinaryService {
       newPet.setWeight(weight);
 
       petAdapter.save(newPet);
-      System.out.println("\nLa mascota ha sido añadida correctamente.");
+      System.out.println("\nThe pet has been added correctly.");
       return newPet;
     }
 
@@ -180,9 +183,9 @@ public class VeterinaryService {
    * @return Person
    * @throws Exception
    */
-  public Person existsPerson(long document, String msg) throws Exception {
+  public Person existsPerson(long document, String msg) throws BusinessException {
     Person person = personAdapter.findByDocument(document);
-    if(person == null) throw new Exception(msg);
+    if(person == null) throw new BusinessException(msg);
     return person;
   }
 
@@ -192,7 +195,7 @@ public class VeterinaryService {
    * @param msg
    * @throws Exception
    */
-  public void notExistsPerson(long document, String msg) throws Exception {
+  public void notExistsPerson(long document, String msg) throws BusinessException {
     Person person = personAdapter.findByDocument(document);
     if(person != null) throw new BusinessException(msg);
   }

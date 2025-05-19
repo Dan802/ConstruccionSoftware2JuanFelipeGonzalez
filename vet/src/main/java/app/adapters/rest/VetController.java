@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import app.Exceptions.BusinessException;
 import app.adapters.rest.request.PetOwnerRequest;
+import app.adapters.rest.request.PetRequest;
 import app.domain.services.VeterinaryService;
 
 @RestController
@@ -25,6 +26,19 @@ public class VetController {
         try {
             veterinaryService.savePetOwner(request.getDocument(), request.getName(), request.getAge());
             return new ResponseEntity<>("Person created successfully", HttpStatus.CREATED);
+        } catch (BusinessException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/createPet")
+    public ResponseEntity<String> createPet(@RequestBody PetRequest request) {
+        System.out.println(request.toString());
+        try {
+            veterinaryService.savePet(request.getDocumentOwner(), request.getName(), request.getAge(), request.getSpecie(), request.getRace(), request.getDescription(), request.getWeight());
+            return new ResponseEntity<>("Pet created successfully", HttpStatus.CREATED);
         } catch (BusinessException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
