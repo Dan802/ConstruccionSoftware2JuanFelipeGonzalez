@@ -109,7 +109,6 @@ public class VetInput {
     long document = personValidator.documentValidator(Utils.getReader().nextLine()); 
     
     //? Primero se puede consultar y luego seguir?
-    veterinaryService.notExistsPerson(document, "Ya existe una persona con esa cedula");
 
     System.out.println("Ingrese el nombre del dueño"); 
     String name = personValidator.nameValidator(Utils.getReader().nextLine()); 

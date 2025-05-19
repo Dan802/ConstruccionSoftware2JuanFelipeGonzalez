@@ -2,6 +2,8 @@ package app.domain.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import app.Exceptions.BusinessException;
 import app.adapters.inputs.utils.SimpleValidator;
 import app.adapters.inputs.utils.Utils;
 import app.adapters.medicalRecord.MedicalRecordAdapter;
@@ -29,9 +31,11 @@ public class VeterinaryService {
   private MedicalRecordAdapter meReAdapter;
   @Autowired
   private PetAdapter petAdapter;
+  
 
   //#region CREATE
-  public void savePetOwner(long document, String name, int age) {
+  public void savePetOwner(long document, String name, int age) throws Exception {
+    notExistsPerson(document, "Ya existe una persona con esa cedula");
 
     String role = "Dueño";
     Person newPerson = new Person(document, name, age, role);
@@ -190,7 +194,7 @@ public class VeterinaryService {
    */
   public void notExistsPerson(long document, String msg) throws Exception {
     Person person = personAdapter.findByDocument(document);
-    if(person != null) throw new Exception(msg);
+    if(person != null) throw new BusinessException(msg);
   }
 
   public Pet searchPet() throws Exception{

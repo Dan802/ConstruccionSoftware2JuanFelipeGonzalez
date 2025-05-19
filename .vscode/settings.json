@@ -4,7 +4,10 @@
     "titleBar.activeBackground": "#1820b5",
     "titleBar.activeForeground": "#FEF9F7"
   },
-  "java.configuration.updateBuildConfiguration": "interactive",
+  "java.configuration.updateBuildConfiguration": "automatic",
   "java.compile.nullAnalysis.mode": "automatic",
-  "java.debug.settings.onBuildFailureProceed": true
+  "java.debug.settings.onBuildFailureProceed": true,
+  "java.jdt.ls.lombokSupport.enabled": true,
+  "java.completion.enabled": true,
+  "java.server.launchMode": "Standard"
 }
