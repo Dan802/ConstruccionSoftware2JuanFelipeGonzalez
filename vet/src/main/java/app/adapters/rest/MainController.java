@@ -35,7 +35,7 @@ public class MainController {
  2. Crear mascota" 												POST /createPet 
  3. Crear historia clínica" 									POST /createMedicalRecord
  4. Consultar historia clínica (ingresando los milisegundos)	GET /getMedicalRecord NO
- 5. Editar historia clínica (ingresando los milisegundos)		Patch /updateMedicalRecord NO
+ 5. Editar historia clínica (ingresando los milisegundos)		Put /updateMedicalRecord WIP
  6. Crear orden" 												POST /createOrder NO		
  7. Consultar orden (ingresando el id de la orden)				GET /getOrder NO
  8. Anular orden" 												Patch /cancelOrder NO

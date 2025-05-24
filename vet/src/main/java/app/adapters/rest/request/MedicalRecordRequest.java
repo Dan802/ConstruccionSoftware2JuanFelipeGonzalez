@@ -1,6 +1,7 @@
 package app.adapters.rest.request;
 
 public class MedicalRecordRequest {
+    private long ms;
     private Long vetDocument; 
     private Long petId; 
     private String reason; 
@@ -14,6 +15,13 @@ public class MedicalRecordRequest {
     private String procedureDetail; 
     private boolean orderCancellation; 
 
+    public long getMs() {
+        return ms;
+    }
+
+    public void setMs(long ms) {    
+        this.ms = ms;
+    }
 
     public void setVetDocument(Long vetDocument) {
         this.vetDocument = vetDocument;
@@ -114,7 +122,8 @@ public class MedicalRecordRequest {
     @Override
     public String toString() {
         return "MedicalRecordRequest{" +
-                "\nvetDocument=" + vetDocument +
+                "\nms=" + ms +
+                ",\nvetDocument=" + vetDocument +
                 ",\npetId=" + petId +
                 ",\nreason='" + reason + '\'' +
                 ",\nsymptoms='" + symptoms + '\'' +

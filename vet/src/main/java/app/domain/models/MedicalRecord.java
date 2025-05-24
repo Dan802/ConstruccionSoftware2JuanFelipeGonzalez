@@ -48,6 +48,10 @@ public class MedicalRecord { //Historia Clínica
     return date;
   }
 
+  public void setDate(Long date) {
+    this.date = date;
+  }
+
   public Person getVetDocument() {
     return vetDocument;
   }
