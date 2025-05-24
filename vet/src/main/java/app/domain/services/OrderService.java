@@ -35,7 +35,7 @@ public class OrderService {
 
     Order order = new Order(orderId, pet, owner, vet, meRe, ms);
     order = orderAdapter.save(order);
-    System.out.println("\nSe ha guardado la orden exitosamente");
+    System.out.println("\nOrder saved successfully");
     
     return order;
   }

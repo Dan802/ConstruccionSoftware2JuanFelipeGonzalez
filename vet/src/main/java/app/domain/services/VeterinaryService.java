@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import app.Exceptions.BusinessException;
+import app.Exceptions.NotFoundException;
 import app.adapters.inputs.utils.SimpleValidator;
 import app.adapters.inputs.utils.Utils;
 import app.adapters.medicalRecord.MedicalRecordAdapter;
@@ -78,7 +79,7 @@ public class VeterinaryService {
     MedicalRecord meRe = new MedicalRecord(milisecondsDate,veterinary, pet, reason,symptoms,diagnosis, procedure, medicine, doseMedication, vaccinationHistory, allergyMedications, procedureDetail, orderCancellation);
     meRe = meReAdapter.save(meRe);
     
-    System.out.println("\nLa historia clínica ha sido guardada correctamente.");
+    System.out.println("\nMEDICAL RECORD:" + meRe.toString());
     return meRe;
   }
   //#endregion CREATE
@@ -200,12 +201,9 @@ public class VeterinaryService {
     if(person != null) throw new BusinessException(msg);
   }
 
-  public Pet searchPet() throws Exception{
-    System.out.println("\nIngrese el id de la mascota");      
-    Long petId = simpleValidator.longValidator(Utils.getReader().nextLine(), "\"petId\" ");
-    
+  public Pet searchPet(long petId) throws NotFoundException{
     Pet pet = petAdapter.findByPetId(petId);
-    if(pet == null) throw new Exception("No hay una mascota registrada con ese id");
+    if(pet == null) throw new NotFoundException("There is no pet registered with that id");
     return pet;
   }
 

@@ -24,4 +24,64 @@ public class Order {
     this.medicine = medicine;
     this.createdDate = createdDate;
   }
+
+  public Long getOrderId() {
+    return orderId;
+  }
+
+  public void setOrderId(Long orderId) {
+    this.orderId = orderId;
+  }
+
+  public Pet getPetId() {
+    return petId;
+  }
+
+  public void setPetId(Pet petId) {
+    this.petId = petId;
+  }
+
+  public Person getDocumentOwner() {
+    return documentOwner;
+  }
+
+  public void setDocumentOwner(Person documentOwner) {
+    this.documentOwner = documentOwner;
+  }
+
+  public Person getDocumentVet() {
+    return documentVet;
+  }
+
+  public void setDocumentVet(Person documentVet) {
+    this.documentVet = documentVet;
+  }
+
+  public MedicalRecord getMedicine() {
+    return medicine;
+  }
+
+  public void setMedicine(MedicalRecord medicine) {
+    this.medicine = medicine;
+  }
+
+  public Long getCreatedDate() {
+    return createdDate;
+  }
+
+  public void setCreatedDate(Long createdDate) {
+    this.createdDate = createdDate;
+  }
+
+  @Override
+  public String toString() {
+    return "Order{" +
+        "\norderId=" + orderId +
+        ",\npetId=" + petId +
+        ",\ndocumentOwner=" + documentOwner +
+        ",\ndocumentVet=" + documentVet +
+        ",\nmedicine=" + medicine +
+        ",\ncreatedDate=" + createdDate +
+        '}';
+  }
 }

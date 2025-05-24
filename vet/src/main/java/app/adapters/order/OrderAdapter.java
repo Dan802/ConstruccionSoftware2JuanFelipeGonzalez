@@ -58,7 +58,7 @@ public class OrderAdapter implements OrderPort {
     meReEntity.setDiagnosis(order.getMedicine().getDiagnosis());
     meReEntity.setDoseMedication(order.getMedicine().getDoseMedication());
     meReEntity.setMedicine(order.getMedicine().getMedicine());
-    meReEntity.setOrderCancellation(order.getMedicine().isOrderCancellation()); 
+    meReEntity.setOrderCancellation(order.getMedicine().getOrderCancellation()); 
     meReEntity.setProcedures(order.getMedicine().getProcedures());
     meReEntity.setProcedureDetail(order.getMedicine().getProcedureDetail());
     meReEntity.setReason(order.getMedicine().getReason());

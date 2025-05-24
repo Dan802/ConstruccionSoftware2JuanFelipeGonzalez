@@ -58,7 +58,7 @@ public class MedicalRecordAdapter implements MedicalRecordPort {
     meReEntity.setDiagnosis(meRecord.getDiagnosis());
     meReEntity.setDoseMedication(meRecord.getDoseMedication());
     meReEntity.setMedicine(meRecord.getMedicine());
-    meReEntity.setOrderCancellation(meRecord.isOrderCancellation()); 
+    meReEntity.setOrderCancellation(meRecord.getOrderCancellation()); 
     meReEntity.setProcedures(meRecord.getProcedures());
     meReEntity.setProcedureDetail(meRecord.getProcedureDetail());
     meReEntity.setReason(meRecord.getReason());
