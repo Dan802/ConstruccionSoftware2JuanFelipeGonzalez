@@ -13,7 +13,27 @@ public class MedicalRecordRequest {
     private String vaccinationHistory; 
     private String allergyMedications; 
     private String procedureDetail; 
-    private boolean orderCancellation; 
+    private Boolean orderCancellation; 
+
+    // TODO: Delete this
+    private String userNameVet;
+    private String passwordVet;
+
+    public void setUserNameVet(String userNameVet) {
+        this.userNameVet = userNameVet;
+    }
+
+    public void setPasswordVet(String passwordVet) {
+        this.passwordVet = passwordVet;
+    }
+
+    public String getUserNameVet() {
+        return userNameVet;
+    }
+
+    public String getPasswordVet() {
+        return passwordVet;
+    }
 
     public long getMs() {
         return ms;
@@ -67,7 +87,7 @@ public class MedicalRecordRequest {
         this.procedureDetail = procedureDetail;
     }   
 
-    public void setOrderCancellation(boolean orderCancellation) {
+    public void setOrderCancellation(Boolean orderCancellation) {
         this.orderCancellation = orderCancellation;
     }   
 
@@ -115,7 +135,7 @@ public class MedicalRecordRequest {
         return procedureDetail;
     }
 
-    public boolean getOrderCancellation() {
+    public Boolean getOrderCancellation() {
         return orderCancellation;
     }
 

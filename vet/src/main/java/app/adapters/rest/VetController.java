@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -21,6 +22,7 @@ import app.domain.models.Person;
 import app.domain.models.Pet;
 import app.domain.services.OrderService;
 import app.domain.services.VeterinaryService;
+import app.domain.services.LoginService;
 
 @RestController
 @RequestMapping("/api")
@@ -28,7 +30,8 @@ public class VetController {
 
     @Autowired
     private VeterinaryService veterinaryService;
-
+    @Autowired
+    private LoginService loginService;
     @Autowired
     private OrderService orderService;
 
@@ -61,8 +64,11 @@ public class VetController {
     @PostMapping("/createMedicalRecord")
     public ResponseEntity<String> createMedicalRecord(@RequestBody MedicalRecordRequest request) {
         try {
-            System.out.println("\nREQUEST:" + request.toString() + "\n");
-            //Todo: verify if the vet is logged in
+            if(request.getUserNameVet() != null && request.getPasswordVet() != null) {
+                loginService.login(request.getUserNameVet(), request.getPasswordVet());
+            } else {
+                throw new BusinessException("Veterinary not logged in");
+            }
 
             Pet pet = veterinaryService.searchPet(request.getPetId());  
             
@@ -83,6 +89,13 @@ public class VetController {
 	public ResponseEntity<String> updateMedicalRecord(@RequestBody MedicalRecordRequest request) {
 
         try {
+
+            if(request.getUserNameVet() != null && request.getPasswordVet() != null) {
+                loginService.login(request.getUserNameVet(), request.getPasswordVet());
+            } else {
+                throw new BusinessException("Veterinary not logged in");
+            }
+
             // We search the old medical record
             // And only update the fields that are not null
             MedicalRecord oldMedicalRecord = veterinaryService.searchMedicalRecord(request.getMs());
@@ -116,6 +129,12 @@ public class VetController {
             medicalRecord.setVaccinationHistory(request.getVaccinationHistory() == null ? oldMedicalRecord.getVaccinationHistory() : request.getVaccinationHistory());
             medicalRecord.setAllergyMedications(request.getAllergyMedications() == null ? oldMedicalRecord.getAllergyMedications() : request.getAllergyMedications());
             medicalRecord.setProcedureDetail(request.getProcedureDetail() == null ? oldMedicalRecord.getProcedureDetail() : request.getProcedureDetail());
+            
+            if(request.getOrderCancellation() != null) {
+                medicalRecord.setOrderCancellation(request.getOrderCancellation());
+            } else {
+                medicalRecord.setOrderCancellation(oldMedicalRecord.getOrderCancellation());
+            }
 
             veterinaryService.updateMedicalRecord(medicalRecord);   
 
@@ -124,10 +143,22 @@ public class VetController {
         return new ResponseEntity(be.getMessage(), HttpStatus.CONFLICT);
 		} catch (NotFoundException e) {
 			return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
-		}
-        catch (Exception e) {
+		} catch (Exception e) {
 			return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+    
+    @GetMapping("/medicalRecord/{ms}")
+    public ResponseEntity<String> getMedicalRecord(@PathVariable Long ms) {
+        try {
+            MedicalRecord medicalRecord = veterinaryService.searchMedicalRecord(ms);
+            return new ResponseEntity<>(medicalRecord.toString(), HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     
 }
