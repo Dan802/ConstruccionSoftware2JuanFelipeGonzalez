@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -172,7 +173,6 @@ public class VetController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
 
     @PostMapping("/createOrder")
     public ResponseEntity<Order> createOrder(@RequestBody OrderRequest request) {
@@ -197,4 +197,26 @@ public class VetController {
         }
     }
 
+    @PatchMapping("/cancelOrder/{orderId, userNameVet, passwordVet}")
+    public ResponseEntity<MedicalRecord> cancelOrder(@PathVariable Long orderId, @PathVariable String userNameVet, @PathVariable String passwordVet) {
+        try {
+
+            // ToDo: should be with jwt token
+            if(userNameVet != null && passwordVet != null) {
+                loginService.login(userNameVet, passwordVet);
+            } else {
+                throw new BusinessException("Veterinary not logged in");
+            }
+
+            MedicalRecord medicalRecord = veterinaryService.searchMedicalRecord(orderId);
+            medicalRecord = veterinaryService.changeOrderCancellation(medicalRecord);
+            
+            return new ResponseEntity<>(medicalRecord, HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } 
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        } 
+    }
 }

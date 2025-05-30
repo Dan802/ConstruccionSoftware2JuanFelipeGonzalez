@@ -63,8 +63,9 @@ public class VeterinaryService {
       return newPet;
     }
 
-  public void saveMedicalRecord(MedicalRecord medicalRecord, String msg) {
+  public MedicalRecord saveMedicalRecord(MedicalRecord medicalRecord, String msg) {
     meReAdapter.save(medicalRecord);
+    return medicalRecord;
   }
 
   public MedicalRecord saveMedicalRecord(Long milisecondsDate, Person veterinary, Pet pet, String reason, String symptoms, String diagnosis, String procedure, String medicine, String doseMedication, String vaccinationHistory, String allergyMedications, String procedureDetail) {
@@ -128,33 +129,12 @@ public class VeterinaryService {
     saveMedicalRecord(meRe, "\nMedical record updated successfully");
   }
 
-  //#region PRINT
-  public void printMedicalRecord(MedicalRecord meRe) {
-    String meRePrint = 
-      "\n1. Id de la historia clínica: " + meRe.getDate() +
-      "\n1. Id de la historia clínica: " + Utils.mstoDate(meRe.getDate()) +
-      "\n2. Médico que lo atendió: " + meRe.getVetDocument().getName() +
-      "\n3. Mascota atendida: " + meRe.getPetId().getName() +
-      "\n4. Motivo de consulta: " + meRe.getReason() +
-      "\n5. Sintomatologia: " + meRe.getSymptoms() +
-      "\n6. Diagnostico: " + meRe.getDiagnosis() +
-      "\n7. Procedimiento (opcional): " + simpleValidator.isNull(meRe.getProcedures())  +
-      "\n8. Medicamento (opcional): " + simpleValidator.isNull(meRe.getMedicine()) +
-      "\n9. Dosis de medicamento (opcional): " + simpleValidator.isNull(meRe.getDoseMedication()) +
-      "\n10. Historial de vacunación: " + meRe.getVaccinationHistory() +
-      "\n11. Medicamentos a los que presenta alergia: " + meRe.getAllergyMedications() +
-      "\n12. Detalle del procedimiento: " + meRe.getProcedureDetail() +
-      "\n13. ¿Orden anulada? " + (meRe.isOrderCancellation() ? "Si" : "No");
-
-    System.out.println(meRePrint);
-  }
-  
-  public void showMedicalRecord( MedicalRecord medicalRecord) throws Exception {
-    printMedicalRecord(medicalRecord);
-  }
-
   public Person searchPerson(Login login) {
     return personAdapter.findByDocument(login.getPersonId().getDocument());
   }
-  //#endregion PRINT
+
+  public MedicalRecord changeOrderCancellation(MedicalRecord meRe) throws Exception {
+    meRe.setOrderCancellation(true); 
+    return saveMedicalRecord(meRe, "Order cancelled successfully");
+  }
 }

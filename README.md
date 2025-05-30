@@ -69,8 +69,8 @@ Return all the users registered
  4. Consultar historia clínica (ingresando los milisegundos)	GET /getMedicalRecord 
  5. Editar historia clínica (ingresando los milisegundos)		Put /updateMedicalRecord 
  6. Crear orden 												POST /createOrder 		
- 7. Consultar orden (ingresando el id de la orden)				GET /getOrder NO
- 8. Anular orden 												Patch /cancelOrder NO
+ 7. Consultar orden (ingresando el id de la orden)				GET /getOrder
+ 8. Anular orden 												Patch /cancelOrder 
  9. Cerrar sesión
 
 

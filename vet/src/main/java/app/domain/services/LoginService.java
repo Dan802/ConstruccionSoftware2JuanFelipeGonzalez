@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import app.Exceptions.NotFoundException;
-import app.adapters.inputs.AdminInput;
 import app.adapters.inputs.SellerInput;
 import app.adapters.inputs.VetInput;
 import app.adapters.login.LoginAdapter;
@@ -19,10 +18,8 @@ import lombok.Setter;
 @Service
 public class LoginService {
 
-  @Autowired
+    @Autowired
 	private LoginAdapter loginAdapter;
-  @Autowired
-	private AdminInput adminInput;
 	@Autowired
 	private VetInput vetInput;
 	@Autowired

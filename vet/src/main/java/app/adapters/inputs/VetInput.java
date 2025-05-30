@@ -297,7 +297,6 @@ public class VetInput {
   }
 
   private void cancelOrder() throws Exception{
-    MedicalRecord medicalRecord = searchMedicalRecord();
-    veterinaryService.changeOrderCancellation(medicalRecord);
+    
   }
 }
