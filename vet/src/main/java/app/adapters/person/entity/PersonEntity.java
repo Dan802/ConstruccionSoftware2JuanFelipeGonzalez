@@ -22,6 +22,6 @@ public class PersonEntity {
   @Column(name="age")
   private int age; // Edad
 
-  @Column(name="role")
+  @Column(name="role", columnDefinition = "VARCHAR(20) CHECK (UPPER(role) IN ('ADMINISTRADOR', 'VENDEDOR', 'VETERINARIO', 'DUEÑO'))")
   private String role;
 }

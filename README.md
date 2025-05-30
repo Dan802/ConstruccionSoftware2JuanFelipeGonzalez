@@ -1,5 +1,80 @@
 # ConstruccionSoftware2JuanFelipeGonzalez
 
+# Postman statements 
+
+## Menu principal
+1. Iniciar sesion	POST /login 
+2. Salir
+
+### **GET** - `/api/users`
+Return all the users registered
+
+### **POST** - `/api/login`
+
+```ts
+{
+  username: string,
+  password: string
+}
+```
+
+```ts
+{
+    "userName": "alfonso",
+    "password": "alfonso1234"
+}
+```
+
+## Menu del administrador
+ 1. Crear vendedor.		POST /createPerson 
+ 2. Crear veterinario.	POST /createPerson 
+ 3. Salir.
+
+### **POST** - `/api/createPerson`
+ 
+ ```ts
+{
+  document: long,
+  name: String,
+  age: int,
+  role: String,
+  userName: String,
+  password: String,
+  userNameAdmin: String,
+  passwordAdmin  : String
+}
+```
+
+```ts
+{
+     "document": 13223232224,
+     "name": "Pantera",
+     "age": 23,
+     "role": "VETERINARIO",
+     "userName": "pantera",
+     "password": "pantera1234",
+     "userNameAdmin": "mariano",
+     "passwordAdmin"  : "mariano1234"
+    }
+```
+
+>[!NOTE]
+> El rol debe ser: Administrador, vendedor, veterinario, o dueño
+
+
+## Menu del Veterinario
+ 1. Crear dueño 												POST /createPetOwner 
+ 2. Crear mascota 												POST /createPet 
+ 3. Crear historia clínica 									POST /createMedicalRecord
+ 4. Consultar historia clínica (ingresando los milisegundos)	GET /getMedicalRecord 
+ 5. Editar historia clínica (ingresando los milisegundos)		Put /updateMedicalRecord 
+ 6. Crear orden 												POST /createOrder 		
+ 7. Consultar orden (ingresando el id de la orden)				GET /getOrder NO
+ 8. Anular orden 												Patch /cancelOrder NO
+ 9. Cerrar sesión
+
+
+
 # Materia: Construccion de software 2
 
 ## Integrantes del Equipo 

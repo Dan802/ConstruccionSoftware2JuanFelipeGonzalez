@@ -32,16 +32,20 @@ public class AdministrationService {
 
   public void registerPerson(Person newPerson, Login login) throws Exception {
     if(personAdapter.existPerson(newPerson.getDocument())){
-      throw new BusinessException("Ya existe una persona con esa cedula");
+      throw new BusinessException("There is already a person with that document");
     }
 
     if (loginAdapter.findByUsername(login.getUserName()) != null){
-      throw new BusinessException("Ya existe ese username registrado");
+      throw new BusinessException("There is already a username registered");
     }
 
-    Person person = personAdapter.save(newPerson);
-    login.setPersonId(person);
-    loginAdapter.save(login);
+    try {
+      Person person = personAdapter.save(newPerson);
+      login.setPersonId(person);
+      loginAdapter.save(login);
+    } catch (Exception e) {
+      throw new BusinessException("Error registering the person, verify the role and other data");
+    }
   }
 
   public void createPerson(long document, String name, int age, String userName, String password, String role) throws Exception {
@@ -59,13 +63,12 @@ public class AdministrationService {
     // Nota: Este metodo no esta partido en dos porque así se guarda en la bd 
     // si y solo si el documento y username no estan duplicados
     registerPerson(newPerson, newLoginInfo);
-    System.out.println("\nPersona guardada correctamente");
   }
 
   public List<Login> getUsers() throws Exception {
 		List<Login> users = loginPort.getAll();
 		if(users.isEmpty()) {
-			throw new NotFoundException("No se encontraron usuarios"); 
+			throw new NotFoundException("No users found"); 
 		}
 		return users;
 	}

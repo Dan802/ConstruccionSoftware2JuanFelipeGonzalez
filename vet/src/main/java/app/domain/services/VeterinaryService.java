@@ -92,9 +92,9 @@ public class VeterinaryService {
    * @return Person
    * @throws Exception
    */
-  public Person existsPerson(long document, String msg) throws BusinessException {
+  public Person existsPerson(long document, String msg) throws NotFoundException {
     Person person = personAdapter.findByDocument(document);
-    if(person == null) throw new BusinessException(msg);
+    if(person == null) throw new NotFoundException(msg);
     return person;
   }
 

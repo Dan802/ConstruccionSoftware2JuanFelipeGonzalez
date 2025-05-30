@@ -7,6 +7,26 @@ public class PersonRequest {
     private String role;
     private String userName;
     private String password;
+    private String userNameAdmin;
+    private String passwordAdmin;   
+
+    
+
+    public String getUserNameAdmin() {
+        return userNameAdmin;
+    }
+
+    public String getPasswordAdmin() {
+        return passwordAdmin;
+    }   
+
+    public void setUserNameAdmin(String userNameAdmin) {
+        this.userNameAdmin = userNameAdmin;
+    }
+
+    public void setPasswordAdmin(String passwordAdmin) {
+        this.passwordAdmin = passwordAdmin;
+    }
     
     public void setDocument(long document) {
         this.document = document;

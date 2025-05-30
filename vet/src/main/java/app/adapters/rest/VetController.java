@@ -17,9 +17,11 @@ import app.Exceptions.NotFoundException;
 import app.adapters.rest.request.MedicalRecordRequest;
 import app.adapters.rest.request.PetOwnerRequest;
 import app.adapters.rest.request.PetRequest;
+import app.adapters.rest.request.OrderRequest;
 import app.domain.models.MedicalRecord;
-import app.domain.models.Person;
+import app.domain.models.Person;    
 import app.domain.models.Pet;
+import app.domain.models.Order;
 import app.domain.services.OrderService;
 import app.domain.services.VeterinaryService;
 import app.domain.services.LoginService;
@@ -42,7 +44,7 @@ public class VetController {
             veterinaryService.savePetOwner(request.getDocument(), request.getName(), request.getAge());
             return new ResponseEntity<>("Person created successfully", HttpStatus.CREATED);
         } catch (BusinessException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -55,7 +57,7 @@ public class VetController {
             veterinaryService.savePet(request.getDocumentOwner(), request.getName(), request.getAge(), request.getSpecie(), request.getRace(), request.getDescription(), request.getWeight());
             return new ResponseEntity<>("Pet created successfully", HttpStatus.CREATED);
         } catch (BusinessException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -87,7 +89,6 @@ public class VetController {
 
     @PutMapping("/updateMedicalRecord")
 	public ResponseEntity<String> updateMedicalRecord(@RequestBody MedicalRecordRequest request) {
-
         try {
 
             if(request.getUserNameVet() != null && request.getPasswordVet() != null) {
@@ -104,7 +105,7 @@ public class VetController {
             Person veterinary = null;
             if(request.getVetDocument() != null) {
                 veterinary = veterinaryService.existsPerson(request.getVetDocument(), "Veterinary not found");
-                if(veterinary.getRole() != "Veterinario") {
+                if(!veterinary.getRole().equals("VETERINARIO")) {
                     throw new BusinessException("Veterinary not found");
                 }
             }
@@ -160,5 +161,40 @@ public class VetController {
         }
     }
 
+    @GetMapping("/order/{orderId}")
+    public ResponseEntity<String> getOrder(@PathVariable Long orderId) {
+        try {
+            Order order = orderService.searchOrder(orderId);
+            return new ResponseEntity<>(order.toString(), HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     
+
+    @PostMapping("/createOrder")
+    public ResponseEntity<Order> createOrder(@RequestBody OrderRequest request) {
+        try {
+
+            if(request.getUserNameVet() != null && request.getPasswordVet() != null) {
+                loginService.login(request.getUserNameVet(), request.getPasswordVet());
+            } else {
+                throw new BusinessException("Veterinary not logged in");
+            }
+
+            Pet pet = veterinaryService.searchPet(request.getPetId());
+            Person owner = veterinaryService.existsPerson(request.getDocumentOwner(), "Owner not found");
+            Person vet = veterinaryService.existsPerson(request.getDocumentVet(), "Veterinary not found");
+            MedicalRecord meRe = veterinaryService.searchMedicalRecord(request.getCreatedDate());
+            
+            Order order = orderService.saveOrder(request.getOrderId(), pet, owner, vet, meRe, null);
+           
+            return new ResponseEntity<>(order, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

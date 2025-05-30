@@ -34,42 +34,20 @@ public class LoginController {
 		try {
 			List<Login> users = administrationService.getUsers();
 
-			int i = 1;
-			for(Login user : users) {
-				System.out.println(i + ". " + user.getUserName());
-				i++;
-			}
-			System.out.println();
-
 			return new ResponseEntity<>(users, HttpStatus.OK);
 		}catch (NotFoundException NFe) {
-			return new ResponseEntity(NFe.getMessage(), HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}  catch (BusinessException be) {
-			return new ResponseEntity(be.getMessage(), HttpStatus.CONFLICT);
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
-			return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
     }
 
 	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody LoginRequest request, HttpServletResponse response) {
-		System.out.println("username: " + request.getUserName());
-		System.out.println("password: " + request.getPassword());
+	public ResponseEntity<String> login(@RequestBody LoginRequest request) {
 		try {
 			loginService.login(request.getUserName(), request.getPassword());
-
-			// Generate a token (e.g., JWT)
-			String token = request.getUserName() + "_" + System.currentTimeMillis();
-			
-			// Create a cookie with the token
-			Cookie tokenCookie = new Cookie("auth_token", token);
-			tokenCookie.setHttpOnly(true); // Makes the cookie inaccessible to JavaScript
-			tokenCookie.setSecure(true); // Only sends the cookie over HTTPS
-			tokenCookie.setPath("/"); // Cookie is available for all paths
-			// tokenCookie.setMaxAge(3600); // Cookie expires in 1 hour
-			
-			// Add the cookie to the response
-			response.addCookie(tokenCookie);
 			
 			return new ResponseEntity<>("Successfully logged in", HttpStatus.OK);
 		} catch (NotFoundException NFe) {

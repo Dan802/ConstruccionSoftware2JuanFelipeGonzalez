@@ -28,40 +28,27 @@ public class LoginService {
 	@Autowired
 	private SellerInput sellerInput;
   
-  public void login(String userName, String password) throws Exception{
+  public Login login(String userName, String password) throws Exception{
     Login login = loginAdapter.findByUsername(userName);
     verifyUser(password, login);
 
-    // switch (login.getPersonId().getRole()) {
-    //   case "Administrador": {
-    //     adminInput.menu();
-    //     break;
-    //   }
-    //   case "Vendedor": {
-    //     sellerInput.menu();
-    //     break;
-    //   }
-    //   case "Veterinario": {
-    //     vetInput.menu(login);
-    //     break;
-    //   }
-    //   default: {
-    //     System.out.println("Ha habido un error, comunícate con soporte.");
-    //     System.out.println("Error: El usuario no tiene rol o no coincide con ninguno :( ");
-    //     break;
-    //   }
-    // }
-  }
+    return login;
+    }
   
   private void verifyUser(String password, Login login) throws Exception{
 		if(login == null) {
-			throw new NotFoundException("\nEl usuario no existe, intentelo de nuevo");
+			throw new NotFoundException("\nThe user does not exist, try again");
 		}
 		
     if(!password.equals(login.getPassword())){
-			throw new Exception("\nLa contraseña no es correcta");
+			throw new Exception("\nThe password is not correct");
 		}
-		
-    System.out.println("\nUsted ha ingresado correctamente");
+	}
+
+	public void verifyVeterinary(String userName, String password) throws Exception{
+		Login login = loginAdapter.findByUsername(userName);
+		if(login == null) {
+			throw new NotFoundException("\nThe user does not exist, try again");
+		}
 	}
 }
