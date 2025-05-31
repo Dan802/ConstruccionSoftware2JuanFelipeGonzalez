@@ -5,9 +5,27 @@ public class PetRequest {
     private String name;
     private int age;
     private String specie;
-    private String race;
+    private String breed;
     private String description;
     private double weight;
+    private String userNameVet;
+    private String passwordVet;
+
+    public void setUserNameVet(String userNameVet) {
+        this.userNameVet = userNameVet;
+    }
+
+    public void setPasswordVet(String passwordVet) {
+        this.passwordVet = passwordVet;
+    }   
+
+    public String getUserNameVet() {
+        return userNameVet;
+    }
+
+    public String getPasswordVet() {
+        return passwordVet;
+    }
 
     public void setDocumentOwner(long documentOwner) {
         this.documentOwner = documentOwner;
@@ -25,8 +43,8 @@ public class PetRequest {
         this.specie = specie;
     }   
 
-    public void setRace(String race) {
-        this.race = race;
+    public void setBreed(String breed) {
+        this.breed = breed;
     }              
 
     public void setDescription(String description) {
@@ -53,8 +71,8 @@ public class PetRequest {
         return specie;
     }
 
-    public String getRace() {
-        return race;
+    public String getBreed() {
+        return breed;
     }
 
     public String getDescription() {
@@ -72,7 +90,7 @@ public class PetRequest {
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", specie='" + specie + '\'' +
-                ", race='" + race + '\'' +
+                ", breed='" + breed + '\'' +
                 ", description='" + description + '\'' +
                 ", weight=" + weight +
                 '}';

@@ -5,8 +5,7 @@ public class OrderRequest {
     private Long petId; 
     private Long documentOwner; 
     private Long documentVet; 
-    private String medicine; 
-    private Long createdDate;
+    private Long medicine; 
 
      // TODO: Delete this
     private String userNameVet;
@@ -60,20 +59,12 @@ public class OrderRequest {
         this.documentVet = documentVet;
     }
 
-    public String getMedicine() {
+    public Long getMedicine() {
         return medicine;
     }
 
-    public void setMedicine(String medicine) {
+    public void setMedicine(Long medicine) {
         this.medicine = medicine;
-    }
-
-    public Long getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Long createdDate) {
-        this.createdDate = createdDate;
     }
 
     @Override
@@ -84,7 +75,6 @@ public class OrderRequest {
                 ",\ndocumentOwner=" + documentOwner +
                 ",\ndocumentVet=" + documentVet +
                 ",\nmedicine=" + medicine +
-                ",\ncreatedDate=" + createdDate +
                 '}';
     }
 

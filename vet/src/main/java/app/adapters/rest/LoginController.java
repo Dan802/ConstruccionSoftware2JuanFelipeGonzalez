@@ -52,6 +52,8 @@ public class LoginController {
 			return new ResponseEntity<>("Successfully logged in", HttpStatus.OK);
 		} catch (NotFoundException NFe) {
 			return new ResponseEntity<>(NFe.getMessage(), HttpStatus.NOT_FOUND);
+		} catch (BusinessException be) {
+			return new ResponseEntity<>(be.getMessage(), HttpStatus.UNAUTHORIZED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}

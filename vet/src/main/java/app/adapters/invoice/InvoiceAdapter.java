@@ -46,7 +46,7 @@ public class InvoiceAdapter implements InvoicePort {
     petEntity.setDocumentOwner(ownerEntity);
     petEntity.setName(invoice.getPetId().getName());
     petEntity.setPetId(invoice.getPetId().getPetId());
-    petEntity.setRace(invoice.getPetId().getRace());
+    petEntity.setBreed(invoice.getPetId().getBreed());
     petEntity.setSpecie(invoice.getPetId().getSpecie());
     petEntity.setWeight(invoice.getPetId().getWeight());
 
@@ -119,7 +119,7 @@ public class InvoiceAdapter implements InvoicePort {
     petEntity.setDocumentOwner(ownerEntity);
     petEntity.setName(invoice.getOrderId().getPetId().getName());
     petEntity.setPetId(invoice.getOrderId().getPetId().getPetId());
-    petEntity.setRace(invoice.getOrderId().getPetId().getRace());
+    petEntity.setBreed(invoice.getOrderId().getPetId().getBreed());
     petEntity.setSpecie(invoice.getOrderId().getPetId().getSpecie());
     petEntity.setWeight(invoice.getOrderId().getPetId().getWeight());
 
@@ -176,7 +176,7 @@ public class InvoiceAdapter implements InvoicePort {
     pet.setDocumentOwner(owner);
     pet.setName(invoiceEntity.getPetId().getName());
     pet.setPetId(invoiceEntity.getPetId().getPetId());
-    pet.setRace(invoiceEntity.getPetId().getRace());
+    pet.setBreed(invoiceEntity.getPetId().getBreed());
     pet.setSpecie(invoiceEntity.getPetId().getSpecie());
     pet.setWeight(invoiceEntity.getPetId().getWeight());
     

@@ -5,8 +5,6 @@ import org.springframework.stereotype.Service;
 
 import app.Exceptions.BusinessException;
 import app.Exceptions.NotFoundException;
-import app.adapters.inputs.utils.SimpleValidator;
-import app.adapters.inputs.utils.Utils;
 import app.adapters.medicalRecord.MedicalRecordAdapter;
 import app.adapters.person.PersonAdapter;
 import app.adapters.pet.PetAdapter;
@@ -26,8 +24,6 @@ public class VeterinaryService {
 
   @Autowired
   private PersonAdapter personAdapter;
-  @Autowired 
-  private SimpleValidator simpleValidator;
   @Autowired
   private MedicalRecordAdapter meReAdapter;
   @Autowired
@@ -38,14 +34,14 @@ public class VeterinaryService {
   public void savePetOwner(long document, String name, int age) throws Exception {
     notExistsPerson(document, "There is already a person with that document");
 
-    String role = "Dueño";
+    String role = "DUEÑO";
     Person newPerson = new Person(document, name, age, role);
 
     personAdapter.save(newPerson);
     System.out.println("\n The owner has been saved correctly.");
   }
   
-  public Pet savePet(long documentOwner, String name, int age, String specie, String race, String description, double weight) throws Exception {
+  public Pet savePet(long documentOwner, String name, int age, String specie, String breed, String description, double weight) throws Exception {
       
       Person person = existsPerson(documentOwner, "There is no owner registered with that document");
 
@@ -54,7 +50,7 @@ public class VeterinaryService {
       newPet.setDocumentOwner(person);
       newPet.setAge(age);
       newPet.setSpecie(specie);
-      newPet.setRace(race);
+      newPet.setBreed(breed);
       newPet.setDescription(description);
       newPet.setWeight(weight);
 

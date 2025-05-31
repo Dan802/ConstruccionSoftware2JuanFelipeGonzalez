@@ -33,8 +33,8 @@ public class PetEntity {
   private int age; 
   @Column(name="specie")
   private String specie; 
-  @Column(name="race")
-  private String race; 
+  @Column(name="breed")
+  private String breed; 
   @Column(name="description")
   private String description; 
   @Column(name="weight")

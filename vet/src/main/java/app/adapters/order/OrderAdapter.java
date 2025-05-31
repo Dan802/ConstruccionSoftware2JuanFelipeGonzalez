@@ -46,7 +46,7 @@ public class OrderAdapter implements OrderPort {
     petEntity.setDocumentOwner(ownerEntity);
     petEntity.setName(order.getPetId().getName());
     petEntity.setPetId(order.getPetId().getPetId());
-    petEntity.setRace(order.getPetId().getRace());
+    petEntity.setBreed(order.getPetId().getBreed());
     petEntity.setSpecie(order.getPetId().getSpecie());
     petEntity.setWeight(order.getPetId().getWeight());
 
@@ -101,7 +101,7 @@ public class OrderAdapter implements OrderPort {
     pet.setDocumentOwner(ownerPerson);
     pet.setName(orderEntity.getPet().getName());
     pet.setPetId(orderEntity.getPet().getPetId());
-    pet.setRace(orderEntity.getPet().getRace());
+    pet.setBreed(orderEntity.getPet().getBreed());
     pet.setSpecie(orderEntity.getPet().getSpecie());
     pet.setWeight(orderEntity.getPet().getWeight());
 

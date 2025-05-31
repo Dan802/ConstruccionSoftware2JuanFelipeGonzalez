@@ -40,7 +40,7 @@ public class LoginAdapter implements LoginPort{
 	}
 
   @Override
-  public void save(Login login) {
+  public Login save(Login login) {
     PersonEntity personEntity = new PersonEntity();
     personEntity.setAge(login.getPersonId().getAge());
     personEntity.setDocument(login.getPersonId().getDocument());
@@ -52,7 +52,7 @@ public class LoginAdapter implements LoginPort{
     loginEntity.setUserName(login.getUserName());
     loginEntity.setPassword(login.getPassword());
     
-    loginRepository.save(loginEntity);
+    return loginAdapter(loginRepository.save(loginEntity));
   }
 
   @Override

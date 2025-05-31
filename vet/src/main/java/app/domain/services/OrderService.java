@@ -3,7 +3,7 @@ package app.domain.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import app.adapters.inputs.utils.Utils;
+import app.Exceptions.NotFoundException;
 import app.adapters.order.OrderAdapter;
 import app.domain.models.MedicalRecord;
 import app.domain.models.Order;
@@ -44,24 +44,9 @@ public class OrderService {
     Order order = orderAdapter.findByOrderId(orderId);
 
     if(order == null) {
-      throw new Exception("\nNo se encontró la orden");
+      throw new NotFoundException("Order not found");
     }
 
     return order;
   }
-  
-  public void printOrder(Order order) {
-    String orderPrint = 
-      "\n1. Order Id: " + order.getOrderId() +
-      "\n2. Mascota: " + order.getPetId().getName() +
-      "\n3. Dueño: " + order.getDocumentOwner().getName()+
-      "\n4. Veterinario: " + order.getDocumentVet().getName() +
-      "\n5. Medicinas recetadas: " + order.getMedicine().getMedicine() +
-      "\n6. Fecha de creación: " + Utils.mstoDate(order.getCreatedDate()) +
-      "\n7. ¿Orden Cancelada? " + (order.getMedicine().isOrderCancellation() ? "Si" : "No");
-
-    System.out.println(orderPrint);
-  }
-
-  
 }

@@ -1,5 +1,7 @@
 package app.adapters.rest;
 
+import javax.print.DocFlavor;
+
 import app.Exceptions.BusinessException;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -30,7 +30,7 @@ public class AdministrationService {
   @Autowired
   private LoginPort loginPort;
 
-  public void registerPerson(Person newPerson, Login login) throws Exception {
+  public Login registerPerson(Person newPerson, Login login) throws Exception {
     if(personAdapter.existPerson(newPerson.getDocument())){
       throw new BusinessException("There is already a person with that document");
     }
@@ -42,13 +42,13 @@ public class AdministrationService {
     try {
       Person person = personAdapter.save(newPerson);
       login.setPersonId(person);
-      loginAdapter.save(login);
+      return loginAdapter.save(login);
     } catch (Exception e) {
       throw new BusinessException("Error registering the person, verify the role and other data");
     }
   }
 
-  public void createPerson(long document, String name, int age, String userName, String password, String role) throws Exception {
+  public Login createPerson(long document, String name, int age, String userName, String password, String role) throws Exception {
     Person newPerson = new Person();
     newPerson.setDocument(document);
     newPerson.setName(name);
@@ -62,7 +62,7 @@ public class AdministrationService {
     // Guardamos la persona
     // Nota: Este metodo no esta partido en dos porque así se guarda en la bd 
     // si y solo si el documento y username no estan duplicados
-    registerPerson(newPerson, newLoginInfo);
+    return registerPerson(newPerson, newLoginInfo);
   }
 
   public List<Login> getUsers() throws Exception {

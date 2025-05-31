@@ -22,6 +22,7 @@ import app.adapters.rest.request.OrderRequest;
 import app.domain.models.MedicalRecord;
 import app.domain.models.Person;    
 import app.domain.models.Pet;
+import app.domain.models.Login;
 import app.domain.models.Order;
 import app.domain.services.OrderService;
 import app.domain.services.VeterinaryService;
@@ -38,10 +39,12 @@ public class VetController {
     @Autowired
     private OrderService orderService;
 
-    @PostMapping("/createPetOwner")
+    @PostMapping("/petOwner")
     public ResponseEntity<String> createPetOwner(@RequestBody PetOwnerRequest request) {
-        System.out.println(request.toString());
         try {
+            // ToDo: should be with jwt token
+            verifyVeterinary(request.getUserNameVet(), request.getPasswordVet());
+            
             veterinaryService.savePetOwner(request.getDocument(), request.getName(), request.getAge());
             return new ResponseEntity<>("Person created successfully", HttpStatus.CREATED);
         } catch (BusinessException e) {
@@ -51,30 +54,44 @@ public class VetController {
         }
     }
 
-    @PostMapping("/createPet")
+    @PostMapping("/pet")
     public ResponseEntity<String> createPet(@RequestBody PetRequest request) {
-        System.out.println(request.toString());
         try {
-            veterinaryService.savePet(request.getDocumentOwner(), request.getName(), request.getAge(), request.getSpecie(), request.getRace(), request.getDescription(), request.getWeight());
+            // ToDo: should be with jwt token
+            verifyVeterinary(request.getUserNameVet(), request.getPasswordVet());
+
+            veterinaryService.savePet(request.getDocumentOwner(), request.getName(), request.getAge(), request.getSpecie(), request.getBreed(), request.getDescription(), request.getWeight());
             return new ResponseEntity<>("Pet created successfully", HttpStatus.CREATED);
         } catch (BusinessException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    @GetMapping("/medicalRecord/{ms}")
+    public ResponseEntity<MedicalRecord> getMedicalRecord(@PathVariable Long ms) {
+        try {
+            // ToDo: Verify session with cookie's token
+            MedicalRecord medicalRecord = veterinaryService.searchMedicalRecord(ms);
+            return new ResponseEntity<>(medicalRecord, HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
-    @PostMapping("/createMedicalRecord")
+    @PostMapping("/medicalRecord")
     public ResponseEntity<String> createMedicalRecord(@RequestBody MedicalRecordRequest request) {
         try {
-            if(request.getUserNameVet() != null && request.getPasswordVet() != null) {
-                loginService.login(request.getUserNameVet(), request.getPasswordVet());
-            } else {
-                throw new BusinessException("Veterinary not logged in");
-            }
+            // ToDo: should be with jwt token
+            verifyVeterinary(request.getUserNameVet(), request.getPasswordVet());
 
             Pet pet = veterinaryService.searchPet(request.getPetId());  
-            
+
             // TODO: should be with cookie's token
             Person veterinary = veterinaryService.existsPerson(request.getVetDocument(), "Veterinary not found");
 
@@ -84,19 +101,15 @@ public class VetController {
 
             return new ResponseEntity<>("Medical record created successfully and order saved", HttpStatus.CREATED);
         }catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } 
     }
 
     @PutMapping("/updateMedicalRecord")
 	public ResponseEntity<String> updateMedicalRecord(@RequestBody MedicalRecordRequest request) {
         try {
-
-            if(request.getUserNameVet() != null && request.getPasswordVet() != null) {
-                loginService.login(request.getUserNameVet(), request.getPasswordVet());
-            } else {
-                throw new BusinessException("Veterinary not logged in");
-            }
+            // ToDo: should be with jwt token
+            verifyVeterinary(request.getUserNameVet(), request.getPasswordVet());
 
             // We search the old medical record
             // And only update the fields that are not null
@@ -150,73 +163,74 @@ public class VetController {
 		}
 	}
     
-    @GetMapping("/medicalRecord/{ms}")
-    public ResponseEntity<String> getMedicalRecord(@PathVariable Long ms) {
-        try {
-            MedicalRecord medicalRecord = veterinaryService.searchMedicalRecord(ms);
-            return new ResponseEntity<>(medicalRecord.toString(), HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
     @GetMapping("/order/{orderId}")
-    public ResponseEntity<String> getOrder(@PathVariable Long orderId) {
+    public ResponseEntity<Order> getOrder(@PathVariable Long orderId) {
         try {
+            // ToDo: Verify session with cookie's token
             Order order = orderService.searchOrder(orderId);
-            return new ResponseEntity<>(order.toString(), HttpStatus.OK);
+            return new ResponseEntity<>(order, HttpStatus.OK);
         } catch (NotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PostMapping("/createOrder")
-    public ResponseEntity<Order> createOrder(@RequestBody OrderRequest request) {
+    @PostMapping("/order")
+    public ResponseEntity<String> createOrder(@RequestBody OrderRequest request) {
         try {
-
-            if(request.getUserNameVet() != null && request.getPasswordVet() != null) {
-                loginService.login(request.getUserNameVet(), request.getPasswordVet());
-            } else {
-                throw new BusinessException("Veterinary not logged in");
-            }
+            // ToDo: should be with jwt token
+            verifyVeterinary(request.getUserNameVet(), request.getPasswordVet());
 
             Pet pet = veterinaryService.searchPet(request.getPetId());
             Person owner = veterinaryService.existsPerson(request.getDocumentOwner(), "Owner not found");
             Person vet = veterinaryService.existsPerson(request.getDocumentVet(), "Veterinary not found");
-            MedicalRecord meRe = veterinaryService.searchMedicalRecord(request.getCreatedDate());
+            MedicalRecord meRe = veterinaryService.searchMedicalRecord(request.getMedicine());
             
-            Order order = orderService.saveOrder(request.getOrderId(), pet, owner, vet, meRe, null);
+            orderService.saveOrder(request.getOrderId(), pet, owner, vet, meRe, null);
            
-            return new ResponseEntity<>(order, HttpStatus.CREATED);
+            return new ResponseEntity<>("Order created successfully", HttpStatus.CREATED);
+        } catch (BusinessException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PatchMapping("/cancelOrder/{orderId, userNameVet, passwordVet}")
-    public ResponseEntity<MedicalRecord> cancelOrder(@PathVariable Long orderId, @PathVariable String userNameVet, @PathVariable String passwordVet) {
+    @PatchMapping("/cancelOrder")
+    public ResponseEntity<String> cancelOrder(@RequestBody OrderRequest request) {
         try {
 
             // ToDo: should be with jwt token
+            verifyVeterinary(request.getUserNameVet(), request.getPasswordVet());
+
+            MedicalRecord medicalRecord = veterinaryService.searchMedicalRecord(request.getMedicine());
+            veterinaryService.changeOrderCancellation(medicalRecord);
+            
+            return new ResponseEntity<>("Order cancelled successfully", HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } 
+        catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } 
+    }
+
+    private void verifyVeterinary(String userNameVet, String passwordVet) throws BusinessException {
+        try {
             if(userNameVet != null && passwordVet != null) {
-                loginService.login(userNameVet, passwordVet);
+                Login login = loginService.login(userNameVet, passwordVet);
+
+                if(!login.getPersonId().getRole().equals("VETERINARIO"))
+                    throw new BusinessException("Veterinary not logged in");
             } else {
                 throw new BusinessException("Veterinary not logged in");
             }
-
-            MedicalRecord medicalRecord = veterinaryService.searchMedicalRecord(orderId);
-            medicalRecord = veterinaryService.changeOrderCancellation(medicalRecord);
-            
-            return new ResponseEntity<>(medicalRecord, HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        } 
-        catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        } 
+        } catch (Exception e) {
+            throw new BusinessException("Veterinary not logged in");
+        }
     }
+
 }

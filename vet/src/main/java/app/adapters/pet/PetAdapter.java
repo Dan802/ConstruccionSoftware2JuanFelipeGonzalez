@@ -35,7 +35,7 @@ public class PetAdapter implements PetPort{
     petEntity.setDocumentOwner(personEntity);
     petEntity.setAge(pet.getAge());
     petEntity.setSpecie(pet.getSpecie());
-    petEntity.setRace(pet.getRace());
+    petEntity.setBreed(pet.getBreed());
     petEntity.setDescription(pet.getDescription());
     petEntity.setWeight(pet.getWeight());
 		petRepository.save(petEntity);
@@ -63,7 +63,7 @@ public class PetAdapter implements PetPort{
     pet.setDocumentOwner(person);
     pet.setName(petEntity.getName());
     pet.setPetId(petEntity.getPetId());
-    pet.setRace(petEntity.getRace());
+    pet.setBreed(petEntity.getBreed());
     pet.setSpecie(petEntity.getSpecie());
     pet.setWeight(petEntity.getWeight());
 

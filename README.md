@@ -7,10 +7,24 @@
 2. Salir
 
 ### **GET** - `/api/users`
-Return all the users registered
+JSON Response:
+```ts
+{
+  loginId : long,   
+  personId: {
+    document: long,
+    name: string,
+    age: int,
+    role: string,
+  }, 
+  userName : string,
+  password : string
+}
+```
 
 ### **POST** - `/api/login`
 
+JSON request body:
 ```ts
 {
   username: string,
@@ -18,10 +32,11 @@ Return all the users registered
 }
 ```
 
+JSON request example:
 ```ts
 {
-    "userName": "alfonso",
-    "password": "alfonso1234"
+    "userName": "mariano",
+    "password": "mariano1234"
 }
 ```
 
@@ -32,6 +47,7 @@ Return all the users registered
 
 ### **POST** - `/api/createPerson`
  
+ JSON Request Body:
  ```ts
 {
   document: long,
@@ -44,22 +60,22 @@ Return all the users registered
   passwordAdmin  : String
 }
 ```
-
+JSON Request Example:
 ```ts
 {
-     "document": 13223232224,
-     "name": "Pantera",
-     "age": 23,
+     "document": 123435679,
+     "name": "Alfonso Rodriguez",
+     "age": 24,
      "role": "VETERINARIO",
-     "userName": "pantera",
-     "password": "pantera1234",
+     "userName": "alfonsos",
+     "password": "alfonsos1234",
      "userNameAdmin": "mariano",
-     "passwordAdmin"  : "mariano1234"
-    }
+     "passwordAdmin": "mariano1234"
+}
 ```
 
 >[!NOTE]
-> El rol debe ser: Administrador, vendedor, veterinario, o dueño
+> The rol have to be: ADMINISTRADOR, VENDEDOR, VETERINARIO, or DUEÑO
 
 
 ## Menu del Veterinario
@@ -73,7 +89,304 @@ Return all the users registered
  8. Anular orden 												Patch /cancelOrder 
  9. Cerrar sesión
 
+### **POST** - `/api/petOwner`
+JSON Request Body:
+```ts
+{
+  document: long,
+  name: string,
+  age: int,
+  userName: string,
+  password: string,
+  userNameVet: string,
+  passwordVet: string
+}
+```
 
+JSON Request Example:
+```ts
+{
+  "document": 102,
+  "name": "Don Gediondo",
+  "age": 54,
+  "userName": "gediondo",
+  "password": "gediondo1234",
+  "userNameVet": "alfonso",
+  "passwordVet": "alfonso1234"
+}
+```
+
+### **POST** - `/api/pet`
+JSON Request Body:
+```ts
+{
+  name: string,
+  species: string,
+  breed: string,
+  age: int,
+  documentOwner: long,
+  userNameVet: string,
+  passwordVet: string
+}
+```
+
+JSON Request Example:
+```ts
+{
+  "name": "Poppins",
+  "description": "bola de pelos hermosa",
+  "specie": "gata",
+  "breed": "criolla",
+  "age": 4,
+  "weight": 30,
+  "documentOwner": 101,
+  "userNameVet": "alfonso",
+  "passwordVet": "alfonso1234"
+}
+```
+
+### **POST** - `/api/medicalRecord`
+JSON Request Body:
+```ts
+{
+  vetDocument: long,
+  petId: long,
+  reason: string,
+  symptoms: string,
+  diagnosis: string,
+  procedures: string,
+  medicine: string,
+  doseMedication: string,
+  vaccinationHistory: string,
+  allergyMedications: string,
+  procedureDetail: string,
+  userNameVet: string,
+  passwordVet: string
+}
+```
+
+JSON Request Example:
+```ts
+{
+  "vetDocument" : 12345679,
+  "petId" : 1,
+  "reason" : "Fiebre y deshidratación",
+  "symptoms" : "Ta malito",
+  "diagnosis" : "Enfermedad general",
+  "procedures" : "NA",
+  "medicine" : "NA",
+  "doseMedication" : "NA",
+  "vaccinationHistory" : "Actualizada",
+  "allergyMedications" : "No",
+  "procedureDetail" : "NA",
+  "userNameVet": "alfonso",
+  "passwordVet": "alfonso1234"
+}
+```
+
+### **GET** - `/api/medicalRecord/:ms`
+Query Parameters:
+```ts
+{
+  ms : long  // Unix timestamp in milliseconds
+}
+```
+
+JSON Response:
+```ts
+{
+  date: long,
+  vetDocument: {
+    document: long,
+    name: string,
+    age: int,
+    role: string
+  },
+  petId: {
+    petId: long,
+    name: string,
+    documentOwner: {
+      document: long,
+      name: string,
+      age: int,
+      role: string
+    },
+    age: int,
+    specie: string,
+    breed: string,
+    description: string,
+    weight: double
+  },
+  reason: string,
+  symptoms: string,
+  diagnosis: string,
+  procedures: string,
+  medicine: string,
+  doseMedication: string,
+  vaccinationHistory: string,
+  allergyMedications: string,
+  procedureDetail: string,
+  orderCancellation: boolean
+}
+```
+
+### **PUT** - `/api/updateMedicalRecord`
+JSON Request Body:
+```ts
+{
+  ms: long,
+  vetDocument?: long,
+  petId?: long,
+  reason?: string,
+  symptoms?: string,
+  diagnosis?: string,
+  procedures?: string,
+  medicine?: string,
+  doseMedication?: string,
+  vaccinationHistory?: string,
+  allergyMedications?: string,
+  procedureDetail?: string,
+  userNameVet: string,
+  passwordVet: string
+}
+```
+
+>[!NOTE]
+> ? Fields are optional
+
+JSON Request Example:
+```ts
+{
+    "ms": 1748649028633,
+    "petId": 5,
+    "reason": "Mami, mi patita, me duele...",
+    "userNameVet": "alfonso",
+    "passwordVet": "alfonso1234"
+}
+```
+
+### **POST** - `/api/order`
+JSON Request Body:
+```ts
+{
+    orderId : long,
+    petId : long,
+    documentOwner : long,
+    documentVet : long,
+    medicine : long,
+    userNameVet: string,
+    passwordVet: string
+}
+```
+
+JSON Request Example:
+```ts
+{
+  "orderId" : "1",
+  "petId" : "1",
+  "documentOwner" : "101",
+  "documentVet" : "12345679",
+  "medicine" : "1748649028633",
+  "userNameVet": "alfonso",
+  "passwordVet": "alfonso1234"
+}
+```
+
+### **GET** - `/api/order/:orderId`
+Query Parameters:
+```ts
+{
+  orderId: long
+}
+```
+
+JSON Response:
+```ts
+{
+  orderId: long,
+  petId: {
+    petId: long,
+    name: string,
+    documentOwner: {
+      document: long,
+      name: string,
+      age: int,
+      role: string
+    },
+    age: int,
+    specie: string,
+    breed: string | null,
+    description: string,
+    weight: double
+  },
+  documentOwner: {
+    document: long,
+    name: string,
+    age: int,
+    role: string
+  },
+  documentVet: {
+    document: long,
+    name: string,
+    age: int,
+    role: string
+  },
+  medicine: {
+    date: long,
+    vetDocument: {
+      document: long,
+      name: string,
+      age: int,
+      role: string
+    },
+    petId: {
+      petId: long,
+      name: string,
+      documentOwner: {
+        document: long,
+        name: string,
+        age: int,
+        role: string
+      },
+      age: int,
+      specie: string,
+      breed: string | null,
+      description: string,
+      weight: double
+    },
+    reason: string,
+    symptoms: string,
+    diagnosis: string,
+    procedures: string,
+    medicine: string,
+    doseMedication: string,
+    vaccinationHistory: string,
+    allergyMedications: string,
+    procedureDetail: string,
+    orderCancellation: boolean
+  },
+  createdDate: long
+}
+```
+
+### **PATCH** - `/api/cancelOrder`
+JSON Request Body:
+```ts
+{
+  medicine: long,
+  userNameVet: string,
+  passwordVet: string
+}
+```
+
+JSON Request Example:
+```ts
+{
+  "medicine": 1748625524763,
+  "userNameVet": "alfonso",
+  "passwordVet": "alfonso1234"
+}
+```
 
 # Materia: Construccion de software 2
 
@@ -115,7 +428,3 @@ spring.jpa.hibernate.ddl-auto=update
 ```
 
 4. Correr el proyecto 🤙
-
-## Herramientas utilizadas 
-- Sudor y lagrimas (90%)
-- Imaginación y suerte (10%)
